@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
     "js-base64": "^2.4.8",
     "jsonwebtoken": "^8.3.0",
     "jsrsasign": "^8.0.12",
