@@ -1,17 +1,13 @@
-const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
-const colors = require('colors');
+require('colors');
 const axios = require('axios');
 const util = require('util');
-const url = require('url');
 const fs = require('fs');
-const Base64 = require('js-base64').Base64;
-const jwkToPem = require('jwk-to-pem');
+const { Base64 } = require('js-base64');
 const JSONWebKey = require('json-web-key');
 const jwt = require('jsonwebtoken');
 const {
-  COGNITO_CLIENT_ID,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   REDIRECT_URI,
@@ -19,7 +15,6 @@ const {
   PRIVATE_RSA256_KEY
 } = require('./config');
 
-const hostname = '127.0.0.1';
 const port = 3001;
 const cert = fs.readFileSync(`./${PRIVATE_RSA256_KEY}`);
 
@@ -57,7 +52,7 @@ const getUserInfo = accessToken =>
           new Date(Date.parse(userResponse.data.updated_at))
         )
       };
-      console.log('User Claims: ', util.inspect(claims));
+      console.info('User Claims: ', util.inspect(claims));
       return claims;
     }),
 
@@ -87,14 +82,14 @@ const getTokens = (code, state) =>
     data: {
       // OAuth required fields
       grant_type: 'authorization_code',
-      code: code,
       redirect_uri: REDIRECT_URI,
       client_id: GITHUB_CLIENT_ID,
       // GitHub Specific
       response_type: 'code',
       client_secret: GITHUB_CLIENT_SECRET,
+      code,
       // State may not be present, so we conditionally include it
-      ...(state && { state: state })
+      ...(state && { state })
     }
   }).then(githubResponse => {
     if (githubResponse.data.error) {
@@ -124,11 +119,11 @@ const getTokens = (code, state) =>
       return new Promise(resolve => {
         const payload = {
           //  ...userInfo,
-          iss: `https://ddd9a2e0.ngrok.io`, ///https://github.com/${GITHUB_CLIENT_ID}`,
+          iss: `https://ddd9a2e0.ngrok.io`, // https://github.com/${GITHUB_CLIENT_ID}`,
           aud: GITHUB_CLIENT_ID
         };
 
-        const id_token = jwt.sign(payload, cert, {
+        const idToken = jwt.sign(payload, cert, {
           expiresIn: '1h',
           algorithm: 'RS256',
           keyid: KEY_ID
@@ -136,24 +131,26 @@ const getTokens = (code, state) =>
 
         console.log(
           'Token Header:',
-          util.inspect(Base64.decode(id_token.split('.')[0]))
+          util.inspect(Base64.decode(idToken.split('.')[0]))
         );
 
-        /*    try {
+        /*
+        try {
           jwt.verify(id_token, jwkToPem(getPublicKey()));
           console.log('Token is valid'.cyan);
         } catch (error) {
           throw new Error(`Generated token did not validate: ${error.message}`);
-        }*/
+        }
+        */
 
         const tokenResponse = {
           ...githubResponse.data,
           scope,
-          id_token
+          id_token: idToken
         };
         console.log(
           'Payload:',
-          util.inspect(Base64.decode(tokenResponse.id_token.split('.')[1]))
+          util.inspect(Base64.decode(tokenResponse.idToken.split('.')[1]))
         );
         console.log('Response:', util.inspect(tokenResponse));
 
@@ -162,11 +159,11 @@ const getTokens = (code, state) =>
     }
   });
 
-var app = express();
+const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   console.log('Request:'.cyan, util.inspect(req.url).magenta);
   console.log(' Headers:'.cyan, util.inspect(req.headers));
   console.log(' Body:'.cyan, util.inspect(req.body));
@@ -210,8 +207,8 @@ const tokenEndpoint = (code, state, res) => {
   }
 };
 
-const getBearerToken = req => {
-  return new Promise((resolve, reject) => {
+const getBearerToken = req =>
+  new Promise((resolve, reject) => {
     // This method implements https://tools.ietf.org/html/rfc6750
     const authHeader = req.get('Authorization');
     if (authHeader) {
@@ -230,7 +227,6 @@ const getBearerToken = req => {
     }
     reject(new Error('No token specified in request'));
   });
-};
 
 const userInfoEndpoint = (req, res) => {
   getBearerToken(req)
@@ -281,10 +277,10 @@ app.get('/.well-known/openid-configuration', (req, res) => {
     ],
     token_endpoint_auth_signing_alg_values_supported: ['RS256'],
     userinfo_endpoint: `https://${host}/userinfo`,
-    //check_session_iframe: 'https://server.example.com/connect/check_session',
-    //end_session_endpoint: 'https://server.example.com/connect/end_session',
+    // check_session_iframe: 'https://server.example.com/connect/check_session',
+    // end_session_endpoint: 'https://server.example.com/connect/end_session',
     jwks_uri: `https://${host}/jwks.json`,
-    //registration_endpoint: 'https://server.example.com/connect/register',
+    // registration_endpoint: 'https://server.example.com/connect/register',
     scopes_supported: ['openid', 'read:user', 'user:email'],
     response_types_supported: [
       'code',
