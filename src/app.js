@@ -21,6 +21,7 @@ const {
 
 const hostname = '127.0.0.1';
 const port = 3001;
+const cert = fs.readFileSync(`./${PRIVATE_RSA256_KEY}`);
 
 const NumericDate = date => Math.floor(date / 1000);
 
@@ -31,15 +32,15 @@ const getPublicKey = () => ({
 });
 
 const getUserInfo = accessToken =>
-  axios({
-    method: 'get',
-    url: 'https://api.github.com/user',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `token ${accessToken}`
-    }
-  })
-    .then(userResponse => {
+  Promise.all([
+    axios({
+      method: 'get',
+      url: 'https://api.github.com/user',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `token ${accessToken}`
+      }
+    }).then(userResponse => {
       // Here we map the github user response to the standard claims from
       // OpenID. The mapping was constructed by following
       // https://developer.github.com/v3/users/
@@ -58,25 +59,23 @@ const getUserInfo = accessToken =>
       };
       console.log('User Claims: ', util.inspect(claims));
       return claims;
+    }),
+
+    axios({
+      method: 'get',
+      url: 'https://api.github.com/user/emails',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `token ${accessToken}`
+      }
+    }).then(emailsResponse => {
+      const primaryEmail = emailsResponse.data.find(email => email.primary);
+      return {
+        email: primaryEmail.email,
+        email_verified: primaryEmail.verified
+      };
     })
-    .then(userClaims =>
-      axios({
-        method: 'get',
-        url: 'https://api.github.com/user/emails',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `token ${accessToken}`
-        }
-      }).then(emailsResponse => {
-        const primaryEmail = emailsResponse.data.find(email => email.primary);
-        const claims = {
-          ...userClaims,
-          email: primaryEmail.email,
-          email_verified: primaryEmail.verified
-        };
-        return claims;
-      })
-    );
+  ]).then(claims => claims.reduce((acc, claim) => ({ ...acc, ...claim }), {}));
 
 const getTokens = (code, state) =>
   axios({
@@ -125,11 +124,9 @@ const getTokens = (code, state) =>
       return getUserInfo(githubResponse.data.access_token).then(userInfo => {
         const payload = {
           ...userInfo,
-          iss: `https://github.com/${GITHUB_CLIENT_ID}`,
+          iss: `https://ddd9a2e0.ngrok.io`, ///https://github.com/${GITHUB_CLIENT_ID}`,
           aud: GITHUB_CLIENT_ID
         };
-
-        const cert = fs.readFileSync(`./${PRIVATE_RSA256_KEY}`);
 
         const id_token = jwt.sign(payload, cert, {
           expiresIn: '1h',
@@ -142,12 +139,12 @@ const getTokens = (code, state) =>
           util.inspect(Base64.decode(id_token.split('.')[0]))
         );
 
-        try {
+        /*    try {
           jwt.verify(id_token, jwkToPem(getPublicKey()));
           console.log('Token is valid'.cyan);
         } catch (error) {
           throw new Error(`Generated token did not validate: ${error.message}`);
-        }
+        }*/
 
         const tokenResponse = {
           ...githubResponse.data,
@@ -170,7 +167,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
-  console.log('Request:'.cyan, util.inspect(req.url));
+  console.log('Request:'.cyan, util.inspect(req.url).pink);
   console.log(' Headers:'.cyan, util.inspect(req.headers));
   console.log(' Body:'.cyan, util.inspect(req.body));
   next();
@@ -178,11 +175,18 @@ app.use(function(req, res, next) {
 app.listen(port);
 
 const marshalAndSend = (res, data) => {
-  console.log('Responding Success:'.green, util.inspect(data));
   res.format({
-    'text/plain': () => res.send(util.inspect(data)),
-    'application/json': () => res.send(data),
-    default: () => res.status(406).send('Not Acceptable')
+    'application/json': () => {
+      console.log('Responding Json:'.green, util.inspect(data));
+      res.json(data);
+    },
+    default: () => {
+      console.log(
+        'Failed because client asked for bad format:'.red,
+        util.inspect(data)
+      );
+      res.status(406).send('Not Acceptable');
+    }
   });
 };
 
@@ -247,7 +251,67 @@ app.post('/token', (req, res) => {
   tokenEndpoint(req.body.code, req.body.state, res);
 });
 
-app.get('/jwks', (req, res) => res.send({ keys: [getPublicKey()] }));
+app.get('/jwks.json', (req, res) => res.json({ keys: [getPublicKey()] }));
 
 app.get('/userinfo', userInfoEndpoint);
 app.post('/userinfo', userInfoEndpoint);
+
+app.get('/authorize', (req, res) =>
+  res.redirect(
+    `https://github.com/login/oauth/authorize?client_id=${
+      req.query.client_id
+    }&scope=${req.query.scope}&state=${req.query.state}&response_type=${
+      req.query.response_type
+    }`
+  )
+);
+app.post('/authorize', (req, res) =>
+  res.redirect('https://github.com/login/oauth/authorize')
+);
+
+app.get('/.well-known/openid-configuration', (req, res) => {
+  const host = req.get('host');
+  const config = {
+    issuer: `https://${host}`,
+    authorization_endpoint: `https://${host}/authorize`,
+    token_endpoint: `https://${host}/token`,
+    token_endpoint_auth_methods_supported: [
+      'client_secret_basic',
+      'private_key_jwt'
+    ],
+    token_endpoint_auth_signing_alg_values_supported: ['RS256'],
+    userinfo_endpoint: `https://${host}/userinfo`,
+    //check_session_iframe: 'https://server.example.com/connect/check_session',
+    //end_session_endpoint: 'https://server.example.com/connect/end_session',
+    jwks_uri: `https://${host}/jwks.json`,
+    //registration_endpoint: 'https://server.example.com/connect/register',
+    scopes_supported: ['openid', 'read:user', 'user:email'],
+    response_types_supported: [
+      'code',
+      'code id_token',
+      'id_token',
+      'token id_token'
+    ],
+
+    subject_types_supported: ['public'],
+    userinfo_signing_alg_values_supported: ['none'],
+    id_token_signing_alg_values_supported: ['RS256'],
+    request_object_signing_alg_values_supported: ['none'],
+    display_values_supported: ['page', 'popup'],
+    claims_supported: [
+      'sub',
+      'name',
+      'preferred_username',
+      'profile',
+      'picture',
+      'website',
+      'email',
+      'email_verified',
+      'updated_at',
+      'iss',
+      'aud'
+    ]
+  };
+  console.log('Responding: ', util.inspect(config));
+  res.json(config);
+});
