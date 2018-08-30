@@ -161,6 +161,24 @@ const tokenEndpoint = (code, state, res) => {
   }
 };
 
+const getBearerToken = req => {
+  // This method implements https://tools.ietf.org/html/rfc6750
+  const authHeader = req.get('Authorization');
+  if (authHeader) {
+    // Section 2.1 Authorization request header
+    // Should be of the form 'Bearer <token>'
+    // We can ignore the 'Bearer ' bit
+    return authHeader.split(' ')[1];
+  } else if (req.query.access_token) {
+    // Section 2.3 URI query parameter
+    return req.query.access_token;
+  } else if (req.get('Content-Type') === 'application/x-www-form-urlencoded') {
+    // Section 2.2 form encoded body parameter
+    return req.body.access_token;
+  }
+  throw new Error('No token specified in request');
+};
+
 const userInfoEndpoint = (token, res) => {
   getUserInfo(token)
     .then(userInfo => {
@@ -182,5 +200,9 @@ app.post('/token', (req, res) => {
 });
 
 app.get('/userinfo', (req, res) => {
-  getUserInfo(token);
+  getUserInfo(getBearerToken(req));
+});
+
+app.post('/userinfo', (req, res) => {
+  getUserInfo(getBearerToken(req));
 });
