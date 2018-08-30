@@ -121,9 +121,9 @@ const getTokens = (code, state) =>
       // exp - expiry time for the id token (seconds since epoch in UTC)
       // iat - time that the JWT was issued (seconds since epoch in UTC)
 
-      return getUserInfo(githubResponse.data.access_token).then(userInfo => {
+      return new Promise(resolve => {
         const payload = {
-          ...userInfo,
+          //  ...userInfo,
           iss: `https://ddd9a2e0.ngrok.io`, ///https://github.com/${GITHUB_CLIENT_ID}`,
           aud: GITHUB_CLIENT_ID
         };
@@ -157,7 +157,7 @@ const getTokens = (code, state) =>
         );
         console.log('Response:', util.inspect(tokenResponse));
 
-        return tokenResponse;
+        resolve(tokenResponse);
       });
     }
   });
@@ -167,7 +167,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
-  console.log('Request:'.cyan, util.inspect(req.url).pink);
+  console.log('Request:'.cyan, util.inspect(req.url).magenta);
   console.log(' Headers:'.cyan, util.inspect(req.headers));
   console.log(' Body:'.cyan, util.inspect(req.body));
   next();
