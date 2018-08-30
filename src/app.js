@@ -5,20 +5,30 @@ const colors = require('colors');
 const axios = require('axios');
 const util = require('util');
 const url = require('url');
+const fs = require('fs');
 const Base64 = require('js-base64').Base64;
 const jwkToPem = require('jwk-to-pem');
+const JSONWebKey = require('json-web-key');
 const jwt = require('jsonwebtoken');
 const {
   COGNITO_CLIENT_ID,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
-  REDIRECT_URI
+  REDIRECT_URI,
+  KEY_ID,
+  PRIVATE_RSA256_KEY
 } = require('./config');
 
 const hostname = '127.0.0.1';
 const port = 3001;
 
 const NumericDate = date => Math.floor(date / 1000);
+
+const getPublicKey = () => ({
+  alg: 'RS256',
+  kid: KEY_ID,
+  ...JSONWebKey.fromPEM(fs.readFileSync(`./${PRIVATE_RSA256_KEY}.pub`)).toJSON()
+});
 
 const getUserInfo = accessToken =>
   axios({
@@ -119,9 +129,25 @@ const getTokens = (code, state) =>
           aud: GITHUB_CLIENT_ID
         };
 
-        const id_token = jwt.sign(payload, 'secret', {
-          expiresIn: '1h'
+        const cert = fs.readFileSync(`./${PRIVATE_RSA256_KEY}`);
+
+        const id_token = jwt.sign(payload, cert, {
+          expiresIn: '1h',
+          algorithm: 'RS256',
+          keyid: KEY_ID
         });
+
+        console.log(
+          'Token Header:',
+          util.inspect(Base64.decode(id_token.split('.')[0]))
+        );
+
+        try {
+          jwt.verify(id_token, jwkToPem(getPublicKey()));
+          console.log('Token is valid'.cyan);
+        } catch (error) {
+          throw new Error(`Generated token did not validate: ${error.message}`);
+        }
 
         const tokenResponse = {
           ...githubResponse.data,
@@ -221,6 +247,7 @@ app.post('/token', (req, res) => {
   tokenEndpoint(req.body.code, req.body.state, res);
 });
 
-app.get('/userinfo', userInfoEndpoint);
+app.get('/jwks', (req, res) => res.send({ keys: [getPublicKey()] }));
 
+app.get('/userinfo', userInfoEndpoint);
 app.post('/userinfo', userInfoEndpoint);
