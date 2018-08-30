@@ -1,7 +1,7 @@
 const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const colors = require('colors');
 const axios = require('axios');
 const util = require('util');
 const url = require('url');
@@ -62,7 +62,7 @@ const getUserInfo = accessToken =>
         const claims = {
           ...userClaims,
           email: primaryEmail.email,
-          email_verified: primaryEmail.email_verified
+          email_verified: primaryEmail.verified
         };
         return claims;
       })
@@ -142,52 +142,74 @@ const getTokens = (code, state) =>
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(function(req, res, next) {
+  console.log('Request:'.cyan, util.inspect(req.url));
+  console.log(' Headers:'.cyan, util.inspect(req.headers));
+  console.log(' Body:'.cyan, util.inspect(req.body));
+  next();
+});
 app.listen(port);
+
+const marshalAndSend = (res, data) => {
+  console.log('Responding Success:'.green, util.inspect(data));
+  res.format({
+    'text/plain': () => res.send(util.inspect(data)),
+    'application/json': () => res.send(data),
+    default: () => res.status(406).send('Not Acceptable')
+  });
+};
+
+const errorAndSend = (res, error) => {
+  console.log('Responding Failure:'.red, util.inspect(error));
+  res.statusCode = 400;
+  res.end(`Failure: ${util.inspect(error.message)}`);
+};
 
 const tokenEndpoint = (code, state, res) => {
   if (code) {
     getTokens(code, state)
       .then(tokens => {
-        res.statusCode = 200;
-        res.end(`Success with tokens: ${util.inspect(tokens)}`);
+        marshalAndSend(res, tokens);
       })
       .catch(error => {
-        res.statusCode = 400;
-        res.end(`Failure: ${util.inspect(error.message)}`);
+        errorAndSend(res, error);
       });
   } else {
-    res.statusCode = 400;
-    res.end('No code supplied');
+    errorAndSend(res, new Error('No code supplied'));
   }
 };
 
 const getBearerToken = req => {
-  // This method implements https://tools.ietf.org/html/rfc6750
-  const authHeader = req.get('Authorization');
-  if (authHeader) {
-    // Section 2.1 Authorization request header
-    // Should be of the form 'Bearer <token>'
-    // We can ignore the 'Bearer ' bit
-    return authHeader.split(' ')[1];
-  } else if (req.query.access_token) {
-    // Section 2.3 URI query parameter
-    return req.query.access_token;
-  } else if (req.get('Content-Type') === 'application/x-www-form-urlencoded') {
-    // Section 2.2 form encoded body parameter
-    return req.body.access_token;
-  }
-  throw new Error('No token specified in request');
+  return new Promise((resolve, reject) => {
+    // This method implements https://tools.ietf.org/html/rfc6750
+    const authHeader = req.get('Authorization');
+    if (authHeader) {
+      // Section 2.1 Authorization request header
+      // Should be of the form 'Bearer <token>'
+      // We can ignore the 'Bearer ' bit
+      resolve(authHeader.split(' ')[1]);
+    } else if (req.query.access_token) {
+      // Section 2.3 URI query parameter
+      resolve(req.query.access_token);
+    } else if (
+      req.get('Content-Type') === 'application/x-www-form-urlencoded'
+    ) {
+      // Section 2.2 form encoded body parameter
+      resolve(req.body.access_token);
+    }
+    reject(new Error('No token specified in request'));
+  });
 };
 
-const userInfoEndpoint = (token, res) => {
-  getUserInfo(token)
+const userInfoEndpoint = (req, res) => {
+  getBearerToken(req)
+    .then(token => getUserInfo(token))
     .then(userInfo => {
-      res.statusCode = 200;
-      res.end(`Success with info: ${util.inspect(tokens)}`);
+      marshalAndSend(res, userInfo);
     })
     .catch(error => {
-      res.statusCode = 400;
-      res.end(`Failure: ${util.inspect(error.message)}`);
+      errorAndSend(res, error);
     });
 };
 
@@ -199,10 +221,6 @@ app.post('/token', (req, res) => {
   tokenEndpoint(req.body.code, req.body.state, res);
 });
 
-app.get('/userinfo', (req, res) => {
-  getUserInfo(getBearerToken(req));
-});
+app.get('/userinfo', userInfoEndpoint);
 
-app.post('/userinfo', (req, res) => {
-  getUserInfo(getBearerToken(req));
-});
+app.post('/userinfo', userInfoEndpoint);
