@@ -1,7 +1,7 @@
 {
-  "name": "auth-spike",
+  "name": "github-openid-wrapper",
   "version": "1.0.0",
-  "description": "",
+  "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
   "main": "src/web.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
