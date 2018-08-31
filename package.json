@@ -4,7 +4,8 @@
   "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
   "main": "src/web/app.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --coverage",
+    "test-dev": "jest --watch",
     "start": "nodemon src/web/app.js",
     "lint": "eslint 'src/**' --ext .js ",
     "coverage": "jest --coverage"
