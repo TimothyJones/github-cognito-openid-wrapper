@@ -1,4 +1,8 @@
 const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+
+// use chai as promised to get awesome promise handlers
+chai.use(chaiAsPromised);
 
 // Allow chai to print diffs like Jest would
 const chaiJestDiff = require('chai-jest-diff').default;

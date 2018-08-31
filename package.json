@@ -2,12 +2,12 @@
   "name": "github-openid-wrapper",
   "version": "1.0.0",
   "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
-  "main": "src/web.js",
+  "main": "src/web/app.js",
   "scripts": {
     "test": "jest --watch",
-    "start": "nodemon src/web.js",
-    "lint": "eslint src/*.js",
-    "coverage": "jest --coverage" 
+    "start": "nodemon src/web/app.js",
+    "lint": "eslint 'src/**' --ext .js ",
+    "coverage": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "chai-jest-diff": "^1.0.2",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
