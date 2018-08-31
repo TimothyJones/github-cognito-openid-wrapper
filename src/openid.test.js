@@ -1,20 +1,20 @@
 const openid = require('./openid');
+const github = require('./github');
+const crypto = require('./crypto');
+
+jest.mock('./github');
+jest.mock('./crypto');
 
 const MOCK_TOKEN = 'MOCK_TOKEN';
 const MOCK_CODE = 'MOCK_CODE';
-
-const github = require('./github');
-const crypto = require('./crypto');
-jest.mock('./github');
-jest.mock('./crypto');
 
 describe('openid domain layer', () => {
   describe('userinfo function', () => {
     describe('with a good token', () => {
       describe('with complete user details', () => {
         beforeEach(() => {
-          github.getUserDetails.mockImplementation(() => {
-            return Promise.resolve({
+          github.getUserDetails.mockImplementation(() =>
+            Promise.resolve({
               sub: 'Some sub',
               name: 'some name',
               login: 'username',
@@ -22,8 +22,8 @@ describe('openid domain layer', () => {
               avatar_url: 'picture.jpg',
               blog: 'website',
               updated_at: '2008-01-14T04:33:35Z'
-            });
-          });
+            })
+          );
         });
         describe('with a primary email', () => {
           beforeEach(() => {
@@ -74,10 +74,10 @@ describe('openid domain layer', () => {
     describe('with a bad token', () => {
       beforeEach(() => {
         github.getUserDetails.mockImplementation(() =>
-          Promise.reject('Bad token')
+          Promise.reject(new Error('Bad token'))
         );
         github.getUserEmails.mockImplementation(() =>
-          Promise.reject('Bad token')
+          Promise.reject(new Error('Bad token'))
         );
       });
       it('fails', () =>
@@ -113,15 +113,13 @@ describe('openid domain layer', () => {
     });
     describe('with a bad code', () => {
       beforeEach(() => {
-        github.getToken.mockImplementation(() => Promise.reject('Bad code'));
-        tokenPromise = openid.getTokens(
-          MOCK_CODE,
-          'some state',
-          'somehost.com'
+        github.getToken.mockImplementation(() =>
+          Promise.reject(new Error('Bad code'))
         );
       });
       it('fails', () =>
-        expect(openid.getUserInfo('bad token')).to.eventually.be.rejected);
+        expect(openid.getUserInfo('bad token', 'two', 'three')).to.eventually.be
+          .rejected);
     });
   });
   describe('jwks', () => {

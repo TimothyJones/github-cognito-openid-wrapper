@@ -1,15 +1,15 @@
 const axios = require('axios');
 const util = require('util');
-const GITHUB_API_ROOT = 'https://api.github.com';
-const GITHUB_API_USER_DETAILS = `${GITHUB_API_ROOT}/user`;
-const GITHUB_API_USER_EMAILS = `${GITHUB_API_ROOT}/user/emails`;
-const GITHUB_API_OAUTH_TOKEN = 'https://github.com/login/oauth/access_token';
-
 const {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   COGNITO_REDIRECT_URI
 } = require('./config');
+
+const GITHUB_API_ROOT = 'https://api.github.com';
+const GITHUB_API_USER_DETAILS = `${GITHUB_API_ROOT}/user`;
+const GITHUB_API_USER_EMAILS = `${GITHUB_API_ROOT}/user/emails`;
+const GITHUB_API_OAUTH_TOKEN = 'https://github.com/login/oauth/access_token';
 
 const check = response => {
   if (response.data) {

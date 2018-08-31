@@ -32,7 +32,7 @@ const getUserInfo = accessToken =>
     github.getUserEmails(accessToken).then(userEmails => {
       const primaryEmail = userEmails.find(email => email.primary);
       if (primaryEmail === undefined) {
-        throw 'User did not have a primary email address';
+        throw new Error('User did not have a primary email address');
       }
       return {
         email: primaryEmail.email,

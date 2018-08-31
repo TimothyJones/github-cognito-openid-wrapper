@@ -1,5 +1,5 @@
-const config = require('./config');
 const fs = require('fs');
+const config = require('./config');
 
 const ensureString = variableName => {
   if (typeof config[variableName] !== 'string') {
