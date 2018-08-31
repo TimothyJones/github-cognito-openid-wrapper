@@ -200,4 +200,4 @@ const getConfigFor = host => ({
   ]
 });
 
-module.exports = { getTokens, getUserInfo, getJwks, getConfigFor };
+module.exports = { getTokens, getUserInfo, getJwks, getConfigFor, NumericDate };

@@ -4,9 +4,10 @@
   "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
   "main": "src/web.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "start": "nodemon src/web.js",
-    "lint": "eslint src/*.js"
+    "lint": "eslint src/*.js",
+    "coverage": "jest --coverage" 
   },
   "author": "",
   "license": "ISC",
@@ -23,11 +24,20 @@
     "jwk-to-pem": "^2.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-jest-diff": "^1.0.2",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-chai-expect": "^1.1.1",
+    "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.22.0",
+    "jest": "^23.5.0",
     "nodemon": "^1.18.3",
     "prettier": "^1.14.2"
+  },
+  "engines": {
+    "node": ">=10"
   }
 }
