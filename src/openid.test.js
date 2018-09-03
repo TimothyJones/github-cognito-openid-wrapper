@@ -8,25 +8,35 @@ jest.mock('./crypto');
 const MOCK_TOKEN = 'MOCK_TOKEN';
 const MOCK_CODE = 'MOCK_CODE';
 
-const mockEmailsWithPrimary = withPrimary => {
-  github.getUserEmails.mockImplementation(() =>
-    Promise.resolve([
-      {
-        primary: false,
-        email: 'not-this-email@example.com',
-        verified: false
-      },
-      { primary: withPrimary, email: 'email@example.com', verified: true }
-    ])
-  );
-};
-
 describe('openid domain layer', () => {
+  const githubMock = {
+    getUserEmails: jest.fn(),
+    getUserDetails: jest.fn(),
+    getToken: jest.fn()
+  };
+
+  beforeEach(() => {
+    github.mockImplementation(() => githubMock);
+  });
+
   describe('userinfo function', () => {
+    const mockEmailsWithPrimary = withPrimary => {
+      githubMock.getUserEmails.mockImplementation(() =>
+        Promise.resolve([
+          {
+            primary: false,
+            email: 'not-this-email@example.com',
+            verified: false
+          },
+          { primary: withPrimary, email: 'email@example.com', verified: true }
+        ])
+      );
+    };
+
     describe('with a good token', () => {
       describe('with complete user details', () => {
         beforeEach(() => {
-          github.getUserDetails.mockImplementation(() =>
+          githubMock.getUserDetails.mockImplementation(() =>
             Promise.resolve({
               sub: 'Some sub',
               name: 'some name',
@@ -68,10 +78,10 @@ describe('openid domain layer', () => {
     });
     describe('with a bad token', () => {
       beforeEach(() => {
-        github.getUserDetails.mockImplementation(() =>
+        githubMock.getUserDetails.mockImplementation(() =>
           Promise.reject(new Error('Bad token'))
         );
-        github.getUserEmails.mockImplementation(() =>
+        githubMock.getUserEmails.mockImplementation(() =>
           Promise.reject(new Error('Bad token'))
         );
       });
@@ -82,7 +92,7 @@ describe('openid domain layer', () => {
   describe('token function', () => {
     describe('with the correct code', () => {
       beforeEach(() => {
-        github.getToken.mockImplementation(() =>
+        githubMock.getToken.mockImplementation(() =>
           Promise.resolve({
             access_token: 'SOME_TOKEN',
             token_type: 'bearer',
@@ -108,7 +118,7 @@ describe('openid domain layer', () => {
     });
     describe('with a bad code', () => {
       beforeEach(() => {
-        github.getToken.mockImplementation(() =>
+        githubMock.getToken.mockImplementation(() =>
           Promise.reject(new Error('Bad code'))
         );
       });

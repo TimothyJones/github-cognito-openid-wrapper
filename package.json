@@ -4,8 +4,8 @@
   "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
   "main": "src/web/app.js",
   "scripts": {
-    "test": "jest --coverage",
-    "test-dev": "jest --watch",
+    "test": "jest --runInBand --coverage",
+    "test-dev": "jest ---runInBand --watch",
     "start": "nodemon src/web/app.js",
     "lint": "eslint 'src/**' --ext .js ",
     "coverage": "jest --coverage"
@@ -25,6 +25,7 @@
     "jwk-to-pem": "^2.0.0"
   },
   "devDependencies": {
+    "@pact-foundation/pact": "^5.9.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-jest-diff": "^1.0.2",

@@ -6,10 +6,14 @@ const {
   COGNITO_REDIRECT_URI
 } = require('./config');
 
-const GITHUB_API_ROOT = 'https://api.github.com';
-const GITHUB_API_USER_DETAILS = `${GITHUB_API_ROOT}/user`;
-const GITHUB_API_USER_EMAILS = `${GITHUB_API_ROOT}/user/emails`;
-const GITHUB_API_OAUTH_TOKEN = 'https://github.com/login/oauth/access_token';
+const getApiEndpoints = (
+  apiBaseUrl = 'https://api.github.com',
+  loginBaseUrl = 'https://github.com'
+) => ({
+  userDetails: `${apiBaseUrl}/user`,
+  userEmails: `${apiBaseUrl}/user/emails`,
+  oauthToken: `${loginBaseUrl}/login/oauth/access_token`
+});
 
 const check = response => {
   if (response.data) {
@@ -41,29 +45,33 @@ const gitHubGet = (url, accessToken) =>
     }
   });
 
-module.exports = {
-  getUserDetails: accessToken =>
-    gitHubGet(GITHUB_API_USER_DETAILS, accessToken).then(check),
-  getUserEmails: accessToken =>
-    gitHubGet(GITHUB_API_USER_EMAILS, accessToken).then(check),
-  getToken: (code, state) =>
-    axios({
-      method: 'post',
-      url: GITHUB_API_OAUTH_TOKEN,
-      headers: {
-        Accept: 'application/json'
-      },
-      data: {
-        // OAuth required fields
-        grant_type: 'authorization_code',
-        redirect_uri: COGNITO_REDIRECT_URI,
-        client_id: GITHUB_CLIENT_ID,
-        // GitHub Specific
-        response_type: 'code',
-        client_secret: GITHUB_CLIENT_SECRET,
-        code,
-        // State may not be present, so we conditionally include it
-        ...(state && { state })
-      }
-    }).then(check)
+module.exports = baseUrl => {
+  const urls = getApiEndpoints(baseUrl, baseUrl);
+  return {
+    getUserDetails: accessToken =>
+      gitHubGet(urls.userDetails, accessToken).then(check),
+    getUserEmails: accessToken =>
+      gitHubGet(urls.userEmails, accessToken).then(check),
+    getToken: (code, state) =>
+      axios({
+        method: 'post',
+        url: urls.oauthToken,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: {
+          // OAuth required fields
+          grant_type: 'authorization_code',
+          redirect_uri: COGNITO_REDIRECT_URI,
+          client_id: GITHUB_CLIENT_ID,
+          // GitHub Specific
+          response_type: 'code',
+          client_secret: GITHUB_CLIENT_SECRET,
+          code,
+          // State may not be present, so we conditionally include it
+          ...(state && { state })
+        }
+      }).then(check)
+  };
 };
