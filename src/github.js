@@ -8,7 +8,7 @@ const GITHUB_API_OAUTH_TOKEN = 'https://github.com/login/oauth/access_token';
 const {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
-  REDIRECT_URI
+  COGNITO_REDIRECT_URI
 } = require('./config');
 
 const check = response => {
@@ -60,7 +60,7 @@ module.exports = {
       data: {
         // OAuth required fields
         grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: COGNITO_REDIRECT_URI,
         client_id: GITHUB_CLIENT_ID,
         // GitHub Specific
         response_type: 'code',

@@ -4,15 +4,14 @@ const fs = require('fs');
 
 const { KEY_ID, PRIVATE_RSA256_KEY, GITHUB_CLIENT_ID } = require('./config');
 
-const cert = fs.readFileSync(`./${PRIVATE_RSA256_KEY}`);
-
+const cert = fs.existsSync(PRIVATE_RSA256_KEY)
+  ? fs.readFileSync(`${PRIVATE_RSA256_KEY}`)
+  : undefined;
 module.exports = {
   getPublicKey: () => ({
     alg: 'RS256',
     kid: KEY_ID,
-    ...JSONWebKey.fromPEM(
-      fs.readFileSync(`./${PRIVATE_RSA256_KEY}.pub`)
-    ).toJSON()
+    ...JSONWebKey.fromPEM(fs.readFileSync(`${PRIVATE_RSA256_KEY}.pub`)).toJSON()
   }),
 
   makeIdToken: (payload, host) =>
