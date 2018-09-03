@@ -8,6 +8,19 @@ jest.mock('./crypto');
 const MOCK_TOKEN = 'MOCK_TOKEN';
 const MOCK_CODE = 'MOCK_CODE';
 
+const mockEmailsWithPrimary = withPrimary => {
+  github.getUserEmails.mockImplementation(() =>
+    Promise.resolve([
+      {
+        primary: false,
+        email: 'not-this-email@example.com',
+        verified: false
+      },
+      { primary: withPrimary, email: 'email@example.com', verified: true }
+    ])
+  );
+};
+
 describe('openid domain layer', () => {
   describe('userinfo function', () => {
     describe('with a good token', () => {
@@ -27,16 +40,7 @@ describe('openid domain layer', () => {
         });
         describe('with a primary email', () => {
           beforeEach(() => {
-            github.getUserEmails.mockImplementation(() =>
-              Promise.resolve([
-                {
-                  primary: false,
-                  email: 'not-this-email@example.com',
-                  verified: false
-                },
-                { primary: true, email: 'email@example.com', verified: true }
-              ])
-            );
+            mockEmailsWithPrimary(true);
           });
           it('Returns the aggregated complete object', async () => {
             const response = await openid.getUserInfo(MOCK_TOKEN);
@@ -55,16 +59,7 @@ describe('openid domain layer', () => {
         });
         describe('without a primary email', () => {
           beforeEach(() => {
-            github.getUserEmails.mockImplementation(() =>
-              Promise.resolve([
-                {
-                  primary: false,
-                  email: 'not-this-email@example.com',
-                  verified: false
-                },
-                { primary: false, email: 'email@example.com', verified: true }
-              ])
-            );
+            mockEmailsWithPrimary(false);
           });
           it('fails', () =>
             expect(openid.getUserInfo('MOCK_TOKEN')).to.eventually.be.rejected);

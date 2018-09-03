@@ -31,25 +31,21 @@ const check = response => {
   );
 };
 
+const gitHubGet = (url, accessToken) =>
+  axios({
+    method: 'get',
+    url,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `token ${accessToken}`
+    }
+  });
+
 module.exports = {
   getUserDetails: accessToken =>
-    axios({
-      method: 'get',
-      url: GITHUB_API_USER_DETAILS,
-      headers: {
-        Accept: 'application/json',
-        Authorization: `token ${accessToken}`
-      }
-    }).then(check),
+    gitHubGet(GITHUB_API_USER_DETAILS, accessToken).then(check),
   getUserEmails: accessToken =>
-    axios({
-      method: 'get',
-      url: GITHUB_API_USER_EMAILS,
-      headers: {
-        Accept: 'application/json',
-        Authorization: `token ${accessToken}`
-      }
-    }).then(check),
+    gitHubGet(GITHUB_API_USER_EMAILS, accessToken).then(check),
   getToken: (code, state) =>
     axios({
       method: 'post',
