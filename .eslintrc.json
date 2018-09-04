@@ -14,7 +14,8 @@
           "log"
         ]
       }
-    ]
+    ],
+    "camelcase": 0
   },
   "overrides": [
     {

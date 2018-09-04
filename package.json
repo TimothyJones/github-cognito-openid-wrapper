@@ -4,11 +4,17 @@
   "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
   "main": "src/web/app.js",
   "scripts": {
+    "build": "webpack",
     "test": "jest --runInBand --coverage",
-    "test-dev": "jest ---runInBand --watch",
+    "test-dev": "jest --runInBand --watch",
     "start": "nodemon src/web/app.js",
-    "lint": "eslint 'src/**' --ext .js ",
-    "coverage": "jest --coverage"
+    "lint": "eslint 'src/**' --ext .js",
+    "preinstall": "./create-key.sh",
+    "prebuild-dist": "npm run lint && npm run test",
+    "build-dist": "npm run build",
+    "predeploy": "npm run build-dist",
+    "deploy": "./deploy.sh",
+    "coverage": "jest --runInBand --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -25,7 +31,11 @@
     "jwk-to-pem": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
     "@pact-foundation/pact": "^5.9.1",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-jest-diff": "^1.0.2",
@@ -38,7 +48,10 @@
     "eslint-plugin-jest": "^21.22.0",
     "jest": "^23.5.0",
     "nodemon": "^1.18.3",
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.2",
+    "raw-loader": "^0.5.1",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
   },
   "engines": {
     "node": ">=10"

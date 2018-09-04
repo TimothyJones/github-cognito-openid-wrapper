@@ -1,17 +1,17 @@
 const JSONWebKey = require('json-web-key');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
 
-const { KEY_ID, PRIVATE_RSA256_KEY, GITHUB_CLIENT_ID } = require('./config');
+const { GITHUB_CLIENT_ID } = require('./config');
 
-const cert = fs.existsSync(PRIVATE_RSA256_KEY)
-  ? fs.readFileSync(`${PRIVATE_RSA256_KEY}`)
-  : undefined;
+const KEY_ID = 'jwtRS256';
+const cert = require('../jwtRS256.key');
+const pubKey = require('../jwtRS256.key.pub');
+
 module.exports = {
   getPublicKey: () => ({
     alg: 'RS256',
     kid: KEY_ID,
-    ...JSONWebKey.fromPEM(fs.readFileSync(`${PRIVATE_RSA256_KEY}.pub`)).toJSON()
+    ...JSONWebKey.fromPEM(pubKey).toJSON()
   }),
 
   makeIdToken: (payload, host) =>

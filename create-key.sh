@@ -1,9 +1,9 @@
 #!/bin/bash -eu
 
-FILENAME=jwtRS256.key
+FILENAME=./jwtRS256.key
 
-echo "Creating"
-
-ssh-keygen -t rsa -b 4096 -f "$FILENAME"
-# Don't add passphrase
-openssl rsa -in "$FILENAME" -pubout -outform PEM -out "$FILENAME".pub
+if [ ! -f "$FILENAME" ]; then
+  echo "  --- Creating private key, as it does not exist ---"
+  ssh-keygen -t rsa -b 4096 -f "$FILENAME" -N ''
+  openssl rsa -in "$FILENAME" -pubout -outform PEM -out "$FILENAME".pub
+fi

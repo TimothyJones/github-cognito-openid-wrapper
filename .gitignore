@@ -1,7 +1,10 @@
 node_modules
 coverage
 pacts
+dist
+logs
 
 set-env.sh
 *.key
 *.key.pub
+serverless-output.yml

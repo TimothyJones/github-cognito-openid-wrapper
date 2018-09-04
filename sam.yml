@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    ./rego-api-identity-proxy
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+    Function:
+        Runtime: nodejs8.10
+        Timeout: 15
+        Environment:
+          Variables:
+            GITHUB_CLIENT_ID:
+              Ref: GitHubClientIdParameter
+            GITHUB_CLIENT_SECRET:
+              Ref: GitHubClientSecretParameter
+            COGNITO_REDIRECT_URI:
+              Ref: CognitoRedirectUriParameter
+
+Parameters:
+  RegionParameter:
+    Type: String
+  GitHubClientIdParameter:
+    Type: String
+  GitHubClientSecretParameter:
+    Type: String
+  CognitoRedirectUriParameter:
+    Type: String
+
+Resources:
+  OpenIdDiscovery:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: openIdConfiguration.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /.well-known/openid-configuration
+            Method: get
+  Authorize:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: authorize.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /authorize
+            Method: get
+  Token:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: token.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /token
+            Method: get
+        PostResource:
+          Type: Api
+          Properties:
+            Path: /token
+            Method: post
+  UserInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: userinfo.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /userinfo
+            Method: get
+        PostResource:
+          Type: Api
+          Properties:
+            Path: /userinfo
+            Method: post
+  Jwks:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: jwks.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /jwks.json
+            Method: get
+
+Outputs:
+    RegoIdentityApi:
+      Description: "API Gateway endpoint URL for Prod stage for Rego Identityfunction"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
