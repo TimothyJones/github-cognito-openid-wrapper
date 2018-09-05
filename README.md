@@ -7,4 +7,13 @@ GitHub OpenID Connect Wrapper
 
 This project allows you to connect to GitHub (which uses OAuth2.0), using AWS Cognito (which uses OpenID Connect).
 
+## Getting Started
+
+    cp example-config.sh config.sh
+    vim config.sh # Or whatever your favourite editor is
+
+    npm install
+    npm run deploy # Will run the cloudformation script you configured above
+
+
 Full readme coming soon.
