@@ -8,11 +8,11 @@
     "test": "jest --runInBand --coverage",
     "test-dev": "jest --runInBand --watch",
     "lint": "eslint 'src/**' --ext .js",
-    "preinstall": "./create-key.sh",
+    "preinstall": "./scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
     "build-dist": "npm run build",
     "predeploy": "npm run build-dist",
-    "deploy": "./deploy.sh",
+    "deploy": "./scripts/deploy.sh",
     "coverage": "jest --runInBand --coverage"
   },
   "author": "",

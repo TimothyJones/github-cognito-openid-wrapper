@@ -4,7 +4,7 @@ pacts
 dist
 logs
 
-set-env.sh
+config.sh
 *.key
 *.key.pub
 serverless-output.yml
