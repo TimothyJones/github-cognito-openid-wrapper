@@ -7,6 +7,7 @@
     "build": "webpack",
     "test": "jest --runInBand --coverage",
     "test-dev": "jest --runInBand --watch",
+    "start": "nodemon src/web/app.js",
     "lint": "eslint 'src/**' --ext .js",
     "preinstall": "./scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
@@ -19,7 +20,9 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "colors": "^1.3.2",
+    "express": "^4.16.3",
     "json-web-key": "^0.3.0",
     "jsonwebtoken": "^8.3.0"
   },
