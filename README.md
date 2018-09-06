@@ -46,6 +46,8 @@ It also implements the following [OpenID Connect Discovery](https://openid.net/s
 - Configuration - used to discover configuration of this OpenID implementation's
   endpoints and capabilities. ([spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig))
 
+Out of the box, you can deploy it as a CloudFormation stack, or run it as a web server with node.
+
 ## Getting Started
 
 This project is intended to be deployed as a series of lambda functions alongside
