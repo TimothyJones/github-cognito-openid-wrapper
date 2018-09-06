@@ -1,0 +1,7 @@
+Client->OAuth Server: Authenticate\n(to get profile)
+Note right of OAuth Server: OAuth server\nmay do authorisation here
+OAuth Server->Client: Authentication Code
+Client-->OAuth Server: Authentication Code
+Note right of OAuth Server: Token endpoint uses the code\nto get an access token
+OAuth Server-->Client: Access Token
+Note over Client,OAuth Server: The access token is now\n used to access custom \nendpoints on the server\n(eg to get user profile data)

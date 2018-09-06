@@ -1,0 +1,16 @@
+Cognito->OpenID Shim: Authenticate\n(to get profile)
+OpenID Shim->GitHub: Authenticate
+Note right of GitHub: GitHub does authorisation\n here if necessary
+GitHub->OpenID Shim: Authentication Code
+OpenID Shim->Cognito: Authentication Code
+Cognito-->OpenID Shim: Authentication Code
+OpenID Shim-->GitHub: Authentication Code
+GitHub-->OpenID Shim: Access Token
+Note over OpenID Shim: also generates an ID token
+OpenID Shim-->Cognito: Access and ID tokens
+Cognito-->OpenID Shim: Request public key
+Note right of OpenID Shim: Public key is used \nby cognito to validate\n the ID token
+OpenID Shim-->Cognito: Public Key
+Cognito-->OpenID Shim: Access token
+Note over OpenID Shim, GitHub: Various API calls to\n get user profile data
+OpenID Shim-->Cognito: User information

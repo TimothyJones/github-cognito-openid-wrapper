@@ -1,0 +1,8 @@
+Client->OpenID Connect: Authenticate\n(to get profile)
+Note right of OpenID Connect: OpenID Connect server\nmay do authorisation here
+OpenID Connect->Client: Authentication Code
+Client-->OpenID Connect: Authentication Code
+Note right of OpenID Connect: Token endpoint uses the code\nto get an access token\n and an ID token
+OpenID Connect-->Client: Tokens
+Client-->OpenID Connect: Access token
+OpenID Connect-->Client: User information
