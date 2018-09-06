@@ -2,8 +2,8 @@ const util = require('util');
 
 require('colors');
 
-module.exports = {
-  success: (res, data) => {
+module.exports = res => ({
+  success: data => {
     res.format({
       'application/json': () => {
         console.log('Responding Json:'.green, util.inspect(data));
@@ -18,9 +18,10 @@ module.exports = {
       }
     });
   },
-  error: (res, error) => {
+  error: error => {
     console.log('Responding Failure:'.red, util.inspect(error));
     res.statusCode = 400;
     res.end(`Failure: ${util.inspect(error.message)}`);
-  }
-};
+  },
+  redirect: url => res.redirect(url)
+});

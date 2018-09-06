@@ -10,16 +10,16 @@ This project allows you to wrap your GitHub OAuth App in an OpenID Connect layer
 
 Here are some questions you may immediately have:
 
-* **Why does Cognito not support federation with OAuth?** Because OAuth provides
+- **Why does Cognito not support federation with OAuth?** Because OAuth provides
   no standard way of requesting user identity data. (see the [background](#background)
   section below for more details).
 
-* **Why has no one written a shim to wrap general OAuth implementations with an
+- **Why has no one written a shim to wrap general OAuth implementations with an
   OpenID Connect layer?** Because OAuth provides no standard way of requesting
   user identity data, any shim must be custom written for the particular OAuth
   implementation that's wrapped.
 
-* **GitHub is very popular, has someone written this specific custom wrapper
+- **GitHub is very popular, has someone written this specific custom wrapper
   before?** As far as I can tell, if it has been written, it has not been open
   sourced. Until now!
 
@@ -36,62 +36,84 @@ The project implements everything needed by the [OIDC User Pool IdP authenticati
 It implements the following endpoints from the
 [OpenID Connect Core Spec](https://openid.net/specs/openid-connect-core-1_0.html):
 
-* Authorization - used to start the authorisation process ([spec](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint))
-* Token - used to exchange an authorisation code for an access and ID token ([spec](https://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint))
-* UserInfo - used to exchange an access token for information about the user ([spec](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo))
-* jwks - used to describe the keys used to sign ID tokens ([implied by spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata))
+- Authorization - used to start the authorisation process ([spec](https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint))
+- Token - used to exchange an authorisation code for an access and ID token ([spec](https://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint))
+- UserInfo - used to exchange an access token for information about the user ([spec](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo))
+- jwks - used to describe the keys used to sign ID tokens ([implied by spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata))
 
 It also implements the following [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html) endpoint:
 
-* Configuration - used to discover configuration of this OpenID implementation's
+- Configuration - used to discover configuration of this OpenID implementation's
   endpoints and capabilities. ([spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig))
 
-### Deployment
+## Getting Started
 
 This project is intended to be deployed as a series of lambda functions alongside
 an API Gateway. This means it's easy to use in conjunction with Cognito, and
 should be cheap to host and run.
 
-## Getting Started
+You can also deploy it as a http server running as a node app. This is useful
+for testing, exposing it to Cognito using something like [ngrok](https://ngrok.com/).
+
+### 1: Setup
 
 You will need to:
 
-* Create a Cognito User Pool ([instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-as-user-directory.html)).
-* Configure App Integration for your User Pool ([instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-configuring-app-integration.html)). Note down the domain name.
-* Create a GitHub OAuth App ([instructions](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/), with the following settings:
-  * Authorization callback URL: `https://<Your Cognito Domain>/oauth2/idpresponse`
-  * Note down the Client ID and secret
+- Create a Cognito User Pool ([instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-as-user-directory.html)).
+- Configure App Integration for your User Pool ([instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-configuring-app-integration.html)). Note down the domain name.
+- Create a GitHub OAuth App ([instructions](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/), with the following settings:
+  - Authorization callback URL: `https://<Your Cognito Domain>/oauth2/idpresponse`
+  - Note down the Client ID and secret
 
-### Deployment with lambda and API Gateway.
+Next you need to decide if you'd like to deploy with lambda/API Gateway (follow Step 2a), or as a node server (follow Step 2b)
 
+### 2a: Deployment with lambda and API Gateway
 
-* Install the `aws` and `sam` CLIs from AWS:
-  * `aws` ([install instructions](https://docs.aws.amazon.com/cli/latest/userguide/installing.html)) and configured
-  * `sam` ([install instructions](https://docs.aws.amazon.com/lambda/latest/dg/sam-cli-requirements.html))
+- Install the `aws` and `sam` CLIs from AWS:
 
-* Run `aws configure` and set appropriate access keys etc
-* Set environment variables for the OAuth App client/secret, callback url, stack name, etc:
+  - `aws` ([install instructions](https://docs.aws.amazon.com/cli/latest/userguide/installing.html)) and configured
+  - `sam` ([install instructions](https://docs.aws.amazon.com/lambda/latest/dg/sam-cli-requirements.html))
+
+- Run `aws configure` and set appropriate access keys etc
+- Set environment variables for the OAuth App client/secret, callback url, stack name, etc:
 
        cp example-config.sh config.sh
        vim config.sh # Or whatever your favourite editor is
 
-* Run `npm install` and `npm run deploy`
-* Note down the DNS of the deployed API Gateway (available in the AWS console).
-* Configure the OIDC integration in AWS console for Cognito (described below, but following [these instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-oidc-idp.html)). The following settings are required:
-    * Client ID: The GitHub Client ID above
-    * Authorize scope: `openid read:user user:email`
-    * Issuer: `https://<Your API Gateway DNS name>/Prod`
-    * For some reason, Cognito is unable to use API gateway to do OpenID Discovery. You will need to configure the endpoints manually. They are:
-        * Authorization endpoint: `https://<Your API Gateway DNS name>/Prod/authorize`
-        * Token endpoint: `https://<Your API Gateway DNS name>/Prod/token`
-        * Userinfo endpoint: `https://<Your API Gateway DNS name>/Prod/userinfo`
-        * JWKS uri: `https://<Your API Gateway DNS name>/Prod/jwks.json`
-* Configure the Attribute Mapping in the AWS console:
+- Run `npm install` and `npm run deploy`
+- Note down the DNS of the deployed API Gateway (available in the AWS console).
+
+### 2b: Running the node server
+
+- Set environment variables for the OAuth App client/secret, callback url, and
+  port to run the server on:
+
+       cp example-config.sh config.sh
+       vim config.sh # Or whatever your favourite editor is
+
+- Run `npm run start` to fire up an auto-refreshing development build of the
+  server (production deployment is out of scope for this repository).
+
+### 3: Finalise Cognito configuration
+
+- Configure the OIDC integration in AWS console for Cognito (described below, but following [these instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-oidc-idp.html)). The following settings are required:
+  - Client ID: The GitHub Client ID above
+  - Authorize scope: `openid read:user user:email`
+  - Issuer: `https://<Your API Gateway DNS name>/Prod`
+  - If you have deployed the web app: Run discovery (big blue button next to Issuer).
+  - If you have deployed the lambda/Gateway: For some reason, Cognito is unable to
+    do OpenID Discovery. You will need to configure the endpoints manually. They are:
+    - Authorization endpoint: `https://<Your API Gateway DNS name>/Prod/authorize`
+    - Token endpoint: `https://<Your API Gateway DNS name>/Prod/token`
+    - Userinfo endpoint: `https://<Your API Gateway DNS name>/Prod/userinfo`
+    - JWKS uri: `https://<Your API Gateway DNS name>/Prod/jwks.json`
+- Configure the Attribute Mapping in the AWS console:
 
 ![Attribute mapping](docs/attribute-mapping.png)
 
+- Ensure that your new provider is enabled under **Enabled Identity Providers** on the App Client Settings screen under App Integration.
 
-That's it! If you need to redeploy, all you need to do is run `npm run deploy` again.
+That's it! If you need to redeploy the lambda/API gateway solution, all you need to do is run `npm run deploy` again.
 
 ## The details
 
@@ -150,19 +172,22 @@ You can compare this workflow to the documented Cognito workflow [here](https://
 
 #### Code layout
 
-    ├── scripts         # Bash scripts for deployment and private key generation
-    ├── src             # Source code
-    │    ├── __mocks__  # Mock private key data for tests
-    │    └── lambda     # AWS lambda handlers
-    │         └── util  # Non-handler code for lambdas
-    ├── docs            # Documentation images
-    ├── config          # Configuration for tests
-    └── dist            # Where `npm run build-dist` saves output
+    ├── scripts             # Bash scripts for deployment and key generation
+    ├── src                 # Source code
+    │    ├── __mocks__      # Mock private key data for tests
+    │    └── connectors     # Common code for both lambda and web handlers
+    │         ├── lambda    # AWS lambda handlers
+    │         │    └── util # Helper functions for lambdas
+    │         └── web       # Express.js webserver (useful for local deployment)
+    ├── docs                # Documentation images
+    ├── config              # Configuration for tests
+    ├── dist-web            # Dist folder for web server deployment
+    └-- dist-lambda         # Dist folder for lambda deployment
 
 #### npm targets
 
-- `build` and `build-dist`: create packages in the `dist` folder for the lambda
-  deployment
+- `build` and `build-dist`: create packages in the `dist-lambda` folder (for the lambda
+  deployment) and the `dist-web` folder (for the node web server).
 - `test`: Run unit tests with Jest
 - `lint`: Run `eslint` to check code style
 - `test-dev`: Run unit tests continuously, watching the file system for changes
@@ -202,9 +227,9 @@ client.
 
 **Missing Connect Core Features:**
 
-* Private key rotation ([spec](https://openid.net/specs/openid-connect-core-1_0.html#RotateSigKeys))
-* Refresh tokens ([spec](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens))
-* Passing request parameters as JWTs ([spec](https://openid.net/specs/openid-connect-core-1_0.html#JWTRequests))
+- Private key rotation ([spec](https://openid.net/specs/openid-connect-core-1_0.html#RotateSigKeys))
+- Refresh tokens ([spec](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens))
+- Passing request parameters as JWTs ([spec](https://openid.net/specs/openid-connect-core-1_0.html#JWTRequests))
 
 If you don't know what these things are, you are probably ok to use this project.
 
@@ -212,12 +237,14 @@ If you don't know what these things are, you are probably ok to use this project
 
 A full OpenID implementation would also include:
 
-* [The Dynamic client registration spec](https://openid.net/specs/openid-connect-registration-1_0.html)
-* The [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html) endpoints beyond `openid-configuration`
+- [The Dynamic client registration spec](https://openid.net/specs/openid-connect-registration-1_0.html)
+- The [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html) endpoints beyond `openid-configuration`
 
 **Known issues**
 
-For some reason, Cognito won't use the discovery endpoint if deployed via lambda. However, the four other endpoints can be specified manually.
+If deployed via lambda, Cognito can't seem to use the discovery endpoint.
+However, the endpoints can be specified manually as described in the getting
+started instructions.
 
 ## Extending
 
@@ -237,7 +264,6 @@ endpoints used when the `github` object is initialised.
 If you want to include custom claims based on other GitHub data,
 you can extend `userinfo` in `src/openid.js`. You may need to add extra API
 client calls in `src/github.js`
-
 
 ## Contributing
 

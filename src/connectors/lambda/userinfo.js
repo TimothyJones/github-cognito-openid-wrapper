@@ -1,7 +1,9 @@
 const responder = require('./util/responder');
-const openid = require('../openid');
+const auth = require('./util/auth');
+const controllers = require('../controllers');
 
 module.exports.handler = (event, context, callback) => {
   console.log('Received event:', JSON.stringify(event, null, 2));
-  responder(callback).success(openid.getJwks());
+
+  controllers(responder(callback)).userinfo(auth.getBearerToken(event));
 };

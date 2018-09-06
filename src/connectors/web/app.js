@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const util = require('util');
 const routes = require('./routes');
-const { PORT } = require('../config');
-const validateConfig = require('../validate-config');
+const { PORT } = require('../../config');
+const validateConfig = require('../../validate-config');
 
 require('colors');
 
@@ -16,7 +16,7 @@ try {
   console.error('  See the readme for configuration information');
   process.exit(1);
 }
-console.log('Config is valid'.cyan);
+console.log('Config is valid!'.cyan);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

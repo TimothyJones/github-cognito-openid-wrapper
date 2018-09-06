@@ -31,7 +31,7 @@ Resources:
   OpenIdDiscovery:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: ./dist-lambda
       Handler: openIdConfiguration.handler
       Events:
         GetResource:
@@ -42,7 +42,7 @@ Resources:
   Authorize:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: ./dist-lambda
       Handler: authorize.handler
       Events:
         GetResource:
@@ -53,7 +53,7 @@ Resources:
   Token:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: ./dist-lambda
       Handler: token.handler
       Events:
         GetResource:
@@ -69,7 +69,7 @@ Resources:
   UserInfo:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: ./dist-lambda
       Handler: userinfo.handler
       Events:
         GetResource:
@@ -85,7 +85,7 @@ Resources:
   Jwks:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: ./dist-lambda
       Handler: jwks.handler
       Events:
         GetResource:

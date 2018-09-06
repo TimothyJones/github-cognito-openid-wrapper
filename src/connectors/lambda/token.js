@@ -1,7 +1,7 @@
 const qs = require('querystring');
 const responder = require('./util/responder');
 const auth = require('./util/auth');
-const openid = require('../openid');
+const controllers = require('../controllers');
 
 const parseBody = event => {
   const contentType = event.headers['Content-Type'];
@@ -25,18 +25,9 @@ module.exports.handler = (event, context, callback) => {
   const code = body.code || query.code;
   const state = body.state || query.state;
 
-  const respond = responder(callback);
-
-  if (code) {
-    openid
-      .getTokens(code, state, auth.getIssuer(event.headers.Host))
-      .then(tokens => {
-        respond.success(tokens);
-      })
-      .catch(error => {
-        respond.error(error);
-      });
-  } else {
-    respond.error(new Error('No code supplied'));
-  }
+  controllers(responder(callback)).token(
+    code,
+    state,
+    auth.getIssuer(event.headers.Host)
+  );
 };

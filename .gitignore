@@ -1,7 +1,8 @@
 node_modules
 coverage
 pacts
-dist
+dist-web
+dist-lambda
 logs
 
 config.sh

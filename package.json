@@ -2,12 +2,12 @@
   "name": "github-openid-wrapper",
   "version": "1.0.0",
   "description": "A wrapper to enable an OpenID consumer to talk to github (which only provides OAuth2.0)",
-  "main": "src/lambda/open-id-configuration.js",
+  "main": "dist-web/server.js",
   "scripts": {
     "build": "webpack",
     "test": "jest --runInBand --coverage",
     "test-dev": "jest --runInBand --watch",
-    "start": "nodemon src/web/app.js",
+    "start": "webpack --watch",
     "lint": "eslint 'src/**' --ext .js",
     "preinstall": "./scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
@@ -43,10 +43,13 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^21.22.0",
     "jest": "^23.5.0",
+    "nodemon": "^1.18.4",
+    "nodemon-webpack-plugin": "^4.0.3",
     "prettier": "^1.14.2",
     "raw-loader": "^0.5.1",
     "webpack": "^4.17.2",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "webpack-node-externals": "^1.7.2"
   },
   "engines": {
     "node": ">=10"
