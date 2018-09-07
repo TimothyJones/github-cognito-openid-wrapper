@@ -1,5 +1,4 @@
 const axios = require('axios');
-const util = require('util');
 const {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
@@ -27,7 +26,6 @@ const check = response => {
       return response.data;
     }
   }
-  console.log(util.inspect(response));
   throw new Error(
     `GitHub API responded with a failure: ${response.status} (${
       response.statusText

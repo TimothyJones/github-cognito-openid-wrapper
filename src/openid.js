@@ -1,6 +1,3 @@
-require('colors');
-const util = require('util');
-
 const { NumericDate } = require('./helpers');
 const crypto = require('./crypto');
 const github = require('./github');
@@ -28,7 +25,6 @@ const getUserInfo = accessToken =>
             new Date(Date.parse(userDetails.updated_at))
           )
         };
-        console.info('User Claims: ', util.inspect(claims));
         return claims;
       }),
     github()
@@ -49,7 +45,6 @@ const getTokens = (code, state, host) =>
   github()
     .getToken(code, state)
     .then(githubToken => {
-      console.log('GitHub Token:', util.inspect(githubToken));
       // GitHub returns scopes separated by commas
       // But OAuth wants them to be spaces
       // https://tools.ietf.org/html/rfc6749#section-5.1
@@ -67,30 +62,18 @@ const getTokens = (code, state, host) =>
 
       return new Promise(resolve => {
         const payload = {
+          // This was commented because Cognito times out in under a second
+          // and generating the userInfo takes too long.
+          // It means the ID token is empty except for metadata.
           //  ...userInfo,
         };
 
         const idToken = crypto.makeIdToken(payload, host);
-
-        /*
-        try {
-          jwt.verify(id_token, jwkToPem(getPublicKey()));
-          console.log('Token is valid'.cyan);
-        } catch (error) {
-          throw new Error(`Generated token did not validate: ${error.message}`);
-        }
-        */
-
         const tokenResponse = {
           ...githubToken,
           scope,
           id_token: idToken
         };
-        /* console.log(
-          'Payload:'
-        util.inspect(Base64.decode(tokenResponse.id_token.split('.')[1]))
-      ); */
-        console.log('Response:', util.inspect(tokenResponse));
 
         resolve(tokenResponse);
       });

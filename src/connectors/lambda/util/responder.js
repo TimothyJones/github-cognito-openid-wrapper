@@ -16,13 +16,11 @@ module.exports = callback => ({
       }
     }),
   redirect: url => {
-    const response = {
+    callback(null, {
       statusCode: 302,
       headers: {
         Location: url
       }
-    };
-    console.log(response);
-    callback(null, response);
+    });
   }
 });

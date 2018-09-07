@@ -17,8 +17,6 @@ const parseBody = event => {
 };
 
 module.exports.handler = (event, context, callback) => {
-  console.log('Received event:', JSON.stringify(event, null, 2));
-
   const body = parseBody(event);
   const query = event.queryStringParameters || {};
 

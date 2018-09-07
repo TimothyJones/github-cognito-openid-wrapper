@@ -10,8 +10,7 @@
         "allow": [
           "warn",
           "error",
-          "info",
-          "log"
+          "info"
         ]
       }
     ],
