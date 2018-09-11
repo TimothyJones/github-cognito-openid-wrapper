@@ -14,20 +14,23 @@ describe('GitHub Client Pact', () => {
   afterEach(() => provider.verify());
 
   describe('UserDetails endpoint', () => {
+    const userDetailsRequest = {
+      uponReceiving: 'a request for user details',
+      withRequest: {
+        method: 'GET',
+        path: '/user',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `token THIS_IS_MY_TOKEN`
+        }
+      }
+    };
     describe('When the access token is good', () => {
       const EXPECTED_BODY = { name: 'Tim Jones' };
       beforeEach(() => {
         const interaction = {
+          ...userDetailsRequest,
           state: 'Where the access token is good',
-          uponReceiving: 'a request for user details',
-          withRequest: {
-            method: 'GET',
-            path: '/user',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `token THIS_IS_MY_TOKEN`
-            }
-          },
           willRespondWith: {
             status: 200,
             headers: {
@@ -55,16 +58,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...userDetailsRequest,
           state: 'Where the access token is bad',
-          uponReceiving: 'a request for user details',
-          withRequest: {
-            method: 'GET',
-            path: '/user',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `token THIS_IS_MY_TOKEN`
-            }
-          },
           willRespondWith: {
             status: 400,
             headers: {
@@ -92,16 +87,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...userDetailsRequest,
           state: 'Where there is a server error response',
-          uponReceiving: 'a request for user details',
-          withRequest: {
-            method: 'GET',
-            path: '/user',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `token THIS_IS_MY_TOKEN`
-            }
-          },
           willRespondWith: {
             status: 200,
             headers: {
@@ -125,20 +112,23 @@ describe('GitHub Client Pact', () => {
   });
 
   describe('UserEmails endpoint', () => {
+    const userEmailsRequest = {
+      uponReceiving: 'a request for user emails',
+      withRequest: {
+        method: 'GET',
+        path: '/user/emails',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `token THIS_IS_MY_TOKEN`
+        }
+      }
+    };
     describe('When the access token is good', () => {
       const EXPECTED_BODY = [{ email: 'ben@example.com', primary: true }];
       beforeEach(() => {
         const interaction = {
+          ...userEmailsRequest,
           state: 'Where the access token is good',
-          uponReceiving: 'a request for user emails',
-          withRequest: {
-            method: 'GET',
-            path: '/user/emails',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `token THIS_IS_MY_TOKEN`
-            }
-          },
           willRespondWith: {
             status: 200,
             headers: {
@@ -166,16 +156,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...userEmailsRequest,
           state: 'Where the access token is bad',
-          uponReceiving: 'a request for user emails',
-          withRequest: {
-            method: 'GET',
-            path: '/user/emails',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `token THIS_IS_MY_TOKEN`
-            }
-          },
           willRespondWith: {
             status: 400,
             headers: {
@@ -203,16 +185,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...userEmailsRequest,
           state: 'Where there is a server error response',
-          uponReceiving: 'a request for user emails',
-          withRequest: {
-            method: 'GET',
-            path: '/user/emails',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `token THIS_IS_MY_TOKEN`
-            }
-          },
           willRespondWith: {
             status: 200,
             headers: {
@@ -236,6 +210,28 @@ describe('GitHub Client Pact', () => {
   });
 
   describe('Auth Token endpoint', () => {
+    const accessTokenRequest = {
+      uponReceiving: 'a request for an access token',
+      withRequest: {
+        method: 'POST',
+        path: '/login/oauth/access_token',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: {
+          // OAuth required fields
+          grant_type: 'authorization_code',
+          redirect_uri: 'COGNITO_REDIRECT_URI',
+          client_id: 'GITHUB_CLIENT_ID',
+          // GitHub Specific
+          response_type: 'code',
+          client_secret: 'GITHUB_CLIENT_SECRET',
+          code: 'SOME_CODE'
+        }
+      }
+    };
+
     describe('When the code is good', () => {
       const EXPECTED_BODY = {
         access_token: 'xxxx',
@@ -244,26 +240,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...accessTokenRequest,
           state: 'Where the code is good',
-          uponReceiving: 'a request for an access token',
-          withRequest: {
-            method: 'POST',
-            path: '/login/oauth/access_token',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: {
-              // OAuth required fields
-              grant_type: 'authorization_code',
-              redirect_uri: 'COGNITO_REDIRECT_URI',
-              client_id: 'GITHUB_CLIENT_ID',
-              // GitHub Specific
-              response_type: 'code',
-              client_secret: 'GITHUB_CLIENT_SECRET',
-              code: 'SOME_CODE'
-            }
-          },
           willRespondWith: {
             status: 200,
             headers: {
@@ -291,26 +269,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...accessTokenRequest,
           state: 'Where the code is bad',
-          uponReceiving: 'a request for an access token',
-          withRequest: {
-            method: 'POST',
-            path: '/login/oauth/access_token',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: {
-              // OAuth required fields
-              grant_type: 'authorization_code',
-              redirect_uri: 'COGNITO_REDIRECT_URI',
-              client_id: 'GITHUB_CLIENT_ID',
-              // GitHub Specific
-              response_type: 'code',
-              client_secret: 'GITHUB_CLIENT_SECRET',
-              code: 'SOME_CODE'
-            }
-          },
           willRespondWith: {
             status: 400,
             headers: {
@@ -338,26 +298,8 @@ describe('GitHub Client Pact', () => {
       };
       beforeEach(() => {
         const interaction = {
+          ...accessTokenRequest,
           state: 'Where there is a server error response',
-          uponReceiving: 'a request for an access token',
-          withRequest: {
-            method: 'POST',
-            path: '/login/oauth/access_token',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: {
-              // OAuth required fields
-              grant_type: 'authorization_code',
-              redirect_uri: 'COGNITO_REDIRECT_URI',
-              client_id: 'GITHUB_CLIENT_ID',
-              // GitHub Specific
-              response_type: 'code',
-              client_secret: 'GITHUB_CLIENT_SECRET',
-              code: 'SOME_CODE'
-            }
-          },
           willRespondWith: {
             status: 200,
             headers: {
