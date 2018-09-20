@@ -124,7 +124,7 @@ That's it! If you need to redeploy the lambda/API gateway solution, all you need
 There are two important concepts for identity federation:
 
 - Authentication: Is this user who they say they are?
-- Authorisation: Is the user authorised to use a particular resource?
+- Authorisation: Is the user allowed to use a particular resource?
 
 #### OAuth
 
