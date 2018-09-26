@@ -34,10 +34,11 @@ const getUserInfo = accessToken =>
         if (primaryEmail === undefined) {
           throw new Error('User did not have a primary email address');
         }
-        return {
+        const claims = {
           email: primaryEmail.email,
           email_verified: primaryEmail.verified
         };
+        return claims;
       })
   ]).then(claims => claims.reduce((acc, claim) => ({ ...acc, ...claim }), {}));
 
@@ -52,7 +53,7 @@ const getTokens = (code, state, host) =>
       // since GitHub will have stripped it
       const scope = `openid ${githubToken.scope.replace(',', ' ')}`;
 
-      // ** JWT required fields **
+      // ** JWT ID Token required fields **
       // iss - issuer https url
       // aud - audience that this token is valid for (GITHUB_CLIENT_ID)
       // sub - subject identifier - must be unique
