@@ -11,7 +11,7 @@
     "build": "webpack",
     "test": "jest --runInBand --coverage",
     "test-dev": "jest --runInBand --watch",
-    "start": "webpack --watch",
+    "start": "webpack --watch --display errors-only",
     "lint": "eslint 'src/**' --ext .js",
     "preinstall": "./scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
