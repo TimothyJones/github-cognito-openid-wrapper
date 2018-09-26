@@ -93,6 +93,10 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
        cp example-config.sh config.sh
        vim config.sh # Or whatever your favourite editor is
 
+- Source the config file:
+      
+       source config.sh
+
 - Run `npm run start` to fire up an auto-refreshing development build of the
   server (production deployment is out of scope for this repository).
 
