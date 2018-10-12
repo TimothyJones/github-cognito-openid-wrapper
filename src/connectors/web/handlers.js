@@ -1,6 +1,7 @@
 const responder = require('./responder');
 const auth = require('./auth');
 const controllers = require('../controllers');
+const {getIssuer} = require('../lambda/util/auth');
 
 module.exports = {
   userinfo: (req, res) => {
@@ -23,7 +24,7 @@ module.exports = {
     ),
   openIdConfiguration: (req, res) => {
     controllers(responder(res)).openIdConfiguration(
-      auth.getIssuer(req.get('host'))
+      getIssuer(req.get('host'))
     );
   }
 };
