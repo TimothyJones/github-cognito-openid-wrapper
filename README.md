@@ -277,6 +277,27 @@ client calls in `src/github.js`
 
 Contributions are welcome, especially for the missing features! Pull requests and issues are very welcome.
 
+## FAQ
+
+### How do I use this to implement Cognito logins in my app?
+
+Login requests from your app go directly to Cognito, rather than this shim.
+This is because the shim sits only between Cognito and GitHub, not between your
+app and GitHub. See the [Cognito app integration instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-app-integration.html)
+for more details.
+
+### Can I use this shim to connect to GitHub directly from another OpenID client?
+
+Yes. Although this implementation isn't complete, it does follow the OpenID
+spec, and is complete enough to be able to use it as an OpenID connect provider.
+I've left instructions out, as this readme is complex enough already.
+See the missing features section above for one or two caveats.
+
+### How do I contact you to tell you that I built something cool with this code?
+
+If you build anything cool, ping me [@JonesTim](https://twitter.com/JonesTim) on
+twitter (or open an issue if you have any problems).
+
 ## License
 
 [BSD 3-Clause License](LICENSE)
