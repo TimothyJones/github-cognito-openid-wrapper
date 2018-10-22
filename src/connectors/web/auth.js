@@ -18,5 +18,7 @@ module.exports = {
         resolve(req.body.access_token);
       }
       reject(new Error('No token specified in request'));
-    })
+    }),
+
+  getIssuer: host => `${host}`
 };
