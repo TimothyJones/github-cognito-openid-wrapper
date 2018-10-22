@@ -94,18 +94,20 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
        vim config.sh # Or whatever your favourite editor is
 
 - Source the config file:
-      
-       source config.sh
+
+```
+  source config.sh
+```
 
 - Run `npm run start` to fire up an auto-refreshing development build of the
-  server (production deployment is out of scope for this repository).
+  server (production deployment is out of scope for this repository, but you can expose it using something like [ngrok](https://ngrok.com/) for easy development and testing with Cognito).
 
 ### 3: Finalise Cognito configuration
 
 - Configure the OIDC integration in AWS console for Cognito (described below, but following [these instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-oidc-idp.html)). The following settings are required:
   - Client ID: The GitHub Client ID above
   - Authorize scope: `openid read:user user:email`
-  - Issuer: `https://<Your API Gateway DNS name>/Prod`
+  - Issuer: either `https://<Your API Gateway DNS name>/Prod` (for lambda with API gateway) or `https://<your webserver>/` (for the node server).
   - If you have deployed the web app: Run discovery (big blue button next to Issuer).
   - If you have deployed the lambda/Gateway: For some reason, Cognito is unable to
     do OpenID Discovery. You will need to configure the endpoints manually. They are:
