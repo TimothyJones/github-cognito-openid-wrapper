@@ -290,10 +290,10 @@ for more details.
 
 ### Can I use this shim to connect to GitHub directly from another OpenID client?
 
-Yes. Although this implementation isn't complete, it does follow the OpenID
-spec, and is complete enough to be able to use it as an OpenID connect provider.
-I've left instructions out, as this readme is complex enough already.
-See the missing features section above for one or two caveats.
+Yes. This implementation isn't complete, as it focusses exclusively on 
+Cognito's requirements. However, it does follow the OpenID spec, and is
+complete enough to be able to use it as an OpenID connect provider. See the
+missing features section above for one or two caveats.
 
 ### How do I contact you to tell you that I built something cool with this code?
 
