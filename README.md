@@ -4,6 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/f787719be529b1c0e8ee/maintainability)](https://codeclimate.com/github/TimothyJones/github-cognito-openid-wrapper/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f787719be529b1c0e8ee/test_coverage)](https://codeclimate.com/github/TimothyJones/github-cognito-openid-wrapper/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper?targetFile=package.json)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 
 Do you want to add GitHub as an OIDC (OpenID Connect) provider to an AWS Cognito User Pool? Have you run in to trouble because GitHub only provides OAuth2.0 endpoints, and doesn't support OpenID Connect?
