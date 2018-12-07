@@ -9,3 +9,4 @@ config.sh
 *.key
 *.key.pub
 serverless-output.yml
+package-lock.json
