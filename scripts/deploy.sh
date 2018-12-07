@@ -19,6 +19,6 @@ source ./config.sh
 
 
 OUTPUT_TEMPLATE_FILE="$PROJECT_ROOT/serverless-output.yml"
-aws s3 mb "s3://$BUCKET_NAME" --region "$REGION"
+aws s3 mb "s3://$BUCKET_NAME" --region "$REGION" || true
 sam package --template-file template.yml --output-template-file "$OUTPUT_TEMPLATE_FILE"  --s3-bucket "$BUCKET_NAME"
 sam deploy --region "$REGION" --template-file "$OUTPUT_TEMPLATE_FILE" --stack-name "$STACK_NAME" --parameter-overrides GitHubClientIdParameter="$GITHUB_CLIENT_ID" GitHubClientSecretParameter="$GITHUB_CLIENT_SECRET" CognitoRedirectUriParameter="$COGNITO_REDIRECT_URI" --capabilities CAPABILITY_IAM
