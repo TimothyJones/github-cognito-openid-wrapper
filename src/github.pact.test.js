@@ -20,7 +20,7 @@ describe('GitHub Client Pact', () => {
         method: 'GET',
         path: '/user',
         headers: {
-          Accept: 'application/json',
+          Accept: 'application/vnd.github.v3+json',
           Authorization: `token THIS_IS_MY_TOKEN`
         }
       }
@@ -118,7 +118,7 @@ describe('GitHub Client Pact', () => {
         method: 'GET',
         path: '/user/emails',
         headers: {
-          Accept: 'application/json',
+          Accept: 'application/vnd.github.v3+json',
           Authorization: `token THIS_IS_MY_TOKEN`
         }
       }

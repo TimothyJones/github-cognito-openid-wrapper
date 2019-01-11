@@ -38,7 +38,7 @@ const gitHubGet = (url, accessToken) =>
     method: 'get',
     url,
     headers: {
-      Accept: 'application/json',
+      Accept: 'application/vnd.github.v3+json',
       Authorization: `token ${accessToken}`
     }
   });
