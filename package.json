@@ -18,7 +18,9 @@
     "build-dist": "npm run build",
     "predeploy": "npm run build-dist",
     "deploy": "./scripts/deploy.sh",
-    "coverage": "jest --runInBand --coverage"
+    "coverage": "jest --runInBand --coverage",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +30,8 @@
     "colors": "^1.3.2",
     "express": "^4.16.3",
     "json-web-key": "^0.3.0",
-    "jsonwebtoken": "^8.3.0"
+    "jsonwebtoken": "^8.3.0",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -58,5 +61,6 @@
   },
   "engines": {
     "node": ">=10"
-  }
+  },
+  "snyk": true
 }
