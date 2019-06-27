@@ -93,6 +93,6 @@ Resources:
             Method: get
 
 Outputs:
-    RegoIdentityApi:
-      Description: "API Gateway endpoint URL for Prod stage for Rego Identityfunction"
+    GitHubShimIssuer:
+      Description: "GitHub OpenID Shim Issuer"
       Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
