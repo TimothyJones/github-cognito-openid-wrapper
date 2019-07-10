@@ -253,9 +253,7 @@ A full OpenID implementation would also include:
 
 **Known issues**
 
-If deployed via lambda, Cognito can't seem to use the discovery endpoint.
-However, the endpoints can be specified manually as described in the getting
-started instructions.
+none
 
 ## Extending
 

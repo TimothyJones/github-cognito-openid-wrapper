@@ -155,7 +155,7 @@ describe('openid domain layer', () => {
           display_values_supported: ['page', 'popup'],
           id_token_signing_alg_values_supported: ['RS256'],
           issuer: 'https://not-a-real-host.com',
-          jwks_uri: 'https://not-a-real-host.com/jwks.json',
+          jwks_uri: 'https://not-a-real-host.com/.well-known/jwks.json',
           request_object_signing_alg_values_supported: ['none'],
           response_types_supported: [
             'code',

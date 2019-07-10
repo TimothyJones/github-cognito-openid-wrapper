@@ -89,7 +89,7 @@ Resources:
         GetResource:
           Type: Api
           Properties:
-            Path: /jwks.json
+            Path: /.well-known/jwks.json
             Method: get
 
 Outputs:

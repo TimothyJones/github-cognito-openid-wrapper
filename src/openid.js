@@ -92,7 +92,7 @@ const getConfigFor = host => ({
   userinfo_endpoint: `https://${host}/userinfo`,
   // check_session_iframe: 'https://server.example.com/connect/check_session',
   // end_session_endpoint: 'https://server.example.com/connect/end_session',
-  jwks_uri: `https://${host}/jwks.json`,
+  jwks_uri: `https://${host}/.well-known/jwks.json`,
   // registration_endpoint: 'https://server.example.com/connect/register',
   scopes_supported: ['openid', 'read:user', 'user:email'],
   response_types_supported: [
