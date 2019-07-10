@@ -16,6 +16,10 @@ Globals:
               Ref: GitHubClientSecretParameter
             COGNITO_REDIRECT_URI:
               Ref: CognitoRedirectUriParameter
+            GITHUB_API_URL:
+              Ref: GitHubUrlParameter
+            GITHUB_LOGIN_URL:
+              Ref: GitHubLoginUrlParameter
 
 Parameters:
   GitHubClientIdParameter:
@@ -23,6 +27,10 @@ Parameters:
   GitHubClientSecretParameter:
     Type: String
   CognitoRedirectUriParameter:
+    Type: String
+  GitHubUrlParameter:
+    Type: String
+  GitHubLoginUrlParameter:
     Type: String
 
 Resources:

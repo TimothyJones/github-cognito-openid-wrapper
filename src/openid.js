@@ -42,6 +42,8 @@ const getUserInfo = accessToken =>
       })
   ]).then(claims => claims.reduce((acc, claim) => ({ ...acc, ...claim }), {}));
 
+const getAuthorizeUrl = (client_id, scope, state, response_type) =>  github().getAuthorizeUrl(client_id, scope, state, response_type);
+
 const getTokens = (code, state, host) =>
   github()
     .getToken(code, state)
@@ -122,4 +124,4 @@ const getConfigFor = host => ({
   ]
 });
 
-module.exports = { getTokens, getUserInfo, getJwks, getConfigFor };
+module.exports = { getTokens, getUserInfo, getJwks, getConfigFor, getAuthorizeUrl };

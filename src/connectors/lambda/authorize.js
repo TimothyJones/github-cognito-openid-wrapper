@@ -1,4 +1,5 @@
 const responder = require('./util/responder');
+const controllers = require('../controllers');
 
 module.exports.handler = (event, context, callback) => {
   const {
@@ -8,7 +9,10 @@ module.exports.handler = (event, context, callback) => {
     response_type
   } = event.queryStringParameters;
 
-  responder(callback).redirect(
-    `https://github.com/login/oauth/authorize?client_id=${client_id}&scope=${scope}&state=${state}&response_type=${response_type}`
-  );
+
+  controllers(responder(callback)).authorize(
+    client_id,
+    scope,
+    state,
+    response_type);
 };

@@ -70,6 +70,8 @@ You will need to:
   - Authorization callback URL: `https://<Your Cognito Domain>/oauth2/idpresponse`
   - Note down the Client ID and secret
 
+(If you use GitHub Enterprise, you need the API & Login URL. This is usually `https://<GitHub Enterprise Host>/api/v3` and `https://<GitHub Enterprise Host>`.)
+
 Next you need to decide if you'd like to deploy with lambda/API Gateway (follow Step 2a), or as a node server (follow Step 2b)
 
 ### 2a: Deployment with lambda and API Gateway
