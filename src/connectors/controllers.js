@@ -15,7 +15,7 @@ module.exports = respond => ({
         respond.success(userInfo);
       })
       .catch(error => {
-        logger.error("Failed to provied user info: %s", error.message || error);
+        logger.error("Failed to provide user info: %s", error.message || error);
         respond.error(error);
       });
   },

@@ -1,4 +1,5 @@
 const winston = require('winston');
+const { SPLUNK_URL, SPLUNK_TOKEN, SPLUNK_SOURCE, SPLUNK_SOURCETYPE, SPLUNK_INDEX } = require('../config');
 
 const logger = winston.createLogger({
   level: 'info'
