@@ -22,5 +22,10 @@ module.exports = {
       reject(new Error('No token specified in request'));
     }),
 
-  getIssuer: host => `${host}/Prod`
+  getIssuer: (host, stage) => {
+    const lStage = stage || 'Prod';
+    const issuer = `${host}/${lStage}`;
+    logger.info("Resolved issuer: %s", issuer);
+    return issuer;
+  }
 };
