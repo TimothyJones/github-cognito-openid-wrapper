@@ -12,7 +12,8 @@ describe('openid domain layer', () => {
   const githubMock = {
     getUserEmails: jest.fn(),
     getUserDetails: jest.fn(),
-    getToken: jest.fn()
+    getToken: jest.fn(),
+    getAuthorizeUrl: jest.fn()
   };
 
   beforeEach(() => {
@@ -134,6 +135,17 @@ describe('openid domain layer', () => {
       expect(openid.getJwks()).to.deep.equal({ keys: [mockKey] });
     });
   });
+  describe('authorization', () => {
+    beforeEach(() => {
+      githubMock.getAuthorizeUrl.mockImplementation((client_id, scope, state, response_type) =>
+        `https://not-a-real-host.com/authorize?client_id=${client_id}&scope=${scope}&state=${state}&response_type=${response_type}`
+      );
+    });
+    it('Redirects to the authorization URL', () => {
+      expect(openid.getAuthorizeUrl('client_id', 'scope', 'state', 'response_type')).to.equal(
+        'https://not-a-real-host.com/authorize?client_id=client_id&scope=scope&state=state&response_type=response_type')
+    });
+  });
   describe('openid-configuration', () => {
     describe('with a supplied hostname', () => {
       it('returns the correct response', () => {
@@ -155,7 +167,7 @@ describe('openid domain layer', () => {
           display_values_supported: ['page', 'popup'],
           id_token_signing_alg_values_supported: ['RS256'],
           issuer: 'https://not-a-real-host.com',
-          jwks_uri: 'https://not-a-real-host.com/jwks.json',
+          jwks_uri: 'https://not-a-real-host.com/.well-known/jwks.json',
           request_object_signing_alg_values_supported: ['none'],
           response_types_supported: [
             'code',

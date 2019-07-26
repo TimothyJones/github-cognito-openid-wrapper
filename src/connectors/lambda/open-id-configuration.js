@@ -4,6 +4,6 @@ const controllers = require('../controllers');
 
 module.exports.handler = (event, context, callback) => {
   controllers(responder(callback)).openIdConfiguration(
-    auth.getIssuer(event.headers.Host)
+    auth.getIssuer(event.headers.Host, event.requestContext && event.requestContext.stage)
   );
 };

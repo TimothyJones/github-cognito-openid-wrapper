@@ -42,6 +42,8 @@ const getUserInfo = accessToken =>
       })
   ]).then(claims => claims.reduce((acc, claim) => ({ ...acc, ...claim }), {}));
 
+const getAuthorizeUrl = (client_id, scope, state, response_type) =>  github().getAuthorizeUrl(client_id, scope, state, response_type);
+
 const getTokens = (code, state, host) =>
   github()
     .getToken(code, state)
@@ -92,7 +94,7 @@ const getConfigFor = host => ({
   userinfo_endpoint: `https://${host}/userinfo`,
   // check_session_iframe: 'https://server.example.com/connect/check_session',
   // end_session_endpoint: 'https://server.example.com/connect/end_session',
-  jwks_uri: `https://${host}/jwks.json`,
+  jwks_uri: `https://${host}/.well-known/jwks.json`,
   // registration_endpoint: 'https://server.example.com/connect/register',
   scopes_supported: ['openid', 'read:user', 'user:email'],
   response_types_supported: [
@@ -122,4 +124,4 @@ const getConfigFor = host => ({
   ]
 });
 
-module.exports = { getTokens, getUserInfo, getJwks, getConfigFor };
+module.exports = { getTokens, getUserInfo, getJwks, getConfigFor, getAuthorizeUrl };

@@ -70,6 +70,8 @@ You will need to:
   - Authorization callback URL: `https://<Your Cognito Domain>/oauth2/idpresponse`
   - Note down the Client ID and secret
 
+(If you use GitHub Enterprise, you need the API & Login URL. This is usually `https://<GitHub Enterprise Host>/api/v3` and `https://<GitHub Enterprise Host>`.)
+
 Next you need to decide if you'd like to deploy with lambda/API Gateway (follow Step 2a), or as a node server (follow Step 2b)
 
 ### 2a: Deployment with lambda and API Gateway
@@ -110,7 +112,7 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
 - Configure the OIDC integration in AWS console for Cognito (described below, but following [these instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-oidc-idp.html)). The following settings are required:
   - Client ID: The GitHub Client ID above
   - Authorize scope: `openid read:user user:email`
-  - Issuer: either `https://<Your API Gateway DNS name>/Prod` (for lambda with API gateway) or `https://<your webserver>/` (for the node server).
+  - Issuer: either `https://<Your API Gateway DNS name>/Prod` (for lambda with API gateway, replace `Prod` with the correct stage name) or `https://<your webserver>/` (for the node server).
   - If you have deployed the web app: Run discovery (big blue button next to Issuer).
   - If you have deployed the lambda/Gateway: For some reason, Cognito is unable to
     do OpenID Discovery. You will need to configure the endpoints manually. They are:
@@ -253,9 +255,7 @@ A full OpenID implementation would also include:
 
 **Known issues**
 
-If deployed via lambda, Cognito can't seem to use the discovery endpoint.
-However, the endpoints can be specified manually as described in the getting
-started instructions.
+none
 
 ## Extending
 
