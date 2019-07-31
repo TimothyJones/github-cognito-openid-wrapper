@@ -119,7 +119,7 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
     - Authorization endpoint: `https://<Your API Gateway DNS name>/Prod/authorize`
     - Token endpoint: `https://<Your API Gateway DNS name>/Prod/token`
     - Userinfo endpoint: `https://<Your API Gateway DNS name>/Prod/userinfo`
-    - JWKS uri: `https://<Your API Gateway DNS name>/Prod/jwks.json`
+    - JWKS uri: `https://<Your API Gateway DNS name>/Prod/.well-known/jwks.json`
 - Configure the Attribute Mapping in the AWS console:
 
 ![Attribute mapping](docs/attribute-mapping.png)
