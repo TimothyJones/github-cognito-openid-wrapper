@@ -5,7 +5,7 @@ module.exports = {
   entry: slsw.lib.entries,
   externals: [ 'aws-sdk' ],
   target: 'node',
-  mode: 'development',
+  mode: slsw.lib.options.stage === 'dev' ? 'development' : 'production',
   module: {
     rules: [ {
       test: /\.js$/,
