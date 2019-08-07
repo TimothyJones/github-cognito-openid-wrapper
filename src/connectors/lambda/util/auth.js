@@ -22,9 +22,9 @@ module.exports = {
       reject(new Error('No token specified in request'));
     }),
 
-  getIssuer: (host, stage) => {
-    const lStage = stage || 'Prod';
-    const issuer = `${host}/${lStage}`;
+  getIssuer: (host, requestContext) => {
+    const issuerPath = requestContext && requestContext.path.replace( requestContext.resourcePath, '' ) || '';
+    const issuer = `${host}${issuerPath}`;
     return issuer;
   }
 };
