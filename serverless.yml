@@ -1,0 +1,62 @@
+service: githubOAuthBridge
+
+provider:
+  name: aws
+  stage: ${self:custom.currentStage}
+  runtime: nodejs8.10
+  environment: ${file(./environment-secrets.yml):${self:provider.stage}}
+functions:
+  getOpenIdConfiguration:
+    handler: src/connectors/lambda/open-id-configuration.handler
+    events:
+      - http:
+          path: /.well-known/openid-configuration
+          method: get
+          cors: true
+  authorize:
+    handler: src/connectors/lambda/authorize.handler
+    events:
+      - http:
+          path: /authorize
+          method: get
+          cors: true
+  token:
+    handler: src/connectors/lambda/token.handler
+    events:
+      - http: 
+          path: /token
+          method: get
+          cors: true
+      - http:
+          path: /token
+          method: post
+          cors: true
+  userInfo:
+    handler: src/connectors/lambda/userinfo.handler
+    events:
+      - http:
+          path: /userinfo
+          method: get
+          cors: true
+      - http:
+          path: /userinfo
+          method: post
+          cors: true
+  jwks:
+    handler: src/connectors/lambda/jwks.handler
+    events:
+      - http:
+          path: /.well-known/jwks.json
+          method: get
+          cors: true
+package:
+  exclude:
+    - .git/*
+    - npm-debug*
+custom:
+  defaultStage: dev
+  currentStage: ${opt:stage, self:custom.defaultStage}
+  webpack:
+    webpackConfig: 'webpack.config.serverless.js'
+plugins:
+  - serverless-webpack

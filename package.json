@@ -54,6 +54,7 @@
     "nodemon-webpack-plugin": "^4.0.6",
     "prettier": "^1.14.2",
     "raw-loader": "^0.5.1",
+    "serverless-webpack": "^5.3.1",
     "to": "^0.2.9",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0",
