@@ -10,3 +10,15 @@ config.sh
 *.key.pub
 serverless-output.yml
 package-lock.json
+
+# Serverless directories
+.serverless
+.webpack
+
+npm-debug*
+
+# vim
+*.sw[op]
+
+# sensitive/environment information
+*-secrets.*
