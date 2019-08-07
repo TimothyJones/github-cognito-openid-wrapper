@@ -18,7 +18,7 @@ const parseBody = event => {
 };
 
 module.exports.handler = (event, context, callback) => {
-  if ( process.env.STAGE === 'dev' ) {
+  if ( process.env.SLS_DEBUG ) {
     console.info( `Event: ${ JSON.stringify( event, null, 2 ) }` );
   }
 
@@ -28,7 +28,7 @@ module.exports.handler = (event, context, callback) => {
   const code = body.code || query.code;
   const state = body.state || query.state;
 
-  if ( process.env.STAGE === 'dev' ) {
+  if ( process.env.SLS_DEBUG ) {
     console.info( `INFO: ${ util.inspect( { code, state } ) }` );
   }
 

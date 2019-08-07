@@ -4,7 +4,7 @@ const controllers = require('../controllers');
 
 module.exports.handler = (event, context, callback) => {
 
-  if ( process.env.STAGE === 'dev' ) {
+  if ( process.env.SLS_DEBUG ) {
     console.info( `Event: ${ JSON.stringify( event, null, 2 ) }` );
   }
 
@@ -22,7 +22,7 @@ module.exports.handler = (event, context, callback) => {
     response_type
   };
 
-  if ( process.env.STAGE === 'dev' ) {
+  if ( process.env.SLS_DEBUG ) {
     console.info( `INFO: ${ util.inspect( authorizeParameters ) }` );
   }
 

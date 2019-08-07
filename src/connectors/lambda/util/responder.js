@@ -2,7 +2,7 @@ const util = require( 'util' );
 
 module.exports = callback => ({
   success: response => {
-    if ( process.env.STAGE === 'dev' ) {
+    if ( process.env.SLS_DEBUG ) {
       console.info( `INFO: ${ util.inspect( response ) }` );
     }
 
@@ -15,7 +15,7 @@ module.exports = callback => ({
     })
   },
   error: err => {
-    if ( process.env.STAGE === 'dev' ) {
+    if ( process.env.SLS_DEBUG ) {
       console.error( `ERROR: ${ util.inspect( err ) }` );
     }
 
@@ -35,7 +35,7 @@ module.exports = callback => ({
       }
     };
 
-    if ( process.env.STAGE === 'dev' ) {
+    if ( process.env.SLS_DEBUG ) {
       console.info( `INFO: ${ util.inspect( redirectObject ) }` );
     }
 
