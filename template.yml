@@ -30,8 +30,12 @@ Parameters:
     Type: String
   GitHubUrlParameter:
     Type: String
+    Default: "https://api.github.com"
+    MinLength: 1
   GitHubLoginUrlParameter:
     Type: String
+    Default: "https://github.com"
+    MinLength: 1
 
 Resources:
   OpenIdDiscovery:

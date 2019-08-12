@@ -8,8 +8,8 @@ const {
 } = require('./config');
 
 const getApiEndpoints = (
-  apiBaseUrl = GITHUB_API_URL || 'https://api.github.com',
-  loginBaseUrl = GITHUB_LOGIN_URL || 'https://github.com'
+  apiBaseUrl = GITHUB_API_URL,
+  loginBaseUrl = GITHUB_LOGIN_URL
 ) => ({
   userDetails: `${apiBaseUrl}/user`,
   userEmails: `${apiBaseUrl}/user/emails`,
