@@ -9,6 +9,13 @@ export COGNITO_REDIRECT_URI=# https://<Your Cognito Domain>/oauth2/idpresponse
 # GITHUB_API_URL=# https://<GitHub Enterprise Host>/api/v3
 # GITHUB_LOGIN_URL=# https://<GitHub Enterprise Host>
 
+# Variables required if Splunk logger is used
+# SPLUNK_URL=# https://<Splunk HEC>/services/collector/event/1.0
+# SPLUNK_TOKEN=# Splunk HTTP Event Collector token
+# SPLUNK_SOURCE=# Source for all logged events
+# SPLUNK_SOURCETYPE=# Sourcetype for all logged events
+# SPLUNK_INDEX=# Index for all logged events
+
 # Variables required if deploying with API Gateway / Lambda
 export BUCKET_NAME=# An S3 bucket name to use as the deployment pipeline
 export STACK_NAME=# The name of the stack to create
