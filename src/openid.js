@@ -10,7 +10,7 @@ const getUserInfo = accessToken =>
     github()
       .getUserDetails(accessToken)
       .then(userDetails => {
-        logger.info("Fetched user details: ", userDetails);
+        logger.info("Fetched user details: %j", userDetails, {});
         // Here we map the github user response to the standard claims from
         // OpenID. The mapping was constructed by following
         // https://developer.github.com/v3/users/
@@ -27,13 +27,13 @@ const getUserInfo = accessToken =>
             new Date(Date.parse(userDetails.updated_at))
           )
         };
-        logger.info("Resolved claims:", claims);
+        logger.info("Resolved claims: %j", claims, {});
         return claims;
       }),
     github()
       .getUserEmails(accessToken)
       .then(userEmails => {
-        logger.info("Fetched user emails: ", userEmails)
+        logger.info("Fetched user emails: %j", userEmails, {})
         const primaryEmail = userEmails.find(email => email.primary);
         if (primaryEmail === undefined) {
           throw new Error('User did not have a primary email address');
@@ -42,12 +42,12 @@ const getUserInfo = accessToken =>
           email: primaryEmail.email,
           email_verified: primaryEmail.verified
         };
-        logger.info("Resolved claims:", claims);
+        logger.info("Resolved claims: %j", claims, {});
         return claims;
       })
   ]).then(claims => {
     const mergedClaims = claims.reduce((acc, claim) => ({ ...acc, ...claim }), {});
-    logger.info("Resolved combined claims:", mergedClaims);
+    logger.info("Resolved combined claims: %j", mergedClaims, {});
     return mergedClaims;
   });
 
@@ -57,7 +57,7 @@ const getTokens = (code, state, host) =>
   github()
     .getToken(code, state)
     .then(githubToken => {
-      logger.info("Got token:", githubToken);
+      logger.debug("Got token: %s", githubToken, {});
       // GitHub returns scopes separated by commas
       // But OAuth wants them to be spaces
       // https://tools.ietf.org/html/rfc6749#section-5.1
@@ -88,7 +88,7 @@ const getTokens = (code, state, host) =>
           id_token: idToken
         };
 
-        logger.info("Resolved token response: ", tokenResponse);
+        logger.debug("Resolved token response: %j", tokenResponse, {});
 
         resolve(tokenResponse);
       });

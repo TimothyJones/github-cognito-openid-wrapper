@@ -20,7 +20,7 @@ module.exports = {
       iss: `https://${host}`,
       aud: GITHUB_CLIENT_ID
     };
-    logger.info("Signing payload", enrichedPayload);
+    logger.info("Signing payload %j", enrichedPayload, {});
     return jwt.sign(enrichedPayload,
       cert,
       {

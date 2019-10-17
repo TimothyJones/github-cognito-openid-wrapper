@@ -18,15 +18,19 @@ if (SPLUNK_URL) {
     maxBatchCount: 1
   };
 
-  logger.add(new SplunkStreamEvent(
-    { splunk: splunkSettings,
-    format: winston.format.timestamp()}
-  ));
+  logger.add(new SplunkStreamEvent({
+    splunk: splunkSettings,
+    format: winston.format.combine(
+      winston.format.splat(),
+      winston.format.timestamp()
+    )
+  }));
 } else {
   // STDOUT logging for dev/regular servers
   logger.add(
     new winston.transports.Console({
       format: winston.format.combine(
+        winston.format.splat(),
         winston.format.colorize({ all: true }),
         winston.format.simple()
       )

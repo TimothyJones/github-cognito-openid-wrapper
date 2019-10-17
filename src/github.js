@@ -19,7 +19,7 @@ const getApiEndpoints = (
 });
 
 const check = response => {
-  logger.debug("Checking response:", response);
+  logger.debug("Checking response: %j", response, {});
   if (response.data) {
     if (response.data.error) {
       throw new Error(
@@ -71,7 +71,7 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
         ...(state && { state })
       };
 
-      logger.info("Getting token from %s with data:", urls.oauthToken, data);
+      logger.debug("Getting token from %s with data: %j", urls.oauthToken, data, {});
       return axios({
         method: 'post',
         url: urls.oauthToken,
