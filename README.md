@@ -6,7 +6,6 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper?targetFile=package.json)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-
 Do you want to add GitHub as an OIDC (OpenID Connect) provider to an AWS Cognito User Pool? Have you run in to trouble because GitHub only provides OAuth2.0 endpoints, and doesn't support OpenID Connect?
 
 This project allows you to wrap your GitHub OAuth App in an OpenID Connect layer, allowing you to use it with AWS Cognito.
@@ -72,11 +71,6 @@ You will need to:
 
 (If you use GitHub Enterprise, you need the API & Login URL. This is usually `https://<GitHub Enterprise Host>/api/v3` and `https://<GitHub Enterprise Host>`.)
 
-By default, all logging goes to STDOUT.
-If you use Splunk for logging, you need the Splunk HEC URL & access token. You can also set the source, sourcetype & index for all
-logged events.
-
-
 Next you need to decide if you'd like to deploy with lambda/API Gateway (follow Step 2a), or as a node server (follow Step 2b)
 
 ### 2a: Deployment with lambda and API Gateway
@@ -132,6 +126,16 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
 - Ensure that your new provider is enabled under **Enabled Identity Providers** on the App Client Settings screen under App Integration.
 
 That's it! If you need to redeploy the lambda/API gateway solution, all you need to do is run `npm run deploy` again.
+
+### Logging
+
+This shim also supports logging with Winston. By default, all logging goes to
+STDOUT. Beware that if you set the log level to DEBUG, then sensitive user
+information may be logged.
+
+If you're using the node server, you can also use Splunk for logging.
+Environment variables configuring splunk are commented in `example-config.sh`. The Splunk HEC URL and access
+token are required, and you can also set the source, sourcetype & index for all logged events.
 
 ## The details
 
@@ -260,7 +264,7 @@ A full OpenID implementation would also include:
 
 **Known issues**
 
-none
+See [the issue tracker](https://github.com/TimothyJones/github-cognito-openid-wrapper/issues) for an up to date list.
 
 ## Extending
 
