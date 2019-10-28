@@ -9,14 +9,15 @@ module.exports = respond => ({
       state,
       response_type
     );
-    logger.info('Redirecting to %s', authorizeUrl, {});
+    logger.info('Redirecting to authorizeUrl');
+    logger.debug('Authorize Url is: %s', authorizeUrl, {});
     respond.redirect(authorizeUrl);
   },
   userinfo: tokenPromise => {
     tokenPromise
       .then(token => openid.getUserInfo(token))
       .then(userInfo => {
-        logger.info('Resolved user infos:', userInfo, {});
+        logger.debug('Resolved user infos:', userInfo, {});
         respond.success(userInfo);
       })
       .catch(error => {
@@ -33,11 +34,17 @@ module.exports = respond => ({
       openid
         .getTokens(code, state, host)
         .then(tokens => {
-          logger.info('Token for (%s, %s, %s) provided', code, state, host, {});
+          logger.debug(
+            'Token for (%s, %s, %s) provided',
+            code,
+            state,
+            host,
+            {}
+          );
           respond.success(tokens);
         })
         .catch(error => {
-          logger.warn(
+          logger.error(
             'Token for (%s, %s, %s) failed: %s',
             code,
             state,

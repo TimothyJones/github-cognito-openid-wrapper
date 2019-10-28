@@ -10,7 +10,7 @@ const getUserInfo = accessToken =>
     github()
       .getUserDetails(accessToken)
       .then(userDetails => {
-        logger.info('Fetched user details: %j', userDetails, {});
+        logger.debug('Fetched user details: %j', userDetails, {});
         // Here we map the github user response to the standard claims from
         // OpenID. The mapping was constructed by following
         // https://developer.github.com/v3/users/
@@ -27,13 +27,13 @@ const getUserInfo = accessToken =>
             new Date(Date.parse(userDetails.updated_at))
           )
         };
-        logger.info('Resolved claims: %j', claims, {});
+        logger.debug('Resolved claims: %j', claims, {});
         return claims;
       }),
     github()
       .getUserEmails(accessToken)
       .then(userEmails => {
-        logger.info('Fetched user emails: %j', userEmails, {});
+        logger.debug('Fetched user emails: %j', userEmails, {});
         const primaryEmail = userEmails.find(email => email.primary);
         if (primaryEmail === undefined) {
           throw new Error('User did not have a primary email address');
@@ -42,7 +42,7 @@ const getUserInfo = accessToken =>
           email: primaryEmail.email,
           email_verified: primaryEmail.verified
         };
-        logger.info('Resolved claims: %j', claims, {});
+        logger.debug('Resolved claims: %j', claims, {});
         return claims;
       })
   ]).then(claims => {
@@ -50,7 +50,7 @@ const getUserInfo = accessToken =>
       (acc, claim) => ({ ...acc, ...claim }),
       {}
     );
-    logger.info('Resolved combined claims: %j', mergedClaims, {});
+    logger.debug('Resolved combined claims: %j', mergedClaims, {});
     return mergedClaims;
   });
 
