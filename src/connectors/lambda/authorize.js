@@ -9,10 +9,10 @@ module.exports.handler = (event, context, callback) => {
     response_type
   } = event.queryStringParameters;
 
-
   controllers(responder(callback)).authorize(
     client_id,
     scope,
     state,
-    response_type);
+    response_type
+  );
 };

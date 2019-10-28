@@ -7,7 +7,7 @@ jest.mock('./config', () => ({
   GITHUB_CLIENT_SECRET: 'GITHUB_CLIENT_SECRET',
   GITHUB_CLIENT_ID: 'GITHUB_CLIENT_ID',
   GITHUB_API_URL: 'GITHUB_API_URL',
-  GITHUB_LOGIN_URL: 'GITHUB_LOGIN_URL',
+  GITHUB_LOGIN_URL: 'GITHUB_LOGIN_URL'
 }));
 
 describe('GitHub Client Pact', () => {
@@ -211,12 +211,19 @@ describe('GitHub Client Pact', () => {
     });
   });
 
-  describe('Authorization endpoint' , () => {
+  describe('Authorization endpoint', () => {
     describe('always', () => {
       it('returns a redirect url', () => {
-        expect(github(PACT_BASE_URL)
-          .getAuthorizeUrl('client_id', 'scope', 'state', 'response_type')).to.equal(
-            `${PACT_BASE_URL}/login/oauth/authorize?client_id=client_id&scope=scope&state=state&response_type=response_type`);
+        expect(
+          github(PACT_BASE_URL).getAuthorizeUrl(
+            'client_id',
+            'scope',
+            'state',
+            'response_type'
+          )
+        ).to.equal(
+          `${PACT_BASE_URL}/login/oauth/authorize?client_id=client_id&scope=scope&state=state&response_type=response_type`
+        );
       });
     });
   });

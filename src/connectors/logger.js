@@ -1,5 +1,11 @@
 const winston = require('winston');
-const { SPLUNK_URL, SPLUNK_TOKEN, SPLUNK_SOURCE, SPLUNK_SOURCETYPE, SPLUNK_INDEX } = require('../config');
+const {
+  SPLUNK_URL,
+  SPLUNK_TOKEN,
+  SPLUNK_SOURCE,
+  SPLUNK_SOURCETYPE,
+  SPLUNK_INDEX
+} = require('../config');
 
 const logger = winston.createLogger({
   level: 'info'
@@ -18,13 +24,15 @@ if (SPLUNK_URL) {
     maxBatchCount: 1
   };
 
-  logger.add(new SplunkStreamEvent({
-    splunk: splunkSettings,
-    format: winston.format.combine(
-      winston.format.splat(),
-      winston.format.timestamp()
-    )
-  }));
+  logger.add(
+    new SplunkStreamEvent({
+      splunk: splunkSettings,
+      format: winston.format.combine(
+        winston.format.splat(),
+        winston.format.timestamp()
+      )
+    })
+  );
 } else {
   // STDOUT logging for dev/regular servers
   logger.add(

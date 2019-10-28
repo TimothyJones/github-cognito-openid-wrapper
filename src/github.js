@@ -19,7 +19,7 @@ const getApiEndpoints = (
 });
 
 const check = response => {
-  logger.debug("Checking response: %j", response, {});
+  logger.debug('Checking response: %j', response, {});
   if (response.data) {
     if (response.data.error) {
       throw new Error(
@@ -52,7 +52,9 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
   const urls = getApiEndpoints(apiBaseUrl, loginBaseUrl || apiBaseUrl);
   return {
     getAuthorizeUrl: (client_id, scope, state, response_type) =>
-      `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(scope)}&state=${state}&response_type=${response_type}`,
+      `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(
+        scope
+      )}&state=${state}&response_type=${response_type}`,
     getUserDetails: accessToken =>
       gitHubGet(urls.userDetails, accessToken).then(check),
     getUserEmails: accessToken =>
@@ -71,7 +73,12 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
         ...(state && { state })
       };
 
-      logger.debug("Getting token from %s with data: %j", urls.oauthToken, data, {});
+      logger.debug(
+        'Getting token from %s with data: %j',
+        urls.oauthToken,
+        data,
+        {}
+      );
       return axios({
         method: 'post',
         url: urls.oauthToken,

@@ -20,14 +20,11 @@ module.exports = {
       iss: `https://${host}`,
       aud: GITHUB_CLIENT_ID
     };
-    logger.info("Signing payload %j", enrichedPayload, {});
-    return jwt.sign(enrichedPayload,
-      cert,
-      {
-        expiresIn: '1h',
-        algorithm: 'RS256',
-        keyid: KEY_ID
-      }
-    )
+    logger.info('Signing payload %j', enrichedPayload, {});
+    return jwt.sign(enrichedPayload, cert, {
+      expiresIn: '1h',
+      algorithm: 'RS256',
+      keyid: KEY_ID
+    });
   }
 };
