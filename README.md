@@ -72,6 +72,11 @@ You will need to:
 
 (If you use GitHub Enterprise, you need the API & Login URL. This is usually `https://<GitHub Enterprise Host>/api/v3` and `https://<GitHub Enterprise Host>`.)
 
+By default, all logging goes to STDOUT.
+If you use Splunk for logging, you need the Splunk HEC URL & access token. You can also set the source, sourcetype & index for all
+logged events.
+
+
 Next you need to decide if you'd like to deploy with lambda/API Gateway (follow Step 2a), or as a node server (follow Step 2b)
 
 ### 2a: Deployment with lambda and API Gateway
@@ -291,7 +296,7 @@ for more details.
 
 ### Can I use this shim to connect to GitHub directly from another OpenID client?
 
-Yes. This implementation isn't complete, as it focusses exclusively on 
+Yes. This implementation isn't complete, as it focusses exclusively on
 Cognito's requirements. However, it does follow the OpenID spec, and is
 complete enough to be able to use it as an OpenID connect provider. See the
 missing features section above for one or two caveats.

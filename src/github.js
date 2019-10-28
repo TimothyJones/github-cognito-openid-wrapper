@@ -6,6 +6,7 @@ const {
   GITHUB_API_URL,
   GITHUB_LOGIN_URL
 } = require('./config');
+const logger = require('./connectors/logger');
 
 const getApiEndpoints = (
   apiBaseUrl = GITHUB_API_URL,
@@ -18,6 +19,7 @@ const getApiEndpoints = (
 });
 
 const check = response => {
+  logger.debug("Checking response: %j", response, {});
   if (response.data) {
     if (response.data.error) {
       throw new Error(
@@ -55,26 +57,30 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
       gitHubGet(urls.userDetails, accessToken).then(check),
     getUserEmails: accessToken =>
       gitHubGet(urls.userEmails, accessToken).then(check),
-    getToken: (code, state) =>
-      axios({
+    getToken: (code, state) => {
+      const data = {
+        // OAuth required fields
+        grant_type: 'authorization_code',
+        redirect_uri: COGNITO_REDIRECT_URI,
+        client_id: GITHUB_CLIENT_ID,
+        // GitHub Specific
+        response_type: 'code',
+        client_secret: GITHUB_CLIENT_SECRET,
+        code,
+        // State may not be present, so we conditionally include it
+        ...(state && { state })
+      };
+
+      logger.debug("Getting token from %s with data: %j", urls.oauthToken, data, {});
+      return axios({
         method: 'post',
         url: urls.oauthToken,
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'
         },
-        data: {
-          // OAuth required fields
-          grant_type: 'authorization_code',
-          redirect_uri: COGNITO_REDIRECT_URI,
-          client_id: GITHUB_CLIENT_ID,
-          // GitHub Specific
-          response_type: 'code',
-          client_secret: GITHUB_CLIENT_SECRET,
-          code,
-          // State may not be present, so we conditionally include it
-          ...(state && { state })
-        }
-      }).then(check)
+        data
+      }).then(check);
+    }
   };
 };
