@@ -22,7 +22,8 @@
         "**/*.test.js"
       ],
       "env": {
-        "jest": true
+        "jest": true,
+        "jasmine": true
       },
       "plugins": [
         "jest",
