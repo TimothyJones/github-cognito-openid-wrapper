@@ -37,7 +37,7 @@ module.exports = {
     }),
 
   getIssuer: (host, stage) => {
-    const lStage = stage || 'Prod';
+    const lStage = stage;
     const issuer = `${host}/${lStage}`;
     return issuer;
   }
