@@ -51,10 +51,12 @@ const gitHubGet = (url, accessToken) =>
 module.exports = (apiBaseUrl, loginBaseUrl) => {
   const urls = getApiEndpoints(apiBaseUrl, loginBaseUrl || apiBaseUrl);
   return {
-    getAuthorizeUrl: (client_id, scope, state, response_type) =>
-      `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(
+    getAuthorizeUrl: (client_id, scope, state, response_type) => {
+      logger.info("getAuthorizeUrl state:", state);
+      return `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(
         scope
-      )}&state=${state}&response_type=${response_type}`,
+      )}&state=${state}&response_type=${response_type}`
+    },
     getUserDetails: accessToken =>
       gitHubGet(urls.userDetails, accessToken).then(check),
     getUserEmails: accessToken =>
@@ -72,6 +74,8 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
         // State may not be present, so we conditionally include it
         ...(state && { state })
       };
+
+      logger.info("getToken state:", state);
 
       logger.debug(
         'Getting token from %s with data: %j',

@@ -17,6 +17,13 @@ if [ ! -f "$PROJECT_ROOT/config.sh" ]; then
 fi
 source ./config.sh
 
+STACK_NAME_REQUIRED_PATTERN="github-oauth"
+if [[ "$STACK_NAME" == *"$STACK_NAME_REQUIRED_PATTERN" ]]; then
+  echo "stack name check successful"
+else
+  echo "ERROR: stack name check unsuccessful. must end with $STACK_NAME_REQUIRED_PATTERN"
+  exit 1
+fi
 
 OUTPUT_TEMPLATE_FILE="$PROJECT_ROOT/serverless-output.yml"
 aws s3 mb "s3://$BUCKET_NAME" --region "$REGION" || true
