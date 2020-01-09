@@ -76,7 +76,6 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
       };
 
       logger.info("getToken state:", state);
-
       logger.debug(
         'Getting token from %s with data: %j',
         urls.oauthToken,

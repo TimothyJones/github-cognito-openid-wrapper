@@ -19,7 +19,7 @@ source ./config.sh
 
 STACK_NAME_REQUIRED_PATTERN="github-oauth"
 if [[ "$STACK_NAME" == *"$STACK_NAME_REQUIRED_PATTERN" ]]; then
-  echo "stack name check successful"
+  echo "stack name check successful: $STACK_NAME"
 else
   echo "ERROR: stack name check unsuccessful. must end with $STACK_NAME_REQUIRED_PATTERN"
   exit 1
@@ -27,5 +27,5 @@ fi
 
 OUTPUT_TEMPLATE_FILE="$PROJECT_ROOT/serverless-output.yml"
 aws s3 mb "s3://$BUCKET_NAME" --region "$REGION" || true
-sam deploy --region "$REGION" --template-file "$OUTPUT_TEMPLATE_FILE" --stack-name "$STACK_NAME" --parameter-overrides GitHubClientIdParameter="$GITHUB_CLIENT_ID" GitHubClientSecretParameter="$GITHUB_CLIENT_SECRET" CognitoRedirectUriParameter="$COGNITO_REDIRECT_URI" StageNameParameter="$STAGE_NAME" --capabilities CAPABILITY_IAM
 sam package --template-file template.yml --output-template-file "$OUTPUT_TEMPLATE_FILE"  --s3-bucket "$BUCKET_NAME"
+sam deploy --region "$REGION" --template-file "$OUTPUT_TEMPLATE_FILE" --stack-name "$STACK_NAME" --parameter-overrides GitHubClientIdParameter="$GITHUB_CLIENT_ID" GitHubClientSecretParameter="$GITHUB_CLIENT_SECRET" CognitoRedirectUriParameter="$COGNITO_REDIRECT_URI" StageNameParameter="$STAGE_NAME" --capabilities CAPABILITY_IAM
