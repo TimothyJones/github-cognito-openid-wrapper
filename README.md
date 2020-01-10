@@ -111,14 +111,14 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
 - Configure the OIDC integration in AWS console for Cognito (described below, but following [these instructions](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-oidc-idp.html)). The following settings are required:
   - Client ID: The GitHub Client ID above
   - Authorize scope: `openid read:user user:email`
-  - Issuer: either `https://<Your API Gateway DNS name>/Prod` (for lambda with API gateway, replace `Prod` with the correct stage name) or `https://<your webserver>/` (for the node server).
+  - Issuer: `https://<Your API Gateway DNS name>/${Stage_Name}` or `https://<your webserver>/` (for the node server).
   - If you have deployed the web app: Run discovery (big blue button next to Issuer).
   - If you have deployed the lambda/Gateway: For some reason, Cognito is unable to
     do OpenID Discovery. You will need to configure the endpoints manually. They are:
-    - Authorization endpoint: `https://<Your API Gateway DNS name>/Prod/authorize`
-    - Token endpoint: `https://<Your API Gateway DNS name>/Prod/token`
-    - Userinfo endpoint: `https://<Your API Gateway DNS name>/Prod/userinfo`
-    - JWKS uri: `https://<Your API Gateway DNS name>/Prod/.well-known/jwks.json`
+    - Authorization endpoint: `https://<Your API Gateway DNS name>/${Stage_Name}/authorize`
+    - Token endpoint: `https://<Your API Gateway DNS name>/${Stage_Name}/token`
+    - Userinfo endpoint: `https://<Your API Gateway DNS name>/${Stage_Name}/userinfo`
+    - JWKS uri: `https://<Your API Gateway DNS name>/${Stage_Name}/.well-known/jwks.json`
 - Configure the Attribute Mapping in the AWS console:
 
 ![Attribute mapping](docs/attribute-mapping.png)
@@ -222,7 +222,7 @@ You can compare this workflow to the documented Cognito workflow [here](https://
 - `scripts/create-key.sh`: If the private key is missing, generate a new one.
   This is run as a preinstall script before `npm install`
 - `scripts/deploy.sh`: This is the deploy part of `npm run deploy`. It uploads
-  the dist folder to S3, and then creates the cloudformation stack that contains  
+  the dist folder to S3, and then creates the cloudformation stack that contains
   the API gateway and lambdas
 
 #### Tests

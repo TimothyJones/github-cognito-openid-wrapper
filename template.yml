@@ -1,25 +1,25 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-    ./rego-api-identity-proxy
+    Github Cognito OpenID Wrapper (SSO)
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
-    Function:
-        Runtime: nodejs8.10
-        Timeout: 15
-        Environment:
-          Variables:
-            GITHUB_CLIENT_ID:
-              Ref: GitHubClientIdParameter
-            GITHUB_CLIENT_SECRET:
-              Ref: GitHubClientSecretParameter
-            COGNITO_REDIRECT_URI:
-              Ref: CognitoRedirectUriParameter
-            GITHUB_API_URL:
-              Ref: GitHubUrlParameter
-            GITHUB_LOGIN_URL:
-              Ref: GitHubLoginUrlParameter
+  Function:
+    Runtime: nodejs10
+    Timeout: 15
+    Environment:
+      Variables:
+        GITHUB_CLIENT_ID:
+          Ref: GitHubClientIdParameter
+        GITHUB_CLIENT_SECRET:
+          Ref: GitHubClientSecretParameter
+        COGNITO_REDIRECT_URI:
+          Ref: CognitoRedirectUriParameter
+        GITHUB_API_URL:
+          Ref: GitHubUrlParameter
+        GITHUB_LOGIN_URL:
+          Ref: GitHubLoginUrlParameter
 
 Parameters:
   GitHubClientIdParameter:
@@ -36,8 +36,15 @@ Parameters:
     Type: String
     Default: "https://github.com"
     MinLength: 1
+  StageNameParameter:
+    Type: String
 
 Resources:
+  GithubOAuthApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref StageNameParameter
+      OpenApiVersion: "2.0"
   OpenIdDiscovery:
     Type: AWS::Serverless::Function
     Properties:
@@ -49,6 +56,7 @@ Resources:
           Properties:
             Path: /.well-known/openid-configuration
             Method: get
+            RestApiId: !Ref GithubOAuthApi
   Authorize:
     Type: AWS::Serverless::Function
     Properties:
@@ -60,6 +68,7 @@ Resources:
           Properties:
             Path: /authorize
             Method: get
+            RestApiId: !Ref GithubOAuthApi
   Token:
     Type: AWS::Serverless::Function
     Properties:
@@ -71,11 +80,13 @@ Resources:
           Properties:
             Path: /token
             Method: get
+            RestApiId: !Ref GithubOAuthApi
         PostResource:
           Type: Api
           Properties:
             Path: /token
             Method: post
+            RestApiId: !Ref GithubOAuthApi
   UserInfo:
     Type: AWS::Serverless::Function
     Properties:
@@ -87,11 +98,13 @@ Resources:
           Properties:
             Path: /userinfo
             Method: get
+            RestApiId: !Ref GithubOAuthApi
         PostResource:
           Type: Api
           Properties:
             Path: /userinfo
             Method: post
+            RestApiId: !Ref GithubOAuthApi
   Jwks:
     Type: AWS::Serverless::Function
     Properties:
@@ -103,8 +116,9 @@ Resources:
           Properties:
             Path: /.well-known/jwks.json
             Method: get
+            RestApiId: !Ref GithubOAuthApi
 
 Outputs:
     GitHubShimIssuer:
       Description: "GitHub OpenID Shim Issuer"
-      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+      Value: !Sub "https://${GithubOAuthApi}.execute-api.${AWS::Region}.amazonaws.com/${StageNameParameter}"
