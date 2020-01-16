@@ -2,7 +2,7 @@ const NodemonPlugin = require('nodemon-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
 const baseConfig = {
-  mode: 'development',
+  mode: 'production',
   target: 'node',
   devtool: 'source-map',
   module: {
@@ -38,6 +38,7 @@ const config = [
       openIdConfiguration: './src/connectors/lambda/open-id-configuration.js',
       token: './src/connectors/lambda/token.js',
       userinfo: './src/connectors/lambda/userinfo.js',
+      loginCallback: './src/connectors/lambda/loginCallback.js',
       jwks: './src/connectors/lambda/jwks.js',
       authorize: './src/connectors/lambda/authorize.js'
     }

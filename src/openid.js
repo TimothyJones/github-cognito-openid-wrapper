@@ -1,4 +1,3 @@
-const logger = require('./connectors/logger');
 const { NumericDate } = require('./helpers');
 const crypto = require('./crypto');
 const github = require('./github');
@@ -10,7 +9,6 @@ const getUserInfo = accessToken =>
     github()
       .getUserDetails(accessToken)
       .then(userDetails => {
-        logger.debug('Fetched user details: %j', userDetails, {});
         // Here we map the github user response to the standard claims from
         // OpenID. The mapping was constructed by following
         // https://developer.github.com/v3/users/
@@ -27,41 +25,32 @@ const getUserInfo = accessToken =>
             new Date(Date.parse(userDetails.updated_at))
           )
         };
-        logger.debug('Resolved claims: %j', claims, {});
         return claims;
       }),
     github()
+      .getUserOrgNames(accessToken)
+      .then(userOrgs => ({
+        organizations: JSON.stringify(userOrgs)
+      })),
+    github()
       .getUserEmails(accessToken)
       .then(userEmails => {
-        logger.debug('Fetched user emails: %j', userEmails, {});
         const primaryEmail = userEmails.find(email => email.primary);
         if (primaryEmail === undefined) {
-          throw new Error('User did not have a primary email address');
+          throw new Error(`User did not have a primary email address`);
         }
         const claims = {
           email: primaryEmail.email,
           email_verified: primaryEmail.verified
         };
-        logger.debug('Resolved claims: %j', claims, {});
         return claims;
       })
-  ]).then(claims => {
-    const mergedClaims = claims.reduce(
-      (acc, claim) => ({ ...acc, ...claim }),
-      {}
-    );
-    logger.debug('Resolved combined claims: %j', mergedClaims, {});
-    return mergedClaims;
-  });
+  ]).then(claims => claims.reduce((acc, claim) => ({ ...acc, ...claim }), {}));
 
-const getAuthorizeUrl = (client_id, scope, state, response_type) =>
-  github().getAuthorizeUrl(client_id, scope, state, response_type);
-
-const getTokens = (code, state, host) =>
+const getTokens = (code, state, host, redirectUri) =>
   github()
-    .getToken(code, state)
+    .getToken(code, state, redirectUri)
     .then(githubToken => {
-      logger.debug('Got token: %s', githubToken, {});
       // GitHub returns scopes separated by commas
       // But OAuth wants them to be spaces
       // https://tools.ietf.org/html/rfc6749#section-5.1
@@ -92,8 +81,6 @@ const getTokens = (code, state, host) =>
           id_token: idToken
         };
 
-        logger.debug('Resolved token response: %j', tokenResponse, {});
-
         resolve(tokenResponse);
       });
     });
@@ -110,9 +97,9 @@ const getConfigFor = host => ({
   userinfo_endpoint: `https://${host}/userinfo`,
   // check_session_iframe: 'https://server.example.com/connect/check_session',
   // end_session_endpoint: 'https://server.example.com/connect/end_session',
-  jwks_uri: `https://${host}/.well-known/jwks.json`,
+  jwks_uri: `https://${host}/jwks.json`,
   // registration_endpoint: 'https://server.example.com/connect/register',
-  scopes_supported: ['openid', 'read:user', 'user:email'],
+  scopes_supported: ['openid', 'read:user', 'user:email', 'read:org'],
   response_types_supported: [
     'code',
     'code id_token',
@@ -140,10 +127,4 @@ const getConfigFor = host => ({
   ]
 });
 
-module.exports = {
-  getTokens,
-  getUserInfo,
-  getJwks,
-  getConfigFor,
-  getAuthorizeUrl
-};
+module.exports = { getTokens, getUserInfo, getJwks, getConfigFor };

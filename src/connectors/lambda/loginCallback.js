@@ -1,11 +1,12 @@
 const responder = require('./util/responder');
-const auth = require('./util/auth');
+const cognitoStates = require('../states');
 const controllers = require('../controllers');
 const keepAlive = require('./util/keepAlive');
 
 const handler = (event, context, callback) => {
-  controllers(responder(callback)).openIdConfiguration(
-    auth.getIssuer(event.headers.Host)
+  controllers(responder(callback)).loginCallback(
+    event.queryStringParameters,
+    cognitoStates
   );
 };
 

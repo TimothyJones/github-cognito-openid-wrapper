@@ -1,33 +1,32 @@
-const logger = require('../../logger');
+const { STATIC_SECURITY_HEADERS } = require('../../../config');
 
 module.exports = callback => ({
-  success: response => {
-    logger.info('Success response');
-    logger.debug('Response was: ', response);
+  success: body => {
     callback(null, {
       statusCode: 200,
-      body: JSON.stringify(response),
+      body: JSON.stringify(body),
       headers: {
+        ...STATIC_SECURITY_HEADERS,
         'Content-Type': 'application/json'
       }
     });
   },
-  error: err => {
-    logger.error('Error response: ', err.message || err);
+  error: (err, statusCode = 500) => {
     callback(null, {
-      statusCode: 400,
       body: JSON.stringify(err.message),
       headers: {
+        ...STATIC_SECURITY_HEADERS,
         'Content-Type': 'application/json'
-      }
+      },
+      statusCode
     });
   },
   redirect: url => {
-    logger.info('Redirect response');
-    logger.debug('Redirect response to %s', url, {});
     callback(null, {
       statusCode: 302,
       headers: {
+        ...STATIC_SECURITY_HEADERS,
+        'Content-Type': 'text/html',
         Location: url
       }
     });

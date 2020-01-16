@@ -8,37 +8,37 @@
     "url": "https://github.com/TimothyJones/github-cognito-openid-wrapper.git"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --hide-modules",
     "test": "jest --runInBand --coverage",
     "test-dev": "jest --runInBand --watch",
     "start": "webpack --watch --display errors-only",
-    "lint": "eslint 'src/**' --ext .js",
-    "preinstall": "./scripts/create-key.sh",
+    "lint": "npm run lint:shim && npm run lint:customresource",
+    "lint:shim": "eslint 'src/**' --ext .js",
+    "lint:customresource": "eslint 'cloudformation/lambdas/**' --ext .js",
+    "preinstall": "scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
     "build-dist": "npm run build",
     "predeploy": "npm run build-dist",
-    "deploy": "./scripts/deploy.sh",
-    "coverage": "jest --runInBand --coverage",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "deploy": "scripts/deploy-shim.sh",
+    "coverage": "jest --runInBand --coverage"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "colors": "^1.3.2",
     "express": "^4.16.3",
     "json-web-key": "^0.3.0",
     "jsonwebtoken": "^8.3.0",
-    "winston": "^3.2.1",
-    "winston-splunk-httplogger": "^2.2.0"
+    "uuid": "^3.3.2",
+    "aws-sdk": "^2.388.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
-    "@pact-foundation/pact": "^9.5.0",
-    "babel-jest": "^24.1.0",
+    "@pact-foundation/pact": "^7.2.0",
+    "babel-jest": "^24.3.1",
     "babel-loader": "^8.0.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
@@ -50,19 +50,17 @@
     "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^21.22.0",
-    "jest": "^24.1.0",
+    "jest": "^24.3.1",
     "nodemon": "^1.18.7",
     "nodemon-webpack-plugin": "^4.0.6",
     "prettier": "^1.14.2",
     "raw-loader": "^0.5.1",
-    "snyk": "^1.232.0",
     "to": "^0.2.9",
-    "webpack": "^4.41.2",
+    "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0",
     "webpack-node-externals": "^1.7.2"
   },
   "engines": {
     "node": ">=10"
-  },
-  "snyk": true
+  }
 }

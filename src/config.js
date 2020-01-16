@@ -2,14 +2,18 @@ module.exports = {
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   COGNITO_REDIRECT_URI: process.env.COGNITO_REDIRECT_URI,
-  GITHUB_API_URL: process.env.GITHUB_API_URL,
-  GITHUB_LOGIN_URL: process.env.GITHUB_LOGIN_URL,
+  SHIM_REDIRECT_URI: process.env.SHIM_REDIRECT_URI,
+  STATE_DYNAMODB_TABLE:
+    process.env.STATE_DYNAMODB_TABLE || 'CognitoStateStore',
+  DYNAMODB_ENDPOINT: process.env.DYNAMODB_ENDPOINT || undefined,
   PORT: parseInt(process.env.PORT, 10) || undefined,
-
-  // Splunk logging variables
-  SPLUNK_URL: process.env.SPLUNK_URL,
-  SPLUNK_TOKEN: process.env.SPLUNK_TOKEN,
-  SPLUNK_SOURCE: process.env.SPLUNK_SOURCE,
-  SPLUNK_SOURCETYPE: process.env.SPLUNK_SOURCETYPE,
-  SPLUNK_INDEX: process.env.SPLUNK_INDEX
+  STATIC_SECURITY_HEADERS: {
+    'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+    Pragma: 'no-cache',
+    Expires: 'Thu, 01 Jan 1970 00:00:00 UTC',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Xss-Protection': '1; mode=block',
+    'Strict-Transport-Security': 'max-age=31536000 ; includeSubDomains',
+    'X-Frame-Options': 'DENY'
+  }
 };

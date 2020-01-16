@@ -1,0 +1,142 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: GitHub Shim to provide OpenID Connect to Cognito using API Gateway and Lambda
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Runtime: nodejs8.10
+    Timeout: 15
+    Environment:
+      Variables:
+        GITHUB_CLIENT_ID:
+          Ref: GitHubClientIdParameter
+        GITHUB_CLIENT_SECRET:
+          Ref: GitHubClientSecretParameter
+        COGNITO_REDIRECT_URI:
+          Ref: CognitoRedirectUriParameter
+
+Parameters:
+  GitHubClientIdParameter:
+    Type: String
+  GitHubClientSecretParameter:
+    Type: String
+  CognitoRedirectUriParameter:
+    Type: String
+  DynamoDbEndpoint:
+    Type: String
+  StateDynamoDbTable:
+    Type: String
+
+Resources:
+  OpenIdDiscovery:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist-lambda
+      Handler: openIdConfiguration.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /.well-known/openid-configuration
+            Method: get
+  Authorize:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist-lambda
+      Handler: authorize.handler
+      Events:
+        KeepAlive:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /authorize
+            Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref StateDynamoDbTable
+  LoginCallback:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist-lambda
+      Handler: loginCallback.handler
+      Environment:
+        Variables:
+          DYNAMO_DB_ENDPOINT: !Ref DynamoDbEndpoint
+          STATE_DYNAMODB_TABLE: !Ref StateDynamoDbTable
+      Events:
+        KeepAlive:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /callback
+            Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref StateDynamoDbTable
+  Token:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist-lambda
+      Handler: token.handler
+      Events:
+        KeepAlive:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /token
+            Method: get
+        PostResource:
+          Type: Api
+          Properties:
+            Path: /token
+            Method: post
+  UserInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist-lambda
+      Handler: userinfo.handler
+      Events:
+        KeepAlive:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /userinfo
+            Method: get
+        PostResource:
+          Type: Api
+          Properties:
+            Path: /userinfo
+            Method: post
+  Jwks:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../dist-lambda
+      Handler: jwks.handler
+      Events:
+        KeepAlive:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /jwks.json
+            Method: get
+
+Outputs:
+  GitHubShimIssuer:
+    Description: 'API Gateway endpoint URL for Prod stage for GitHub OpenID Shim'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'

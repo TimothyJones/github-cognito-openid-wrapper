@@ -1,25 +1,17 @@
 const axios = require('axios');
-const {
-  GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET,
-  COGNITO_REDIRECT_URI,
-  GITHUB_API_URL,
-  GITHUB_LOGIN_URL
-} = require('./config');
-const logger = require('./connectors/logger');
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('./config');
 
 const getApiEndpoints = (
-  apiBaseUrl = GITHUB_API_URL,
-  loginBaseUrl = GITHUB_LOGIN_URL
+  apiBaseUrl = 'https://api.github.com',
+  loginBaseUrl = 'https://github.com'
 ) => ({
   userDetails: `${apiBaseUrl}/user`,
   userEmails: `${apiBaseUrl}/user/emails`,
-  oauthToken: `${loginBaseUrl}/login/oauth/access_token`,
-  oauthAuthorize: `${loginBaseUrl}/login/oauth/authorize`
+  userOrgs: `${apiBaseUrl}/user/orgs`,
+  oauthToken: `${loginBaseUrl}/login/oauth/access_token`
 });
 
 const check = response => {
-  logger.debug('Checking response: %j', response, {});
   if (response.data) {
     if (response.data.error) {
       throw new Error(
@@ -48,46 +40,37 @@ const gitHubGet = (url, accessToken) =>
     }
   });
 
-module.exports = (apiBaseUrl, loginBaseUrl) => {
-  const urls = getApiEndpoints(apiBaseUrl, loginBaseUrl || apiBaseUrl);
+module.exports = baseUrl => {
+  const urls = getApiEndpoints(baseUrl, baseUrl);
   return {
-    getAuthorizeUrl: (client_id, scope, state, response_type) =>
-      `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(
-        scope
-      )}&state=${state}&response_type=${response_type}`,
     getUserDetails: accessToken =>
       gitHubGet(urls.userDetails, accessToken).then(check),
     getUserEmails: accessToken =>
       gitHubGet(urls.userEmails, accessToken).then(check),
-    getToken: (code, state) => {
-      const data = {
-        // OAuth required fields
-        grant_type: 'authorization_code',
-        redirect_uri: COGNITO_REDIRECT_URI,
-        client_id: GITHUB_CLIENT_ID,
-        // GitHub Specific
-        response_type: 'code',
-        client_secret: GITHUB_CLIENT_SECRET,
-        code,
-        // State may not be present, so we conditionally include it
-        ...(state && { state })
-      };
-
-      logger.debug(
-        'Getting token from %s with data: %j',
-        urls.oauthToken,
-        data,
-        {}
-      );
-      return axios({
+    getUserOrgNames: accessToken =>
+      gitHubGet(urls.userOrgs, accessToken)
+        .then(check)
+        .then(orgs => orgs.map(org => org.login)),
+    getToken: (code, state, redirectUri) =>
+      axios({
         method: 'post',
         url: urls.oauthToken,
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'
         },
-        data
-      }).then(check);
-    }
+        data: {
+          // OAuth required fields
+          grant_type: 'authorization_code',
+          redirect_uri: redirectUri,
+          client_id: GITHUB_CLIENT_ID,
+          // GitHub Specific
+          response_type: 'code',
+          client_secret: GITHUB_CLIENT_SECRET,
+          code,
+          // State may not be present, so we conditionally include it
+          ...(state && { state })
+        }
+      }).then(check)
   };
 };

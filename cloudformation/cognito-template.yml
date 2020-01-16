@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Cognito User Pool and app client
+
+Parameters:
+  GithubClientId:
+    Type: String
+  LoginCallback:
+    Type: String # eg  http://localhost:9292/auth/openid/callback
+  LogoutCallback:
+    Type: String # eg http://localhost:9292/auth/openid/logout-callback
+  GitHubShimIssuer:
+    Type: String # eg https://zgho333y5g.execute-api.us-east-1.amazonaws.com/Prod
+  DomainName:
+    Type: String
+  GitHubProviderName:
+    Type: String
+    Default: GitHub
+  PreTokenGenerationLambdaArn:
+    Type: String
+
+Resources:
+  SomeUserPool:
+    Type: AWS::Cognito::UserPool
+    DeletionPolicy: Retain
+    Properties:
+      AutoVerifiedAttributes:
+        - email
+      MfaConfiguration: "OFF"
+      # If we need to add a schema attribute or any of the other
+      # "Update requires: replacement" fields, then we'll need to
+      # put that logic in a new custom resource.
+      # (Certain field modifications require the entire user pool to be replaced
+      # if done by CloudFormation, but they can be done via the API.)
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: github_organizations
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: tenant_ids
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+      UsernameAttributes:
+        - email
+      UserPoolName: !Ref DomainName
+      LambdaConfig:
+        PreTokenGeneration: !Ref PreTokenGenerationLambdaArn
+  SomeCognitoAppClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: Some
+      GenerateSecret: true
+      UserPoolId: !Ref SomeUserPool
+  CallIdpConfigure:
+    Type: Custom::LambdaCallout
+    Properties:
+      ServiceToken: !GetAtt SetupOidcIdP.Arn
+      UserPoolId: !Ref SomeUserPool
+      ClientId: !Ref GithubClientId
+      ProviderName: !Ref GitHubProviderName
+      Issuer: !Ref GitHubShimIssuer
+      AuthorizeScopes: "openid read:user user:email read:org"
+      ChangeThisToForceIdpConfigureToRun: 1
+  CallAppClientConfigure:
+    Type: Custom::LambdaCallout
+    DependsOn: CallIdpConfigure
+    Properties:
+      ServiceToken: !GetAtt ConfigureAppClient.Arn
+      UserPoolId: !Ref SomeUserPool
+      ClientId: !Ref SomeCognitoAppClient
+      Idp: !Ref GitHubProviderName
+      LoginCallback: !Ref LoginCallback
+      LogoutCallback: !Ref LogoutCallback
+      ChangeThisToForceAppClientConfigureToRun: 1
+  CallCreateDomain:
+    Type: Custom::LambdaCallout
+    Properties:
+      ServiceToken: !GetAtt CreateDomain.Arn
+      UserPoolId: !Ref SomeUserPool
+      Domain: !Ref DomainName
+      ChangeThisToForceCallCreateDomainToRun: 1
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        -
+          PolicyName: "lambdalogtocloudwatch"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:*"
+        -
+          PolicyName: "cognitoIDP"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "cognito-idp:CreateIdentityProvider"
+                  - "cognito-idp:DeleteIdentityProvider"
+                  - "cognito-idp:UpdateIdentityProvider"
+                  - "cognito-idp:CreateUserPoolDomain"
+                  - "cognito-idp:DeleteUserPoolDomain"
+                  - "cognito-idp:UpdateUserPoolDomain"
+                  - "cognito-idp:UpdateUserPoolClient"
+                  - "cognito-idp:DescribeUserPoolDomain"
+                Resource: "*"
+  SetupOidcIdP:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./lambdas
+      Handler: lambda-cognito-idp.handler
+      Runtime: nodejs8.10
+      Timeout: 30
+      Role: !GetAtt LambdaExecutionRole.Arn
+  ConfigureAppClient:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./lambdas
+      Handler: lambda-cognito-app-client.handler
+      Runtime: nodejs8.10
+      Timeout: 30
+      Role: !GetAtt LambdaExecutionRole.Arn
+  CreateDomain:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./lambdas
+      Handler: lambda-cognito-domain.handler
+      Runtime: nodejs8.10
+      Timeout: 30
+      Role: !GetAtt LambdaExecutionRole.Arn
+  LambdaTriggerInvocationPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref PreTokenGenerationLambdaArn
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !GetAtt SomeUserPool.Arn
+Outputs:
+    CognitoDomain:
+      Description: "The Cognito domain"
+      Value: !Sub "${DomainName}.auth.${AWS::Region}.amazoncognito.com"
+    CognitoIssuer:
+      Description: "The Cognito issuer"
+      Value: !Sub "https://cognito-idp.${AWS::Region}.amazonaws.com/${SomeUserPool}"
+    CognitoUserPoolId:
+      Description: "The Cognito User Pool ID"
+      Value: !Ref SomeUserPool
+    CognitoAppClient:
+      Description: "The Cognito App client with a secret"
+      Value: !Ref SomeCognitoAppClient

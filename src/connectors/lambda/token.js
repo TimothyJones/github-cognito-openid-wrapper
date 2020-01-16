@@ -2,6 +2,7 @@ const qs = require('querystring');
 const responder = require('./util/responder');
 const auth = require('./util/auth');
 const controllers = require('../controllers');
+const keepAlive = require('./util/keepAlive');
 
 const parseBody = event => {
   const contentType = event.headers['Content-Type'];
@@ -16,19 +17,23 @@ const parseBody = event => {
   return {};
 };
 
-module.exports.handler = (event, context, callback) => {
+const handler = (event, context, callback) => {
   const body = parseBody(event);
   const query = event.queryStringParameters || {};
 
   const code = body.code || query.code;
   const state = body.state || query.state;
 
+  const redirectUri = `https://${event.headers.Host}/${
+    event.requestContext.stage
+  }/callback`;
+
   controllers(responder(callback)).token(
     code,
     state,
-    auth.getIssuer(
-      event.headers.Host,
-      event.requestContext && event.requestContext.stage
-    )
+    auth.getIssuer(event.headers.Host),
+    redirectUri
   );
 };
+
+module.exports.handler = keepAlive(handler);

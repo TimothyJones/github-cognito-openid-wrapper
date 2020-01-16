@@ -1,6 +1,7 @@
 const responder = require('./responder');
 const auth = require('./auth');
 const controllers = require('../controllers');
+const cognitoStates = require('../states');
 
 module.exports = {
   userinfo: (req, res) => {
@@ -10,17 +11,18 @@ module.exports = {
     const code = req.body.code || req.query.code;
     const state = req.body.state || req.query.state;
 
-    controllers(responder(res)).token(code, state, req.get('host'));
+    controllers(responder(res)).token(
+      code,
+      state,
+      req.get('host'),
+      `https://${req.get('host')}/callback`
+    );
   },
   jwks: (req, res) => controllers(responder(res)).jwks(),
+  loginCallback: (req, res) =>
+    controllers(responder(res)).loginCallback(req.query, cognitoStates),
   authorize: (req, res) =>
-    responder(res).redirect(
-      `https://github.com/login/oauth/authorize?client_id=${
-        req.query.client_id
-      }&scope=${req.query.scope}&state=${req.query.state}&response_type=${
-        req.query.response_type
-      }`
-    ),
+    controllers(responder(res)).authorize(req.query, cognitoStates),
   openIdConfiguration: (req, res) => {
     controllers(responder(res)).openIdConfiguration(
       auth.getIssuer(req.get('host'))

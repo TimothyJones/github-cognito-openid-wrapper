@@ -1,18 +1,12 @@
 const responder = require('./util/responder');
+const cognitoStates = require('../states');
 const controllers = require('../controllers');
+const keepAlive = require('./util/keepAlive');
 
-module.exports.handler = (event, context, callback) => {
-  const {
-    client_id,
-    scope,
-    state,
-    response_type
-  } = event.queryStringParameters;
-
+const handler = (event, context, callback) =>
   controllers(responder(callback)).authorize(
-    client_id,
-    scope,
-    state,
-    response_type
+    event.queryStringParameters,
+    cognitoStates
   );
-};
+
+module.exports.handler = keepAlive(handler);
