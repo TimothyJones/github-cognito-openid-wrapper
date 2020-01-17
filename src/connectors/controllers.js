@@ -2,16 +2,21 @@ const logger = require('./logger');
 const openid = require('../openid');
 
 module.exports = respond => ({
-  authorize: (client_id, scope, state, response_type) => {
-    const authorizeUrl = openid.getAuthorizeUrl(
-      client_id,
-      scope,
-      state,
-      response_type
-    );
-    logger.info('Redirecting to authorizeUrl');
-    logger.debug('Authorize Url is: %s', authorizeUrl, {});
-    respond.redirect(authorizeUrl);
+  authorize: (client_id, scope, state, response_type, cognitoStates) => {
+    logger.info("kicking off authorize");
+    return cognitoStates
+      .save(state)
+      .then(stateId => {
+        logger.info(`stateId: ${stateId}`);
+        const authorizeUrl = openid.getAuthorizeUrl(
+          client_id,
+          scope,
+          response_type
+        );
+        logger.info('Redirecting to authorizeUrl');
+        logger.debug('Authorize Url is: %s', authorizeUrl, {});
+        respond.redirect(authorizeUrl);
+      });
   },
   userinfo: tokenPromise => {
     tokenPromise

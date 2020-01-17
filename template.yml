@@ -20,6 +20,8 @@ Globals:
           Ref: GitHubUrlParameter
         GITHUB_LOGIN_URL:
           Ref: GitHubLoginUrlParameter
+        DYNAMODB_STATE_TABLE:
+          Ref: DynamoDbStateTableParamater
 
 Parameters:
   GitHubClientIdParameter:
@@ -37,6 +39,8 @@ Parameters:
     Default: "https://github.com"
     MinLength: 1
   StageNameParameter:
+    Type: String
+  DynamoDbStateTableParamater:
     Type: String
 
 Resources:
@@ -60,6 +64,14 @@ Resources:
   Authorize:
     Type: AWS::Serverless::Function
     Properties:
+      Role:
+        Fn::Join:
+          - ""
+          - - "arn:aws:iam::"
+            - !Ref "AWS::AccountId"
+            - ":role/backend-dev-"
+            - !Ref "AWS::Region"
+            - "-lambdaRole"
       CodeUri: ./dist-lambda
       Handler: authorize.handler
       Events:
