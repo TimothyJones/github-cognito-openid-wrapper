@@ -2,9 +2,8 @@ const logger = require('./logger');
 const openid = require('../openid');
 
 module.exports = respond => ({
-  authorize: (client_id, scope, state, response_type, cognitoStates) => {
-    logger.info("kicking off authorize");
-    return cognitoStates
+  authorize: (client_id, scope, state, response_type, cognitoStates) =>
+    cognitoStates
       .save(state)
       .then(stateId => {
         logger.info(`stateId: ${stateId}`);
@@ -16,8 +15,8 @@ module.exports = respond => ({
         logger.info('Redirecting to authorizeUrl');
         logger.debug('Authorize Url is: %s', authorizeUrl, {});
         respond.redirect(authorizeUrl);
-      });
-  },
+      })
+  ,
   userinfo: tokenPromise => {
     tokenPromise
       .then(token => openid.getUserInfo(token))
@@ -81,5 +80,8 @@ module.exports = respond => ({
     const config = openid.getConfigFor(host);
     logger.info('Providing configuration for %s: %j', host, config, {});
     respond.success(config);
+  },
+  callback: () => {
+    logger.info('callback fn');
   }
 });

@@ -19,7 +19,8 @@ const ensureNumber = variableName => {
 const requiredStrings = [
   'GITHUB_CLIENT_ID',
   'GITHUB_CLIENT_SECRET',
-  'COGNITO_REDIRECT_URI'
+  'COGNITO_REDIRECT_URI',
+  'STATE_DYNAMODB_TABLE'
 ];
 
 const requiredNumbers = ['PORT'];

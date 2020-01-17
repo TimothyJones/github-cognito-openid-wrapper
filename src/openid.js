@@ -54,8 +54,8 @@ const getUserInfo = accessToken =>
     return mergedClaims;
   });
 
-const getAuthorizeUrl = (client_id, scope, state, response_type) =>
-  github().getAuthorizeUrl(client_id, scope, state, response_type);
+const getAuthorizeUrl = (client_id, scope, response_type) =>
+  github().getAuthorizeUrl(client_id, scope, response_type);
 
 const getTokens = (code, state, host) =>
   github()
