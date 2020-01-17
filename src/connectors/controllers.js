@@ -1,5 +1,9 @@
+const qs = require('querystring');
+
 const logger = require('./logger');
 const openid = require('../openid');
+
+const { COGNITO_REDIRECT_URI } = require('../config');
 
 module.exports = respond => ({
   authorize: (client_id, scope, state, response_type, cognitoStates) =>
@@ -81,7 +85,21 @@ module.exports = respond => ({
     logger.info('Providing configuration for %s: %j', host, config, {});
     respond.success(config);
   },
-  callback: () => {
-    logger.info('callback fn');
+  callback: (query, cognitoStates) => {
+    cognitoStates
+      .get(query.state)
+      .then(cognitoState => {
+        if (cognitoState) {
+          const queryString = qs.stringify({ ...query, state: cognitoState });
+          const redirect = `${COGNITO_REDIRECT_URI}?${queryString}`;
+          return respond.redirect(redirect);
+        }
+        logger.error('Could not find cognito state for', query.state);
+        return respond.error(new Error('Could not authenticate'), 500);
+      })
+      .catch(err => {
+        logger.error(err);
+        return respond.error(err, 500);
+      });
   }
 });
