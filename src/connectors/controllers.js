@@ -14,6 +14,7 @@ module.exports = respond => ({
         const authorizeUrl = openid.getAuthorizeUrl(
           client_id,
           scope,
+          stateId,
           response_type
         );
         logger.info('Redirecting to authorizeUrl');
@@ -90,11 +91,12 @@ module.exports = respond => ({
       .get(query.state)
       .then(cognitoState => {
         if (cognitoState) {
+          logger.info(`Found cognito state: ${cognitoState}`);
           const queryString = qs.stringify({ ...query, state: cognitoState });
           const redirect = `${COGNITO_REDIRECT_URI}?${queryString}`;
           return respond.redirect(redirect);
         }
-        logger.error('Could not find cognito state for', query.state);
+        logger.error(`Could not find cognito state for ${query.state}`);
         return respond.error(new Error('Could not authenticate'), 500);
       })
       .catch(err => {

@@ -1,6 +1,9 @@
 const AWS = require('aws-sdk');
 
 const { DYNAMODB_STATE_TABLE } = require('../../config');
+const logger = require('../../connectors/logger');
+
+logger.info(`DYNAMODB_STATE_TABLE ${DYNAMODB_STATE_TABLE}`);
 
 const stateClient = new AWS.DynamoDB.DocumentClient({
   region: 'us-east-1',

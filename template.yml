@@ -21,7 +21,7 @@ Globals:
         GITHUB_LOGIN_URL:
           Ref: GitHubLoginUrlParameter
         DYNAMODB_STATE_TABLE:
-          Ref: DynamoDbStateTableParamater
+          Ref: CognitoStatesTable
 
 Parameters:
   GitHubClientIdParameter:
@@ -40,15 +40,29 @@ Parameters:
     MinLength: 1
   StageNameParameter:
     Type: String
-  DynamoDbStateTableParamater:
-    Type: String
 
 Resources:
+  CognitoStatesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # TableName: ${self:custom.prefix}-cognito-states
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+
   GithubOAuthApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: !Ref StageNameParameter
       OpenApiVersion: "2.0"
+
   OpenIdDiscovery:
     Type: AWS::Serverless::Function
     Properties:
@@ -61,17 +75,10 @@ Resources:
             Path: /.well-known/openid-configuration
             Method: get
             RestApiId: !Ref GithubOAuthApi
+
   Authorize:
     Type: AWS::Serverless::Function
     Properties:
-      Role:
-        Fn::Join:
-          - ""
-          - - "arn:aws:iam::"
-            - !Ref "AWS::AccountId"
-            - ":role/backend-dev-"
-            - !Ref "AWS::Region"
-            - "-lambdaRole"
       CodeUri: ./dist-lambda
       Handler: authorize.handler
       Events:
@@ -81,6 +88,10 @@ Resources:
             Path: /authorize
             Method: get
             RestApiId: !Ref GithubOAuthApi
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CognitoStatesTable
+
   Token:
     Type: AWS::Serverless::Function
     Properties:
@@ -99,6 +110,7 @@ Resources:
             Path: /token
             Method: post
             RestApiId: !Ref GithubOAuthApi
+
   UserInfo:
     Type: AWS::Serverless::Function
     Properties:
@@ -117,6 +129,7 @@ Resources:
             Path: /userinfo
             Method: post
             RestApiId: !Ref GithubOAuthApi
+
   Jwks:
     Type: AWS::Serverless::Function
     Properties:
@@ -130,7 +143,23 @@ Resources:
             Method: get
             RestApiId: !Ref GithubOAuthApi
 
+  Callback:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist-lambda
+      Handler: callback.handler
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Method: get
+            Path: /callback
+            RestApiId: !Ref GithubOAuthApi
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CognitoStatesTable
+
 Outputs:
-    GitHubShimIssuer:
-      Description: "GitHub OpenID Shim Issuer"
-      Value: !Sub "https://${GithubOAuthApi}.execute-api.${AWS::Region}.amazonaws.com/${StageNameParameter}"
+  GitHubShimIssuer:
+    Description: "GitHub OpenID Shim Issuer"
+    Value: !Sub "https://${GithubOAuthApi}.execute-api.${AWS::Region}.amazonaws.com/${StageNameParameter}"

@@ -23,12 +23,17 @@ module.exports.handler = (event, context, callback) => {
   const code = body.code || query.code;
   const state = body.state || query.state;
 
+  const redirectUri = `https://${event.headers.Host}/${
+    event.requestContext.stage
+  }/callback`;
+
   controllers(responder(callback)).token(
     code,
     state,
     auth.getIssuer(
       event.headers.Host,
       event.requestContext && event.requestContext.stage
-    )
+    ),
+    redirectUri
   );
 };

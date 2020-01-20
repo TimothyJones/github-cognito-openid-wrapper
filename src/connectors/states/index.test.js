@@ -28,7 +28,7 @@ describe('Cognito States', () => {
             expect(uuid).to.equal(UUID);
             return Promise.resolve({
               Item: {
-                CognitoState: '1234'
+                state: '1234'
               }
             });
           });

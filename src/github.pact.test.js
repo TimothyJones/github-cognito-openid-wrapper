@@ -234,10 +234,11 @@ describe('With an increased jasmine timeout', () => {
             github(PACT_BASE_URL).getAuthorizeUrl(
               'client_id',
               'scope',
+              'state',
               'response_type'
             )
           ).to.equal(
-            `${PACT_BASE_URL}/login/oauth/authorize?client_id=client_id&scope=scope&response_type=response_type`
+            `${PACT_BASE_URL}/login/oauth/authorize?client_id=client_id&state=state&scope=scope&response_type=response_type`
           );
         });
       });
@@ -293,7 +294,6 @@ describe('With an increased jasmine timeout', () => {
             .getToken('SOME_CODE', null, 'CALLBACK_REDIRECT_URI')
             .then(response => {
               // eslint-disable-next-line no-console
-              console.log("RESPONSE:", response);
               expect(response).toEqual(EXPECTED_BODY);
               done();
             }));

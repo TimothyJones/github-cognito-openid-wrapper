@@ -8,6 +8,6 @@ module.exports = {
   },
   get: id =>
     dynamoGet(id).then(
-      response => (response.Item ? response.Item.CognitoState : null)
+      response => (response.Item ? response.Item.state : null)
     )
 };
