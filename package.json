@@ -32,7 +32,8 @@
     "json-web-key": "^0.3.0",
     "jsonwebtoken": "^8.3.0",
     "winston": "^3.2.1",
-    "winston-splunk-httplogger": "^2.2.0"
+    "winston-splunk-httplogger": "^2.2.0",
+    "snyk": "^1.360.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -55,7 +56,6 @@
     "nodemon-webpack-plugin": "^4.0.6",
     "prettier": "^1.14.2",
     "raw-loader": "^0.5.1",
-    "snyk": "^1.232.0",
     "to": "^0.2.9",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.1.0",
