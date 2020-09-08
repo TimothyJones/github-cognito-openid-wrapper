@@ -20,6 +20,15 @@
         "maintenance",
         "question"
       ]
+    },
+    {
+      "login": "bethesque",
+      "name": "Beth Skurrie",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/446228?v=4",
+      "profile": "https://github.com/bethesque",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7
