@@ -29,6 +29,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "derjust",
+      "name": "Sebastian J.",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2053353?v=4",
+      "profile": "https://github.com/derjust",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

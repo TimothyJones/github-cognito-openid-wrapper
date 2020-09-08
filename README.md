@@ -1,6 +1,6 @@
 # GitHub OpenID Connect Wrapper for Cognito
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
@@ -330,6 +330,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/TimothyJones"><img src="https://avatars1.githubusercontent.com/u/914369?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Timothy Jones</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=TimothyJones" title="Code">💻</a> <a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=TimothyJones" title="Documentation">📖</a> <a href="#maintenance-TimothyJones" title="Maintenance">🚧</a> <a href="#question-TimothyJones" title="Answering Questions">💬</a></td>
     <td align="center"><a href="https://github.com/bethesque"><img src="https://avatars1.githubusercontent.com/u/446228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Beth Skurrie</b></sub></a><br /><a href="#ideas-bethesque" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/derjust"><img src="https://avatars0.githubusercontent.com/u/2053353?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sebastian J.</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=derjust" title="Code">💻</a></td>
   </tr>
 </table>
 
