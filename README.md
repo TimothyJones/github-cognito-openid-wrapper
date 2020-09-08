@@ -1,6 +1,6 @@
 # GitHub OpenID Connect Wrapper for Cognito
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
@@ -332,6 +332,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/bethesque"><img src="https://avatars1.githubusercontent.com/u/446228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Beth Skurrie</b></sub></a><br /><a href="#ideas-bethesque" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/derjust"><img src="https://avatars0.githubusercontent.com/u/2053353?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sebastian J.</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=derjust" title="Code">💻</a></td>
     <td align="center"><a href="http://dannydouglass.com/"><img src="https://avatars1.githubusercontent.com/u/266481?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Danny Douglass</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=DannyDouglass" title="Code">💻</a></td>
+    <td align="center"><a href="https://bridgecrew.io/"><img src="https://avatars0.githubusercontent.com/u/23154756?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Livnoni</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=livnoni" title="Code">💻</a></td>
   </tr>
 </table>
 
