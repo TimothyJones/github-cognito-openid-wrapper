@@ -74,6 +74,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "dehli",
+      "name": "c.p.",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/5856011?v=4",
+      "profile": "https://deh.li/",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7
