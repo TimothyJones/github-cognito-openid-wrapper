@@ -1,0 +1,26 @@
+{
+  "projectName": "github-cognito-openid-wrapper",
+  "projectOwner": "TimothyJones",
+  "repoType": "github",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "TimothyJones",
+      "name": "Timothy Jones",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/914369?v=4",
+      "profile": "https://github.com/TimothyJones",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance",
+        "question"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
