@@ -18,8 +18,22 @@ const getApiEndpoints = (
   oauthAuthorize: `${loginBaseUrl}/login/oauth/authorize`
 });
 
+const debug_error = (err) => {
+  if (err.response && err.response.data) {
+    logger.error('Github response: %s', err.response.data, {})
+    const custom_error = new Error(err.response.data || 'Unknown error');
+    custom_error.status = err.response.status || 500;
+    custom_error.description = err.response.data ? err.response.data.statusText : null;
+    throw custom_error;
+  }
+  throw new Error(err);
+}
+
+axios.interceptors.response.use(r => r, debug_error);
+
 const check = response => {
   logger.debug('Checking response: %j', response, {});
+
   if (response.data) {
     if (response.data.error) {
       throw new Error(
@@ -57,8 +71,11 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
       )}&state=${state}&response_type=${response_type}`,
     getUserDetails: accessToken =>
       gitHubGet(urls.userDetails, accessToken).then(check),
-    getUserEmails: accessToken =>
-      gitHubGet(urls.userEmails, accessToken).then(check),
+    getUserEmails: (accessToken) => {
+      logger.debug('Using access token: %s', accessToken, {})
+      logger.debug('Fetching: %s', urls.userEmails, {})
+      return gitHubGet(urls.userEmails, accessToken).then(check)
+    },
     getToken: (code, state) => {
       const data = {
         // OAuth required fields
