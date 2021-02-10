@@ -1,0 +1,17 @@
+node_modules
+dist-lambda
+dist-web
+docs
+logs
+.vscode
+.all-contributors
+.gitignore
+CHANGELOG.md
+config.sh
+example-config.sh
+jwt*
+RS256*
+LICENSE
+ngrok
+README.md
+template.yml

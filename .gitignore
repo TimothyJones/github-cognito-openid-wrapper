@@ -11,3 +11,4 @@ config.sh
 serverless-output.yml
 package-lock.json
 ngrok
+.env
