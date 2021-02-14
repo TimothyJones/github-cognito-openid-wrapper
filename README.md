@@ -288,6 +288,14 @@ If you want to include custom claims based on other GitHub data,
 you can extend `userinfo` in `src/openid.js`. You may need to add extra API
 client calls in `src/github.js`
 
+## Docker
+The wrapper can be run entirely in Docker with [buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) enabled. Make sure to copy `.env.example` to `.env` before you build and run the image. Using `buildx` is optional. The port mapping should correspond to the port configured in `.env`.
+
+```sh
+cp .env.example .env
+docker [buildx] build my-image .
+docker run -p 8080:8080 --env-file .env docker.io/my-image
+```
 ## Contributing
 
 Contributions are welcome, especially for the missing features! Pull requests and issues are very welcome.
