@@ -10,3 +10,4 @@ config.sh
 *.key.pub
 serverless-output.yml
 package-lock.json
+ngrok

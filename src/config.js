@@ -5,7 +5,7 @@ module.exports = {
   GITHUB_API_URL: process.env.GITHUB_API_URL,
   GITHUB_LOGIN_URL: process.env.GITHUB_LOGIN_URL,
   PORT: parseInt(process.env.PORT, 10) || undefined,
-
+  LOG_LEVEL: process.env.NODE_LOG_LEVEL,
   // Splunk logging variables
   SPLUNK_URL: process.env.SPLUNK_URL,
   SPLUNK_TOKEN: process.env.SPLUNK_TOKEN,
