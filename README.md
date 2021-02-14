@@ -107,7 +107,7 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway (follow 
 ```
 
 - Run `npm run start` to fire up an auto-refreshing development build of the
-  server (production deployment is out of scope for this repository, but you can expose it using something like [ngrok](https://ngrok.com/) for easy development and testing with Cognito).
+  server (production deployment is out of scope for this repository, but you can expose it using something like [ngrok](https://ngrok.com/) or [localtunnel](https://github.com/localtunnel/localtunnel#readme) for easy development and testing with Cognito).
 
 ### 3: Finalise Cognito configuration
 
@@ -291,10 +291,17 @@ client calls in `src/github.js`
 ## Docker
 The wrapper can be run entirely in Docker with [buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) enabled. Make sure to copy `.env.example` to `.env` before you build and run the image. Using `buildx` is optional. The port mapping should correspond to the port configured in `.env`.
 
+### Example using localtunnel
 ```sh
 cp .env.example .env
 docker [buildx] build my-image .
 docker run -p 8080:8080 --env-file .env docker.io/my-image
+```
+
+Example using _localtunnel_ in a separate terminal. Make sure `https://some-random-subdomain.loca.lt` is also set as the Cognito callback url.
+
+```
+lt -s some-random-subdomain -p 8080
 ```
 ## Contributing
 
