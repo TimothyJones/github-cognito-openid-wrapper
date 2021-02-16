@@ -1,11 +1,11 @@
 const JSONWebKey = require('json-web-key');
 const jwt = require('jsonwebtoken');
-const { GITHUB_CLIENT_ID } = require('./config');
+const { GITHUB_CLIENT_ID, JWT_RSA_KEY, JWT_RSA_PUB } = require('./config');
 const logger = require('./connectors/logger');
 
 const KEY_ID = 'jwtRS256';
-const cert = require('../jwtRS256.key');
-const pubKey = require('../jwtRS256.key.pub');
+const cert = JWT_RSA_KEY
+const pubKey = JWT_RSA_PUB
 
 module.exports = {
   getPublicKey: () => ({

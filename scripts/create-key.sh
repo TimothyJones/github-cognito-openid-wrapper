@@ -13,3 +13,10 @@ if [ ! -f "$KEY_FILE" ]; then
   ssh-keygen -t rsa -b 4096 -m PEM -f "$KEY_FILE" -N ''
   openssl rsa -in "$KEY_FILE" -pubout -outform PEM -out "$KEY_FILE".pub
 fi
+JWT_RSA_KEY=$(cat "$KEY_FILE")
+JWT_RSA_PUB=$(cat "$KEY_FILE".pub)
+
+export JWT_RSA_KEY=$JWT_RSA_KEY
+export JWT_RSA_PUB=$JWT_RSA_PUB
+
+rm -- "$KEY_FILE" "$KEY_FILE".pub
