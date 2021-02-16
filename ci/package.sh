@@ -3,9 +3,10 @@ set -euxo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source $DIR/_common.sh
+# shellcheck source=src/util.sh
+source "$DIR/_common.sh"
 
-APP="identity-server"
+APP="github-oidc"
 case $PUBLISH in
     true)
         PUBLISH_TO_REGISTRY="true"
@@ -20,7 +21,10 @@ case $PUBLISH in
 
 esac
 
-docker build -f $PROJECT_ROOT/src/Dockerfile -t ${DOCKER_REGISTRY}${APP}:${DOCKER_TAG} $PROJECT_ROOT/src
+DOCKER_BUILDKIT=docker build -f "$PROJECT_ROOT/Dockerfile" \
+-t "${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}" \
+"$PROJECT_ROOT/"
+
 if [ "$PUBLISH_TO_REGISTRY" = "true" ]; then
-    docker push ${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}
+    docker push "${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}"
 fi
