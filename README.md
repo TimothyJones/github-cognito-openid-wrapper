@@ -51,7 +51,9 @@ It also implements the following [OpenID Connect Discovery](https://openid.net/s
 - Configuration - used to discover configuration of this OpenID implementation's
   endpoints and capabilities. ([spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig))
 
-Out of the box, you can deploy it as a CloudFormation stack, or run it as a web server with node.
+Out of the box, you can deploy it as a CloudFormation stack with SAM, or run it as a web server with node.
+
+You can also deploy it in a CDK project using the [`cdk-user-pool-identity-provider-github` construct](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github).
 
 ## Getting Started
 
@@ -61,6 +63,8 @@ should be cheap to host and run.
 
 You can also deploy it as a http server running as a node app. This is useful
 for testing, exposing it to Cognito using something like [ngrok](https://ngrok.com/).
+
+For use with CDK, please follow instructions on the [construct readme](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github#full-setup).
 
 ### 1: Setup
 
@@ -74,9 +78,9 @@ You will need to:
 
 (If you use GitHub Enterprise, you need the API & Login URL. This is usually `https://<GitHub Enterprise Host>/api/v3` and `https://<GitHub Enterprise Host>`.)
 
-Next you need to decide if you'd like to deploy with lambda/API Gateway using SAM (follow Step 2a), with lambda/API Gateway using CDK (follow Step 2b) or as a node server (follow Step 2c)
+Next you need to decide if you'd like to deploy with lambda/API Gateway (follow Step 2a), or as a node server (follow Step 2b)
 
-### 2a: Deployment with lambda and API Gateway using SAM
+### 2a: Deployment with lambda and API Gateway
 
 - Install the `aws` and `sam` CLIs from AWS:
 
@@ -92,31 +96,7 @@ Next you need to decide if you'd like to deploy with lambda/API Gateway using SA
 - Run `npm install` and `npm run deploy`
 - Note down the DNS of the deployed API Gateway (available in the AWS console).
 
-### 2b : Deployment with lambda and API Gateway using CDK
-
-- Install the [UserPoolIdentityProviderGithub construct](https://github.com/scenario-labs/user-pool-identity-provider-github):
-
-  ```bash
-  npm install --save user-pool-identity-provider-github
-  ```
-
-- Add the construct to your CDK stack:
-  ```ts
-  import { UserPool } from 'aws-cdk/aws-cognito';
-  import { UserPoolIdentityProviderGithub } from 'user-pool-identity-provider-github';
-
-  const userPool = new UserPool(stack, 'UserPool');
-  new UserPoolIdentityProviderGithub(this, 'UserPoolIdentityProviderGithub', {
-    userPool,
-    clientId: 'myClientId',
-    clientSeret: 'myClientSecret',
-    cognitoHostedUiDomain: 'https://auth.domain.com',
-  });
-  ```
-
-- You're done, the step 3 configuration is handled in the construct.
-
-### 2c: Running the node server
+### 2b: Running the node server
 
 - Set environment variables for the OAuth App client/secret, callback url, and
   port to run the server on:
