@@ -1,6 +1,5 @@
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const CopyPlugin = require('copy-webpack-plugin');
 
 const baseConfig = {
   mode: 'development',
@@ -14,6 +13,14 @@ const baseConfig = {
         use: {
           loader: 'babel-loader'
         }
+      },
+      {
+        test: /\.(key|key.pub)$/,
+        use: [
+          {
+            loader: 'raw-loader'
+          }
+        ]
       }
     ]
   }
@@ -33,15 +40,7 @@ const config = [
       userinfo: './src/connectors/lambda/userinfo.js',
       jwks: './src/connectors/lambda/jwks.js',
       authorize: './src/connectors/lambda/authorize.js'
-    },
-    plugins: [
-      new CopyPlugin({
-        patterns: [
-          { from: 'jwtRS256.key', to: `${__dirname}/dist-lambda/jwtRS256.key` },
-          { from: 'jwtRS256.key.pub', to: `${__dirname}/dist-lambda/jwtRS256.key.pub` }
-        ],
-      }),
-    ]
+    }
   },
   {
     ...baseConfig,
@@ -54,15 +53,7 @@ const config = [
       server: './src/connectors/web/app.js'
     },
     externals: [nodeExternals()],
-    plugins: [
-      new NodemonPlugin(),
-      new CopyPlugin({
-        patterns: [
-          { from: 'jwtRS256.key', to: `${__dirname}/dist-web/jwtRS256.key` },
-          { from: 'jwtRS256.key.pub', to: `${__dirname}/dist-web/jwtRS256.key.pub` }
-        ],
-      }),
-    ]
+    plugins: [new NodemonPlugin()]
   }
 ];
 
