@@ -51,9 +51,9 @@ It also implements the following [OpenID Connect Discovery](https://openid.net/s
 - Configuration - used to discover configuration of this OpenID implementation's
   endpoints and capabilities. ([spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig))
 
-Out of the box, you can deploy it as a CloudFormation stack with SAM, or run it as a web server with node.
+Out of the box, you can deploy it as a CloudFormation stack, or run it as a web server with node.
 
-You can also deploy it in a CDK project using the [`cdk-user-pool-identity-provider-github` construct](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github).
+An attempt to deploy with CDK is available in the following archived construct: [`cdk-user-pool-identity-provider-github`](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github).
 
 ## Getting Started
 
@@ -63,8 +63,6 @@ should be cheap to host and run.
 
 You can also deploy it as a http server running as a node app. This is useful
 for testing, exposing it to Cognito using something like [ngrok](https://ngrok.com/).
-
-For use with CDK, please follow instructions on the [construct readme](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github#full-setup).
 
 ### 1: Setup
 
