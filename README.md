@@ -53,6 +53,8 @@ It also implements the following [OpenID Connect Discovery](https://openid.net/s
 
 Out of the box, you can deploy it as a CloudFormation stack, or run it as a web server with node.
 
+An attempt to deploy with CDK is available in the following archived construct: [`cdk-user-pool-identity-provider-github`](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github).
+
 ## Getting Started
 
 This project is intended to be deployed as a series of lambda functions alongside
