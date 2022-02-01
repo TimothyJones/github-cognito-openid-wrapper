@@ -6,7 +6,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Runtime: nodejs10.x
+    Runtime: nodejs14.x
     Timeout: 15
     Environment:
       Variables:
