@@ -13,7 +13,7 @@
     "test-dev": "jest --runInBand --watch",
     "start": "webpack --watch --display errors-only",
     "lint": "eslint 'src/**' --ext .js",
-    "preinstall": "./scripts/create-key.sh",
+    "preinstall": "bash ./scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
     "build-dist": "npm run build",
     "predeploy": "npm run build-dist",
@@ -22,7 +22,7 @@
     "format:fix": "npm run format:base -- --write",
     "format:check": "npm run format:base -- --check",
     "release": "standard-version",
-    "deploy": "./scripts/deploy.sh",
+    "deploy": "bash ./scripts/deploy.sh",
     "coverage": "jest --runInBand --coverage",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"

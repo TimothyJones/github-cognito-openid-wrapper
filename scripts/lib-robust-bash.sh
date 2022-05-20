@@ -1,4 +1,7 @@
-#!/bin/bash -eu
+#!/bin/bash
+
+set -e
+set -u
 
 # Check to see that we have a required binary on the path
 function require_binary {
