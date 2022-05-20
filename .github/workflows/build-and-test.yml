@@ -26,15 +26,19 @@ jobs:
 
   build-and-test-windows:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: gh
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
-
 
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          path: gh
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
