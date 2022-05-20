@@ -10,19 +10,9 @@ jest.mock('./config', () => ({
   GITHUB_LOGIN_URL: 'GITHUB_LOGIN_URL'
 }));
 
-describe('With an increased jasmine timeout', () => {
-  let originalTimeout;
-
+describe('With an increased jest timeout', () => {
   beforeAll(() => {
-    // We have to increase the jasmine timeout in order to run pact
-    // on some machines / configurations, since the server sometimes
-    // takes a little longer to start
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-  });
-
-  afterAll(() => {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    jest.setTimeout(30000);
   });
 
   describe('GitHub Client Pact', () => {
@@ -60,12 +50,11 @@ describe('With an increased jasmine timeout', () => {
         });
 
         // add expectations
-        it('returns a sucessful body', done =>
+        it('returns a sucessful body', () =>
           github(PACT_BASE_URL)
             .getUserDetails('THIS_IS_MY_TOKEN')
             .then(response => {
               expect(response).toEqual(EXPECTED_BODY);
-              done();
             }));
       });
       describe('When the access token is bad', () => {
@@ -158,12 +147,11 @@ describe('With an increased jasmine timeout', () => {
         });
 
         // add expectations
-        it('returns a sucessful body', done =>
+        it('returns a sucessful body', () =>
           github(PACT_BASE_URL)
             .getUserEmails('THIS_IS_MY_TOKEN')
             .then(response => {
               expect(response).toEqual(EXPECTED_BODY);
-              done();
             }));
       });
       describe('When the access token is bad', () => {
@@ -288,12 +276,11 @@ describe('With an increased jasmine timeout', () => {
         });
 
         // add expectations
-        it('returns a sucessful body', done =>
+        it('returns a sucessful body', () =>
           github(PACT_BASE_URL)
             .getToken('SOME_CODE')
             .then(response => {
               expect(response).toEqual(EXPECTED_BODY);
-              done();
             }));
       });
       describe('When the code is bad', () => {
