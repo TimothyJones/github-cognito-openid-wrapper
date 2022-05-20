@@ -11,8 +11,6 @@ const logger = winston.createLogger({
   level: 'info',
 });
 
-
-
 // Activate Splunk logging if Splunk's env variables are set
 if (SPLUNK_URL) {
   const SplunkStreamEvent = require('winston-splunk-httplogger'); // eslint-disable-line global-require
