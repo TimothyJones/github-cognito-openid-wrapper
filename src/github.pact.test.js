@@ -7,7 +7,7 @@ jest.mock('./config', () => ({
   GITHUB_CLIENT_SECRET: 'GITHUB_CLIENT_SECRET',
   GITHUB_CLIENT_ID: 'GITHUB_CLIENT_ID',
   GITHUB_API_URL: 'GITHUB_API_URL',
-  GITHUB_LOGIN_URL: 'GITHUB_LOGIN_URL'
+  GITHUB_LOGIN_URL: 'GITHUB_LOGIN_URL',
 }));
 
 describe('With an increased jest timeout', () => {
@@ -28,9 +28,9 @@ describe('With an increased jest timeout', () => {
           path: '/user',
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            Authorization: `token THIS_IS_MY_TOKEN`
-          }
-        }
+            Authorization: `token THIS_IS_MY_TOKEN`,
+          },
+        },
       };
       describe('When the access token is good', () => {
         const EXPECTED_BODY = { name: 'Tim Jones' };
@@ -41,10 +41,10 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 200,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_BODY
-            }
+              body: EXPECTED_BODY,
+            },
           };
           return provider.addInteraction(interaction);
         });
@@ -53,14 +53,14 @@ describe('With an increased jest timeout', () => {
         it('returns a sucessful body', () =>
           github(PACT_BASE_URL)
             .getUserDetails('THIS_IS_MY_TOKEN')
-            .then(response => {
+            .then((response) => {
               expect(response).toEqual(EXPECTED_BODY);
             }));
       });
       describe('When the access token is bad', () => {
         const EXPECTED_ERROR = {
           error: 'This is an error',
-          error_description: 'This is a description'
+          error_description: 'This is a description',
         };
         beforeEach(() => {
           const interaction = {
@@ -69,16 +69,16 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 400,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_ERROR
-            }
+              body: EXPECTED_ERROR,
+            },
           };
           return provider.addInteraction(interaction);
         });
 
         // add expectations
-        it('rejects the promise', done => {
+        it('rejects the promise', (done) => {
           github(PACT_BASE_URL)
             .getUserDetails('THIS_IS_MY_TOKEN')
             .catch(() => {
@@ -89,7 +89,7 @@ describe('With an increased jest timeout', () => {
       describe('When there is a server error response', () => {
         const EXPECTED_ERROR = {
           error: 'This is an error',
-          error_description: 'This is a description'
+          error_description: 'This is a description',
         };
         beforeEach(() => {
           const interaction = {
@@ -98,16 +98,16 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 200,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_ERROR
-            }
+              body: EXPECTED_ERROR,
+            },
           };
           return provider.addInteraction(interaction);
         });
 
         // add expectations
-        it('rejects the promise', done => {
+        it('rejects the promise', (done) => {
           github(PACT_BASE_URL)
             .getUserDetails('THIS_IS_MY_TOKEN')
             .catch(() => {
@@ -125,9 +125,9 @@ describe('With an increased jest timeout', () => {
           path: '/user/emails',
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            Authorization: `token THIS_IS_MY_TOKEN`
-          }
-        }
+            Authorization: `token THIS_IS_MY_TOKEN`,
+          },
+        },
       };
       describe('When the access token is good', () => {
         const EXPECTED_BODY = [{ email: 'ben@example.com', primary: true }];
@@ -138,10 +138,10 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 200,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_BODY
-            }
+              body: EXPECTED_BODY,
+            },
           };
           return provider.addInteraction(interaction);
         });
@@ -150,14 +150,14 @@ describe('With an increased jest timeout', () => {
         it('returns a sucessful body', () =>
           github(PACT_BASE_URL)
             .getUserEmails('THIS_IS_MY_TOKEN')
-            .then(response => {
+            .then((response) => {
               expect(response).toEqual(EXPECTED_BODY);
             }));
       });
       describe('When the access token is bad', () => {
         const EXPECTED_ERROR = {
           error: 'This is an error',
-          error_description: 'This is a description'
+          error_description: 'This is a description',
         };
         beforeEach(() => {
           const interaction = {
@@ -166,16 +166,16 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 400,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_ERROR
-            }
+              body: EXPECTED_ERROR,
+            },
           };
           return provider.addInteraction(interaction);
         });
 
         // add expectations
-        it('rejects the promise', done => {
+        it('rejects the promise', (done) => {
           github(PACT_BASE_URL)
             .getUserEmails('THIS_IS_MY_TOKEN')
             .catch(() => {
@@ -186,7 +186,7 @@ describe('With an increased jest timeout', () => {
       describe('When there is a server error response', () => {
         const EXPECTED_ERROR = {
           error: 'This is an error',
-          error_description: 'This is a description'
+          error_description: 'This is a description',
         };
         beforeEach(() => {
           const interaction = {
@@ -195,16 +195,16 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 200,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_ERROR
-            }
+              body: EXPECTED_ERROR,
+            },
           };
           return provider.addInteraction(interaction);
         });
 
         // add expectations
-        it('rejects the promise', done => {
+        it('rejects the promise', (done) => {
           github(PACT_BASE_URL)
             .getUserEmails('THIS_IS_MY_TOKEN')
             .catch(() => {
@@ -239,7 +239,7 @@ describe('With an increased jest timeout', () => {
           path: '/login/oauth/access_token',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: {
             // OAuth required fields
@@ -249,16 +249,16 @@ describe('With an increased jest timeout', () => {
             // GitHub Specific
             response_type: 'code',
             client_secret: 'GITHUB_CLIENT_SECRET',
-            code: 'SOME_CODE'
-          }
-        }
+            code: 'SOME_CODE',
+          },
+        },
       };
 
       describe('When the code is good', () => {
         const EXPECTED_BODY = {
           access_token: 'xxxx',
           refresh_token: 'yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy',
-          expires_in: 21600
+          expires_in: 21600,
         };
         beforeEach(() => {
           const interaction = {
@@ -267,10 +267,10 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 200,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_BODY
-            }
+              body: EXPECTED_BODY,
+            },
           };
           return provider.addInteraction(interaction);
         });
@@ -279,14 +279,14 @@ describe('With an increased jest timeout', () => {
         it('returns a sucessful body', () =>
           github(PACT_BASE_URL)
             .getToken('SOME_CODE')
-            .then(response => {
+            .then((response) => {
               expect(response).toEqual(EXPECTED_BODY);
             }));
       });
       describe('When the code is bad', () => {
         const EXPECTED_ERROR = {
           error: 'This is an error',
-          error_description: 'This is a description'
+          error_description: 'This is a description',
         };
         beforeEach(() => {
           const interaction = {
@@ -295,16 +295,16 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 400,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_ERROR
-            }
+              body: EXPECTED_ERROR,
+            },
           };
           return provider.addInteraction(interaction);
         });
 
         // add expectations
-        it('rejects the promise', done => {
+        it('rejects the promise', (done) => {
           github(PACT_BASE_URL)
             .getToken('SOME_CODE')
             .catch(() => {
@@ -315,7 +315,7 @@ describe('With an increased jest timeout', () => {
       describe('When there is a server error response', () => {
         const EXPECTED_ERROR = {
           error: 'This is an error',
-          error_description: 'This is a description'
+          error_description: 'This is a description',
         };
         beforeEach(() => {
           const interaction = {
@@ -324,16 +324,16 @@ describe('With an increased jest timeout', () => {
             willRespondWith: {
               status: 200,
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
               },
-              body: EXPECTED_ERROR
-            }
+              body: EXPECTED_ERROR,
+            },
           };
           return provider.addInteraction(interaction);
         });
 
         // add expectations
-        it('rejects the promise', done => {
+        it('rejects the promise', (done) => {
           github(PACT_BASE_URL)
             .getToken('SOME_CODE')
             .catch(() => {

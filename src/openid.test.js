@@ -13,7 +13,7 @@ describe('openid domain layer', () => {
     getUserEmails: jest.fn(),
     getUserDetails: jest.fn(),
     getToken: jest.fn(),
-    getAuthorizeUrl: jest.fn()
+    getAuthorizeUrl: jest.fn(),
   };
 
   beforeEach(() => {
@@ -21,15 +21,15 @@ describe('openid domain layer', () => {
   });
 
   describe('userinfo function', () => {
-    const mockEmailsWithPrimary = withPrimary => {
+    const mockEmailsWithPrimary = (withPrimary) => {
       githubMock.getUserEmails.mockImplementation(() =>
         Promise.resolve([
           {
             primary: false,
             email: 'not-this-email@example.com',
-            verified: false
+            verified: false,
           },
-          { primary: withPrimary, email: 'email@example.com', verified: true }
+          { primary: withPrimary, email: 'email@example.com', verified: true },
         ])
       );
     };
@@ -45,7 +45,7 @@ describe('openid domain layer', () => {
               html_url: 'some profile',
               avatar_url: 'picture.jpg',
               blog: 'website',
-              updated_at: '2008-01-14T04:33:35Z'
+              updated_at: '2008-01-14T04:33:35Z',
             })
           );
         });
@@ -64,7 +64,7 @@ describe('openid domain layer', () => {
               profile: 'some profile',
               sub: 'undefined',
               updated_at: 1200285215,
-              website: 'website'
+              website: 'website',
             });
           });
         });
@@ -97,7 +97,7 @@ describe('openid domain layer', () => {
           Promise.resolve({
             access_token: 'SOME_TOKEN',
             token_type: 'bearer',
-            scope: 'scope1,scope2'
+            scope: 'scope1,scope2',
           })
         );
         crypto.makeIdToken.mockImplementation(() => 'ENCODED TOKEN');
@@ -113,7 +113,7 @@ describe('openid domain layer', () => {
           access_token: 'SOME_TOKEN',
           id_token: 'ENCODED TOKEN',
           scope: 'openid scope1 scope2',
-          token_type: 'bearer'
+          token_type: 'bearer',
         });
       });
     });
@@ -166,7 +166,7 @@ describe('openid domain layer', () => {
             'email_verified',
             'updated_at',
             'iss',
-            'aud'
+            'aud',
           ],
           display_values_supported: ['page', 'popup'],
           id_token_signing_alg_values_supported: ['RS256'],
@@ -177,18 +177,18 @@ describe('openid domain layer', () => {
             'code',
             'code id_token',
             'id_token',
-            'token id_token'
+            'token id_token',
           ],
           scopes_supported: ['openid', 'read:user', 'user:email'],
           subject_types_supported: ['public'],
           token_endpoint: 'https://not-a-real-host.com/token',
           token_endpoint_auth_methods_supported: [
             'client_secret_basic',
-            'private_key_jwt'
+            'private_key_jwt',
           ],
           token_endpoint_auth_signing_alg_values_supported: ['RS256'],
           userinfo_endpoint: 'https://not-a-real-host.com/userinfo',
-          userinfo_signing_alg_values_supported: ['none']
+          userinfo_signing_alg_values_supported: ['none'],
         });
       });
     });

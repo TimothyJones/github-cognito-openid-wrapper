@@ -1,6 +1,6 @@
 const handlers = require('./handlers');
 
-module.exports = app => {
+module.exports = (app) => {
   app.get('/userinfo', handlers.userinfo);
   app.post('/userinfo', handlers.userinfo);
   app.get('/token', handlers.token);

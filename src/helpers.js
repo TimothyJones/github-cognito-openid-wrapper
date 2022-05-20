@@ -1,3 +1,3 @@
 module.exports = {
-  NumericDate: date => Math.floor(date / 1000)
+  NumericDate: (date) => Math.floor(date / 1000),
 };

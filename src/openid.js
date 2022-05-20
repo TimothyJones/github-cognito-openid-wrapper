@@ -5,11 +5,11 @@ const github = require('./github');
 
 const getJwks = () => ({ keys: [crypto.getPublicKey()] });
 
-const getUserInfo = accessToken =>
+const getUserInfo = (accessToken) =>
   Promise.all([
     github()
       .getUserDetails(accessToken)
-      .then(userDetails => {
+      .then((userDetails) => {
         logger.debug('Fetched user details: %j', userDetails, {});
         // Here we map the github user response to the standard claims from
         // OpenID. The mapping was constructed by following
@@ -25,27 +25,27 @@ const getUserInfo = accessToken =>
           updated_at: NumericDate(
             // OpenID requires the seconds since epoch in UTC
             new Date(Date.parse(userDetails.updated_at))
-          )
+          ),
         };
         logger.debug('Resolved claims: %j', claims, {});
         return claims;
       }),
     github()
       .getUserEmails(accessToken)
-      .then(userEmails => {
+      .then((userEmails) => {
         logger.debug('Fetched user emails: %j', userEmails, {});
-        const primaryEmail = userEmails.find(email => email.primary);
+        const primaryEmail = userEmails.find((email) => email.primary);
         if (primaryEmail === undefined) {
           throw new Error('User did not have a primary email address');
         }
         const claims = {
           email: primaryEmail.email,
-          email_verified: primaryEmail.verified
+          email_verified: primaryEmail.verified,
         };
         logger.debug('Resolved claims: %j', claims, {});
         return claims;
-      })
-  ]).then(claims => {
+      }),
+  ]).then((claims) => {
     const mergedClaims = claims.reduce(
       (acc, claim) => ({ ...acc, ...claim }),
       {}
@@ -60,7 +60,7 @@ const getAuthorizeUrl = (client_id, scope, state, response_type) =>
 const getTokens = (code, state, host) =>
   github()
     .getToken(code, state)
-    .then(githubToken => {
+    .then((githubToken) => {
       logger.debug('Got token: %s', githubToken, {});
       // GitHub returns scopes separated by commas
       // But OAuth wants them to be spaces
@@ -77,7 +77,7 @@ const getTokens = (code, state, host) =>
       // exp - expiry time for the id token (seconds since epoch in UTC)
       // iat - time that the JWT was issued (seconds since epoch in UTC)
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         const payload = {
           // This was commented because Cognito times out in under a second
           // and generating the userInfo takes too long.
@@ -89,7 +89,7 @@ const getTokens = (code, state, host) =>
         const tokenResponse = {
           ...githubToken,
           scope,
-          id_token: idToken
+          id_token: idToken,
         };
 
         logger.debug('Resolved token response: %j', tokenResponse, {});
@@ -98,13 +98,13 @@ const getTokens = (code, state, host) =>
       });
     });
 
-const getConfigFor = host => ({
+const getConfigFor = (host) => ({
   issuer: `https://${host}`,
   authorization_endpoint: `https://${host}/authorize`,
   token_endpoint: `https://${host}/token`,
   token_endpoint_auth_methods_supported: [
     'client_secret_basic',
-    'private_key_jwt'
+    'private_key_jwt',
   ],
   token_endpoint_auth_signing_alg_values_supported: ['RS256'],
   userinfo_endpoint: `https://${host}/userinfo`,
@@ -117,7 +117,7 @@ const getConfigFor = host => ({
     'code',
     'code id_token',
     'id_token',
-    'token id_token'
+    'token id_token',
   ],
 
   subject_types_supported: ['public'],
@@ -136,8 +136,8 @@ const getConfigFor = host => ({
     'email_verified',
     'updated_at',
     'iss',
-    'aud'
-  ]
+    'aud',
+  ],
 });
 
 module.exports = {
@@ -145,5 +145,5 @@ module.exports = {
   getUserInfo,
   getJwks,
   getConfigFor,
-  getAuthorizeUrl
+  getAuthorizeUrl,
 };

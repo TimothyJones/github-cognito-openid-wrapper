@@ -1,7 +1,7 @@
 const logger = require('../../logger');
 
 module.exports = {
-  getBearerToken: req =>
+  getBearerToken: (req) =>
     new Promise((resolve, reject) => {
       // This method implements https://tools.ietf.org/html/rfc6750
       const authHeader = req.headers.Authorization;
@@ -40,5 +40,5 @@ module.exports = {
     const lStage = stage;
     const issuer = `${host}/${lStage}`;
     return issuer;
-  }
+  },
 };

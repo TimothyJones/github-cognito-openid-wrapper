@@ -11,5 +11,5 @@ module.exports = {
   SPLUNK_TOKEN: process.env.SPLUNK_TOKEN,
   SPLUNK_SOURCE: process.env.SPLUNK_SOURCE,
   SPLUNK_SOURCETYPE: process.env.SPLUNK_SOURCETYPE,
-  SPLUNK_INDEX: process.env.SPLUNK_INDEX
+  SPLUNK_INDEX: process.env.SPLUNK_INDEX,
 };

@@ -4,11 +4,11 @@ const {
   SPLUNK_TOKEN,
   SPLUNK_SOURCE,
   SPLUNK_SOURCETYPE,
-  SPLUNK_INDEX
+  SPLUNK_INDEX,
 } = require('../config');
 
 const logger = winston.createLogger({
-  level: 'info'
+  level: 'info',
 });
 
 // Activate Splunk logging if Splunk's env variables are set
@@ -21,7 +21,7 @@ if (SPLUNK_URL) {
     source: SPLUNK_SOURCE || '/var/log/GHOIdShim.log',
     sourcetype: SPLUNK_SOURCETYPE || 'github-cognito-openid-wrapper',
     index: SPLUNK_INDEX || 'main',
-    maxBatchCount: 1
+    maxBatchCount: 1,
   };
 
   logger.add(
@@ -30,7 +30,7 @@ if (SPLUNK_URL) {
       format: winston.format.combine(
         winston.format.splat(),
         winston.format.timestamp()
-      )
+      ),
     })
   );
 } else {
@@ -41,7 +41,7 @@ if (SPLUNK_URL) {
         winston.format.splat(),
         winston.format.colorize({ all: true }),
         winston.format.simple()
-      )
+      ),
     })
   );
 }
