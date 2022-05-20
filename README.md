@@ -6,7 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper?targetFile=package.json)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Do you want to add GitHub as an OIDC (OpenID Connect) provider to an AWS Cognito User Pool? Have you run in to trouble because GitHub only provides OAuth2.0 endpoints, and doesn't support OpenID Connect?
@@ -338,6 +338,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://deh.li/"><img src="https://avatars0.githubusercontent.com/u/5856011?v=4?s=100" width="100px;" alt=""/><br /><sub><b>c.p.</b></sub></a><br /><a href="#infra-dehli" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="http://www.calldei.com/"><img src="https://avatars0.githubusercontent.com/u/286113?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Lee</b></sub></a><br /><a href="#infra-DALDEI" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://medium.com/@christophe.bougere"><img src="https://avatars.githubusercontent.com/u/1325474?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christophe Bougère</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=ChristopheBougere" title="Code">💻</a></td>
   </tr>
 </table>
 
