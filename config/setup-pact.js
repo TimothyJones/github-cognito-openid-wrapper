@@ -3,7 +3,7 @@ const { Pact } = require('@pact-foundation/pact');
 const pkg = require('../package.json');
 
 global.port = 8989;
-global.PACT_BASE_URL = `http://localhost:${port}`;
+global.PACT_BASE_URL = `http://127.0.0.1:${port}`;
 
 global.provider = new Pact({
   port: global.port,
