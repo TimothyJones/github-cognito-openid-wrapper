@@ -10,8 +10,8 @@ global.provider = new Pact({
   log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
   dir: path.resolve(process.cwd(), 'pacts'),
   spec: 2,
-  logLevel: 'fatal',
+  logLevel: 'debug',
   pactfileWriteMode: 'update',
   consumer: pkg.name,
-  provider: 'GitHub.com'
+  provider: 'GitHub.com',
 });
