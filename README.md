@@ -338,7 +338,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://deh.li/"><img src="https://avatars0.githubusercontent.com/u/5856011?v=4?s=100" width="100px;" alt=""/><br /><sub><b>c.p.</b></sub></a><br /><a href="#infra-dehli" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="http://www.calldei.com/"><img src="https://avatars0.githubusercontent.com/u/286113?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Lee</b></sub></a><br /><a href="#infra-DALDEI" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://medium.com/@christophe.bougere"><img src="https://avatars.githubusercontent.com/u/1325474?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christophe Bougère</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=ChristopheBougere" title="Code">💻</a></td>
+    <td align="center"><a href="https://medium.com/@christophe.bougere"><img src="https://avatars.githubusercontent.com/u/1325474?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christophe Bougère</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=ChristopheBougere" title="Code">💻</a> <a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=ChristopheBougere" title="Documentation">📖</a></td>
   </tr>
 </table>
 
