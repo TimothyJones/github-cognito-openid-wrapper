@@ -16,9 +16,9 @@ describe('With an increased jest timeout', () => {
   });
 
   describe('GitHub Client Pact', () => {
-    beforeAll(() => provider.setup());
-    afterAll(() => provider.finalize());
-    afterEach(() => provider.verify());
+    beforeAll(() => provider.setup(), 30000);
+    afterAll(() => provider.finalize(), 30000);
+    afterEach(() => provider.verify(), 30000);
 
     describe('UserDetails endpoint', () => {
       const userDetailsRequest = {
