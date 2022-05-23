@@ -77,13 +77,14 @@ pactWith(
           });
 
           // add expectations
-          it('rejects the promise', (done) => {
-            github(provider.mockService.baseUrl)
-              .getUserDetails('THIS_IS_MY_TOKEN')
-              .catch(() => {
-                done();
-              });
-          });
+          it('rejects the promise', () =>
+            expect(
+              github(provider.mockService.baseUrl).getUserDetails(
+                'THIS_IS_MY_TOKEN'
+              )
+            ).rejects.toThrow(
+              new Error('Request failed with status code 400')
+            ));
         });
         describe('When there is a server error response', () => {
           const EXPECTED_ERROR = {
@@ -106,13 +107,16 @@ pactWith(
           });
 
           // add expectations
-          it('rejects the promise', (done) => {
-            github(provider.mockService.baseUrl)
-              .getUserDetails('THIS_IS_MY_TOKEN')
-              .catch(() => {
-                done();
-              });
-          });
+          it('rejects the promise', () =>
+            expect(
+              github(provider.mockService.baseUrl).getUserDetails(
+                'THIS_IS_MY_TOKEN'
+              )
+            ).rejects.toThrow(
+              new Error(
+                'GitHub API responded with a failure: This is an error, This is a description'
+              )
+            ));
         });
       });
 
@@ -174,13 +178,14 @@ pactWith(
           });
 
           // add expectations
-          it('rejects the promise', (done) => {
-            github(provider.mockService.baseUrl)
-              .getUserEmails('THIS_IS_MY_TOKEN')
-              .catch(() => {
-                done();
-              });
-          });
+          it('rejects the promise', () =>
+            expect(
+              github(provider.mockService.baseUrl).getUserEmails(
+                'THIS_IS_MY_TOKEN'
+              )
+            ).rejects.toThrow(
+              new Error('Request failed with status code 400')
+            ));
         });
         describe('When there is a server error response', () => {
           const EXPECTED_ERROR = {
@@ -203,13 +208,16 @@ pactWith(
           });
 
           // add expectations
-          it('rejects the promise', (done) => {
-            github(provider.mockService.baseUrl)
-              .getUserEmails('THIS_IS_MY_TOKEN')
-              .catch(() => {
-                done();
-              });
-          });
+          it('rejects the promise', () =>
+            expect(
+              github(provider.mockService.baseUrl).getUserEmails(
+                'THIS_IS_MY_TOKEN'
+              )
+            ).rejects.toThrow(
+              new Error(
+                'GitHub API responded with a failure: This is an error, This is a description'
+              )
+            ));
         });
       });
 
@@ -223,7 +231,7 @@ pactWith(
                 'state',
                 'response_type'
               )
-            ).to.equal(
+            ).toEqual(
               `${provider.mockService.baseUrl}/login/oauth/authorize?client_id=client_id&scope=scope&state=state&response_type=response_type`
             );
           });

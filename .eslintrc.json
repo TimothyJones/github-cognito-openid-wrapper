@@ -1,41 +1,24 @@
 {
-  "extends": [
-    "airbnb-base",
-    "prettier"
-  ],
+  "extends": ["airbnb-base", "prettier"],
   "rules": {
     "no-console": [
       "error",
       {
-        "allow": [
-          "warn",
-          "error",
-          "info"
-        ]
+        "allow": ["warn", "error", "info"]
       }
     ],
     "camelcase": 0
   },
   "overrides": [
     {
-      "files": [
-        "**/*.test.js"
-      ],
+      "files": ["**/*.test.js"],
       "env": {
         "jest": true,
         "jasmine": true
       },
-      "plugins": [
-        "jest",
-        "chai-expect",
-        "chai-friendly"
-      ],
+      "plugins": ["jest"],
       "rules": {
         "no-unused-expressions": 0,
-        "chai-friendly/no-unused-expressions": 2,
-        "chai-expect/missing-assertion": 2,
-        "chai-expect/terminating-properties": 2,
-        "chai-expect/no-inner-compare": 2,
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
         "jest/no-identical-title": "error",
