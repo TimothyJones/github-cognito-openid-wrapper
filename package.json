@@ -58,6 +58,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.2.0",
     "jest": "^28.1.0",
+    "jest-pact": "^0.9.4",
     "nodemon": "^2.0.16",
     "nodemon-webpack-plugin": "^4.7.1",
     "prettier": "^2.6.2",
