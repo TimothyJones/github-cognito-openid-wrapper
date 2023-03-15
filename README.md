@@ -315,13 +315,17 @@ missing features section above for one or two caveats.
 If you build anything cool, ping me [@JonesTim](https://twitter.com/JonesTim) on
 twitter (or open an issue if you have any problems).
 
+### This is so useful! How can I thank you?
+
+If you'd like to support the work that I have done (and will do) maintaining this project, you can consider [sponsoring me on github](https://github.com/sponsors/TimothyJones)
+
 ## License
 
 [BSD 3-Clause License](LICENSE)
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Although I've done most of the work on this project, I wasn't the only person who has contributed. Here is a list of everyone who has contributed to this project ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
