@@ -1,6 +1,6 @@
 {
   "name": "github-cognito-openid-wrapper",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A wrapper to enable AWS Cognito User Pools (which requires OpenID Connect) to talk to GitHub (which only provides OAuth2.0)",
   "main": "dist-web/server.js",
   "repository": {
