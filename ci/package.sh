@@ -25,6 +25,12 @@ DOCKER_BUILDKIT=1 docker build -f "$PROJECT_ROOT/Dockerfile" \
 -t "${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}" \
 "$PROJECT_ROOT/"
 
+DOCKER_BUILDKIT=1 docker build -f "$PROJECT_ROOT/Dockerfile" \
+-t "${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}" \
+"$PROJECT_ROOT/"
+
 if [ "$PUBLISH_TO_REGISTRY" = "true" ]; then
+    docker tag "${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}" "${DOCKER_REGISTRY}${APP}:latest"
     docker push "${DOCKER_REGISTRY}${APP}:${DOCKER_TAG}"
+    docker push "${DOCKER_REGISTRY}${APP}:latest"
 fi
