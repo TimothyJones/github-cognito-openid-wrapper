@@ -173,7 +173,7 @@ describe('openid domain layer', () => {
             'iss',
             'aud',
             'gh_org_member',
-            'gh_teams'
+            'gh_teams',
           ],
           display_values_supported: ['page', 'popup'],
           id_token_signing_alg_values_supported: ['RS256'],

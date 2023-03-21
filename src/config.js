@@ -1,6 +1,6 @@
 module.exports = {
-  GITHUB_API_URL: "https://api.github.com",
-  GITHUB_LOGIN_URL: "https://github.com",
+  GITHUB_API_URL: 'https://api.github.com',
+  GITHUB_LOGIN_URL: 'https://github.com',
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   COGNITO_REDIRECT_URI: process.env.COGNITO_REDIRECT_URI,

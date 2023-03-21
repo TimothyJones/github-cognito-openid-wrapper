@@ -1,6 +1,6 @@
 const handlers = require('./handlers');
 
-module.exports = app => {
+module.exports = (app) => {
   app.get('/liveness', handlers.liveness);
   app.get('/userinfo', handlers.userinfo);
   app.post('/userinfo', handlers.userinfo);

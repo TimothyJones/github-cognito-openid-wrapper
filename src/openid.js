@@ -2,9 +2,7 @@ const logger = require('./connectors/logger');
 const { NumericDate } = require('./helpers');
 const crypto = require('./crypto');
 const github = require('./github');
-const {
-  ORGANIZATION_NAME
-} = require('./config');
+const { ORGANIZATION_NAME } = require('./config');
 
 const getJwks = () => ({ keys: [crypto.getPublicKey()] });
 
@@ -43,16 +41,16 @@ const getUserInfo = (accessToken) =>
         }
         const claims = {
           email: primaryEmail.email,
-          email_verified: true
+          email_verified: true,
         };
         logger.debug('Resolved claims: %j', claims, {});
         return claims;
       }),
     github()
       .getUserOrgs(accessToken)
-      .then(userOrgs => {
+      .then((userOrgs) => {
         logger.debug('Fetched user orgs: %j', userOrgs, {});
-        const userOrg = userOrgs.find(org => org.login === ORGANIZATION_NAME);
+        const userOrg = userOrgs.find((org) => org.login === ORGANIZATION_NAME);
         if (userOrg === undefined) {
           throw new Error(`User is not a member of ${ORGANIZATION_NAME}`);
         }
@@ -64,13 +62,15 @@ const getUserInfo = (accessToken) =>
       }),
     github()
       .getUserTeams(accessToken)
-      .then(userTeams => {
+      .then((userTeams) => {
         logger.debug('Fetched user teams: %j', userTeams, {});
         const userTeamList = userTeams
-          .filter(team=>team.organization.login === ORGANIZATION_NAME)
+          .filter((team) => team.organization.login === ORGANIZATION_NAME)
           .map(({ name, slug }) => ({ name, slug }));
         if (userTeamList === undefined) {
-          throw new Error(`User is not part of any team in ${ORGANIZATION_NAME}`);
+          throw new Error(
+            `User is not part of any team in ${ORGANIZATION_NAME}`
+          );
         }
         const claims = {
           gh_teams: userTeamList,
@@ -171,8 +171,8 @@ const getConfigFor = (host) => ({
     'iss',
     'aud',
     'gh_org_member',
-    'gh_teams'
-  ]
+    'gh_teams',
+  ],
 });
 
 module.exports = {
