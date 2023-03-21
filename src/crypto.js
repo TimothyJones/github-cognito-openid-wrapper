@@ -11,20 +11,20 @@ module.exports = {
   getPublicKey: () => ({
     alg: 'RS256',
     kid: KEY_ID,
-    ...JSONWebKey.fromPEM(pubKey).toJSON()
+    ...JSONWebKey.fromPEM(pubKey).toJSON(),
   }),
 
   makeIdToken: (payload, host) => {
     const enrichedPayload = {
       ...payload,
       iss: `https://${host}`,
-      aud: GITHUB_CLIENT_ID
+      aud: GITHUB_CLIENT_ID,
     };
     logger.debug('Signing payload %j', enrichedPayload, {});
     return jwt.sign(enrichedPayload, cert, {
       expiresIn: '1h',
       algorithm: 'RS256',
-      keyid: KEY_ID
+      keyid: KEY_ID,
     });
-  }
+  },
 };

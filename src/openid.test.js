@@ -13,7 +13,7 @@ describe('openid domain layer', () => {
     getUserEmails: jest.fn(),
     getUserDetails: jest.fn(),
     getToken: jest.fn(),
-    getAuthorizeUrl: jest.fn()
+    getAuthorizeUrl: jest.fn(),
   };
 
   beforeEach(() => {
@@ -21,15 +21,15 @@ describe('openid domain layer', () => {
   });
 
   describe('userinfo function', () => {
-    const mockEmailsWithPrimary = withPrimary => {
+    const mockEmailsWithPrimary = (withPrimary) => {
       githubMock.getUserEmails.mockImplementation(() =>
         Promise.resolve([
           {
             primary: false,
             email: 'not-this-email@example.com',
-            verified: false
+            verified: false,
           },
-          { primary: withPrimary, email: 'email@example.com', verified: true }
+          { primary: withPrimary, email: 'email@example.com', verified: true },
         ])
       );
     };
@@ -45,7 +45,7 @@ describe('openid domain layer', () => {
               html_url: 'some profile',
               avatar_url: 'picture.jpg',
               blog: 'website',
-              updated_at: '2008-01-14T04:33:35Z'
+              updated_at: '2008-01-14T04:33:35Z',
             })
           );
         });
@@ -55,7 +55,7 @@ describe('openid domain layer', () => {
           });
           it('Returns the aggregated complete object', async () => {
             const response = await openid.getUserInfo(MOCK_TOKEN);
-            expect(response).to.deep.equal({
+            expect(response).toEqual({
               email: 'email@example.com',
               email_verified: true,
               name: 'some name',
@@ -64,7 +64,7 @@ describe('openid domain layer', () => {
               profile: 'some profile',
               sub: 'undefined',
               updated_at: 1200285215,
-              website: 'website'
+              website: 'website',
             });
           });
         });
@@ -73,7 +73,9 @@ describe('openid domain layer', () => {
             mockEmailsWithPrimary(false);
           });
           it('fails', () =>
-            expect(openid.getUserInfo('MOCK_TOKEN')).to.eventually.be.rejected);
+            expect(openid.getUserInfo('MOCK_TOKEN')).rejects.toThrow(
+              new Error('User did not have a primary email address')
+            ));
         });
       });
     });
@@ -87,7 +89,9 @@ describe('openid domain layer', () => {
         );
       });
       it('fails', () =>
-        expect(openid.getUserInfo('bad token')).to.eventually.be.rejected);
+        expect(openid.getUserInfo('bad token')).rejects.toThrow(
+          new Error('Bad token')
+        ));
     });
   });
   describe('token function', () => {
@@ -97,7 +101,7 @@ describe('openid domain layer', () => {
           Promise.resolve({
             access_token: 'SOME_TOKEN',
             token_type: 'bearer',
-            scope: 'scope1,scope2'
+            scope: 'scope1,scope2',
           })
         );
         crypto.makeIdToken.mockImplementation(() => 'ENCODED TOKEN');
@@ -109,11 +113,11 @@ describe('openid domain layer', () => {
           'some state',
           'somehost.com'
         );
-        expect(token).to.deep.equal({
+        expect(token).toEqual({
           access_token: 'SOME_TOKEN',
           id_token: 'ENCODED TOKEN',
           scope: 'openid scope1 scope2',
-          token_type: 'bearer'
+          token_type: 'bearer',
         });
       });
     });
@@ -124,15 +128,16 @@ describe('openid domain layer', () => {
         );
       });
       it('fails', () =>
-        expect(openid.getUserInfo('bad token', 'two', 'three')).to.eventually.be
-          .rejected);
+        expect(openid.getUserInfo('bad token', 'two', 'three')).rejects.toThrow(
+          new Error('Bad token')
+        ));
     });
   });
   describe('jwks', () => {
     it('Returns the right structure', () => {
       const mockKey = { key: 'mock' };
       crypto.getPublicKey.mockImplementation(() => mockKey);
-      expect(openid.getJwks()).to.deep.equal({ keys: [mockKey] });
+      expect(openid.getJwks()).toEqual({ keys: [mockKey] });
     });
   });
   describe('authorization', () => {
@@ -145,7 +150,7 @@ describe('openid domain layer', () => {
     it('Redirects to the authorization URL', () => {
       expect(
         openid.getAuthorizeUrl('client_id', 'scope', 'state', 'response_type')
-      ).to.equal(
+      ).toEqual(
         'https://not-a-real-host.com/authorize?client_id=client_id&scope=scope&state=state&response_type=response_type'
       );
     });
@@ -153,7 +158,7 @@ describe('openid domain layer', () => {
   describe('openid-configuration', () => {
     describe('with a supplied hostname', () => {
       it('returns the correct response', () => {
-        expect(openid.getConfigFor('not-a-real-host.com')).to.deep.equal({
+        expect(openid.getConfigFor('not-a-real-host.com')).toEqual({
           authorization_endpoint: 'https://not-a-real-host.com/authorize',
           claims_supported: [
             'sub',
@@ -179,18 +184,18 @@ describe('openid domain layer', () => {
             'code',
             'code id_token',
             'id_token',
-            'token id_token'
+            'token id_token',
           ],
           scopes_supported: ['openid', 'read:user', 'user:email', 'read:org'],
           subject_types_supported: ['public'],
           token_endpoint: 'https://not-a-real-host.com/token',
           token_endpoint_auth_methods_supported: [
             'client_secret_basic',
-            'private_key_jwt'
+            'private_key_jwt',
           ],
           token_endpoint_auth_signing_alg_values_supported: ['RS256'],
           userinfo_endpoint: 'https://not-a-real-host.com/userinfo',
-          userinfo_signing_alg_values_supported: ['none']
+          userinfo_signing_alg_values_supported: ['none'],
         });
       });
     });

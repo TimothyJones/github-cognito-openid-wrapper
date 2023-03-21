@@ -71,7 +71,7 @@ module.exports = {
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '\\.key$': '<rootDir>/src/__mocks__/privateKeyMock.js',
-    '\\.key\\.pub$': '<rootDir>/src/__mocks__/publicKeyMock.js'
+    '\\.key\\.pub$': '<rootDir>/src/__mocks__/publicKeyMock.js',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -116,10 +116,9 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: ['./config/setup-pact.js'],
-
+  setupFiles: [],
   // The path to a module that runs some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ['./config/setup-test-framework-script.js'],
+  setupFilesAfterEnv: [],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
@@ -158,8 +157,8 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.js$': 'babel-jest'
-  }
+    '^.+\\.js$': 'babel-jest',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

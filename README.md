@@ -1,12 +1,12 @@
 # GitHub OpenID Connect Wrapper for Cognito
 
-[![Build Status](https://travis-ci.org/TimothyJones/github-cognito-openid-wrapper.svg?branch=master)](https://travis-ci.org/TimothyJones/github-cognito-openid-wrapper)
+[![Build, lint, test](https://github.com/TimothyJones/github-cognito-openid-wrapper/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/TimothyJones/github-cognito-openid-wrapper/actions/workflows/build-and-test.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f787719be529b1c0e8ee/maintainability)](https://codeclimate.com/github/TimothyJones/github-openid-wrapper/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f787719be529b1c0e8ee/test_coverage)](https://codeclimate.com/github/TimothyJones/github-openid-wrapper/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper?targetFile=package.json)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Do you want to add GitHub as an OIDC (OpenID Connect) provider to an AWS Cognito User Pool? Have you run in to trouble because GitHub only provides OAuth2.0 endpoints, and doesn't support OpenID Connect?
@@ -52,6 +52,8 @@ It also implements the following [OpenID Connect Discovery](https://openid.net/s
   endpoints and capabilities. ([spec](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig))
 
 Out of the box, you can deploy it as a CloudFormation stack, or run it as a web server with node.
+
+An attempt to deploy with CDK is available in the following archived construct: [`cdk-user-pool-identity-provider-github`](https://github.com/scenario-labs/cdk-user-pool-identity-provider-github).
 
 ## Getting Started
 
@@ -328,13 +330,17 @@ missing features section above for one or two caveats.
 If you build anything cool, ping me [@JonesTim](https://twitter.com/JonesTim) on
 twitter (or open an issue if you have any problems).
 
+### This is so useful! How can I thank you?
+
+If you'd like to support the work that I have done (and will do) maintaining this project, you can consider [sponsoring me on github](https://github.com/sponsors/TimothyJones)
+
 ## License
 
 [BSD 3-Clause License](LICENSE)
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Although I've done most of the work on this project, I wasn't the only person who has contributed. Here is a list of everyone who has contributed to this project ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -351,6 +357,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://deh.li/"><img src="https://avatars0.githubusercontent.com/u/5856011?v=4?s=100" width="100px;" alt=""/><br /><sub><b>c.p.</b></sub></a><br /><a href="#infra-dehli" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="http://www.calldei.com/"><img src="https://avatars0.githubusercontent.com/u/286113?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Lee</b></sub></a><br /><a href="#infra-DALDEI" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://medium.com/@christophe.bougere"><img src="https://avatars.githubusercontent.com/u/1325474?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christophe Bougère</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=ChristopheBougere" title="Code">💻</a> <a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=ChristopheBougere" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://mike.fogel.ca/"><img src="https://avatars.githubusercontent.com/u/69902?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mike Fogel</b></sub></a><br /><a href="https://github.com/TimothyJones/github-cognito-openid-wrapper/commits?author=mfogel" title="Documentation">📖</a></td>
   </tr>
 </table>
 

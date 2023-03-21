@@ -17,14 +17,14 @@ module.exports = respond => ({
     logger.debug('Authorize Url is: %s', authorizeUrl, {});
     respond.redirect(authorizeUrl);
   },
-  userinfo: tokenPromise => {
+  userinfo: (tokenPromise) => {
     tokenPromise
-      .then(token => openid.getUserInfo(token))
-      .then(userInfo => {
+      .then((token) => openid.getUserInfo(token))
+      .then((userInfo) => {
         logger.debug('Resolved user infos:', userInfo, {});
         respond.success(userInfo);
       })
-      .catch(error => {
+      .catch((error) => {
         logger.error(
           'Failed to provide user info: %s',
           error.message || error,
@@ -37,7 +37,7 @@ module.exports = respond => ({
     if (code) {
       openid
         .getTokens(code, state, host)
-        .then(tokens => {
+        .then((tokens) => {
           logger.debug(
             'Token for (%s, %s, %s) provided',
             code,
@@ -47,7 +47,7 @@ module.exports = respond => ({
           );
           respond.success(tokens);
         })
-        .catch(error => {
+        .catch((error) => {
           logger.error(
             'Token for (%s, %s, %s) failed: %s',
             code,
@@ -76,9 +76,9 @@ module.exports = respond => ({
     logger.info('Providing access to JWKS: %j', jwks, {});
     respond.success(jwks);
   },
-  openIdConfiguration: host => {
+  openIdConfiguration: (host) => {
     const config = openid.getConfigFor(host);
     logger.info('Providing configuration for %s: %j', host, config, {});
     respond.success(config);
-  }
+  },
 });

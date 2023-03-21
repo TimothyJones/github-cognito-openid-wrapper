@@ -3,7 +3,7 @@ const responder = require('./util/responder');
 const auth = require('./util/auth');
 const controllers = require('../controllers');
 
-const parseBody = event => {
+const parseBody = (event) => {
   const contentType = event.headers['Content-Type'];
   if (event.body) {
     if (contentType.startsWith('application/x-www-form-urlencoded')) {

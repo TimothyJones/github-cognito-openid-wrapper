@@ -94,6 +94,25 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "ChristopheBougere",
+      "name": "Christophe Bougère",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1325474?v=4",
+      "profile": "https://medium.com/@christophe.bougere",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "mfogel",
+      "name": "Mike Fogel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69902?v=4",
+      "profile": "http://mike.fogel.ca/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7

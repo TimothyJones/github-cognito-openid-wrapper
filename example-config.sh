@@ -8,7 +8,7 @@ export GITHUB_API_URL="https://api.github.com"
 export GITHUB_LOGIN_URL="https://github.com"
 export NODE_LOG_LEVEL="debug"
 
-# Variables required if used with GitHub Enterprise
+# Alternate URLs if used with GitHub Enterprise
 # GITHUB_API_URL=# https://<GitHub Enterprise Host>/api/v3
 # GITHUB_LOGIN_URL=# https://<GitHub Enterprise Host>
 

@@ -1,6 +1,23 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+### [1.2.1](https://github.com/TimothyJones/github-cognito-openid-wrapper/compare/v1.2.0...v1.2.1) (2023-03-15)
+
+
+### Bug Fixes
+
+* Always export API base URLs ([bb3ace5](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/bb3ace5b87aa74200e226e72bfa21f59df90a8d0))
+* Bump version of jsonwebtoken to 9.0.0 to fix vulnerability warnings ([e2e6a7e](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/e2e6a7eaa9099ad9f287f97323125eca8ca2930a))
+* **deps:** Update webpack, jest etc to fix vulnerabilities ([6be4af5](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/6be4af579b47165ea3d1588628d043619a987ac8))
+* Make scripts more robust on windows ([57430ed](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/57430ed88e2a673dbbecc95768a9436eb042a8af))
+* package.json & package-lock.json to reduce vulnerabilities ([6a54d5f](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/6a54d5f5c1bf1a55e4cf55ff639d91edab966e4e))
+* package.json & package-lock.json to reduce vulnerabilities ([2786b43](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/2786b43a6f7cb25917146dda1b5467dfe900f718))
+* package.json & package-lock.json to reduce vulnerabilities ([f1b4f32](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/f1b4f32e1dd4c343a1056da324ea4e5a3a8be21c))
+* upgrade body-parser from 1.20.0 to 1.20.1 ([09f5727](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/09f5727cbcfec7b01c65d25b23c7a6a2faa47985))
+* upgrade jsonwebtoken from 8.3.0 to 8.5.1 ([a5d5f30](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/a5d5f308c61509882cc8cd30abfd83dcdc7f752e))
+* upgrade winston from 3.3.0 to 3.8.1 ([ef5ab31](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/ef5ab31bd01b376f566651bb4b0195bc6429e9ad))
+* use node 14 runtime ([ecfad5d](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/ecfad5d4a2d6ff2470dfbcfbc9e02bb26876c3c5))
 
 ## [1.2.0](https://github.com/TimothyJones/github-cognito-openid-wrapper/compare/v1.1.0...v1.2.0) (2020-09-08)
 

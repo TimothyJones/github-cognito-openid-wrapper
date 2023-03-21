@@ -4,7 +4,7 @@ const {
   GITHUB_CLIENT_SECRET,
   COGNITO_REDIRECT_URI,
   GITHUB_API_URL,
-  GITHUB_LOGIN_URL
+  GITHUB_LOGIN_URL,
 } = require('./config');
 const logger = require('./connectors/logger');
 
@@ -17,7 +17,7 @@ const getApiEndpoints = (
   userOrgs: `${apiBaseUrl}/user/orgs`,
   userTeams: `${apiBaseUrl}/user/teams`,
   oauthToken: `${loginBaseUrl}/login/oauth/access_token`,
-  oauthAuthorize: `${loginBaseUrl}/login/oauth/authorize`
+  oauthAuthorize: `${loginBaseUrl}/login/oauth/authorize`,
 });
 
 const debug_error = (err) => {
@@ -33,24 +33,20 @@ const debug_error = (err) => {
 
 axios.interceptors.response.use(r => r, debug_error);
 
-const check = response => {
+const check = (response) => {
   logger.debug('Checking response: %j', response, {});
 
   if (response.data) {
     if (response.data.error) {
       throw new Error(
-        `GitHub API responded with a failure: ${response.data.error}, ${
-          response.data.error_description
-        }`
+        `GitHub API responded with a failure: ${response.data.error}, ${response.data.error_description}`
       );
     } else if (response.status === 200) {
       return response.data;
     }
   }
   throw new Error(
-    `GitHub API responded with a failure: ${response.status} (${
-      response.statusText
-    })`
+    `GitHub API responded with a failure: ${response.status} (${response.statusText})`
   );
 };
 
@@ -60,8 +56,8 @@ const gitHubGet = (url, accessToken) =>
     url,
     headers: {
       Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${accessToken}`
-    }
+      Authorization: `token ${accessToken}`,
+    },
   });
 
 module.exports = (apiBaseUrl, loginBaseUrl) => {
@@ -71,8 +67,9 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
       `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(
         scope
       )}&state=${state}&response_type=${response_type}`,
-    getUserDetails: accessToken =>
+    getUserDetails: (accessToken) =>
       gitHubGet(urls.userDetails, accessToken).then(check),
+<<<<<<< HEAD
     getUserEmails: (accessToken) => {
       logger.debug('Using access token: %s', accessToken, {})
       logger.debug('Fetching: %s', urls.userEmails, {})
@@ -88,6 +85,13 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
       logger.debug('Fetching: %s', urls.userTeams, {})
       return gitHubGet(urls.userTeams, accessToken).then(check)
     },
+||||||| a6b9c8d
+    getUserEmails: accessToken =>
+      gitHubGet(urls.userEmails, accessToken).then(check),
+=======
+    getUserEmails: (accessToken) =>
+      gitHubGet(urls.userEmails, accessToken).then(check),
+>>>>>>> upstream/master
     getToken: (code, state) => {
       const data = {
         // OAuth required fields
@@ -99,7 +103,7 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
         client_secret: GITHUB_CLIENT_SECRET,
         code,
         // State may not be present, so we conditionally include it
-        ...(state && { state })
+        ...(state && { state }),
       };
 
       logger.debug(
@@ -113,10 +117,10 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
         url: urls.oauthToken,
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        data
+        data,
       }).then(check);
-    }
+    },
   };
 };

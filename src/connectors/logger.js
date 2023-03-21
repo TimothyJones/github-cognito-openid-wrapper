@@ -22,7 +22,7 @@ if (SPLUNK_URL) {
     source: SPLUNK_SOURCE || '/var/log/GHOIdShim.log',
     sourcetype: SPLUNK_SOURCETYPE || 'github-cognito-openid-wrapper',
     index: SPLUNK_INDEX || 'main',
-    maxBatchCount: 1
+    maxBatchCount: 1,
   };
 
   logger.add(
@@ -31,7 +31,7 @@ if (SPLUNK_URL) {
       format: winston.format.combine(
         winston.format.splat(),
         winston.format.timestamp()
-      )
+      ),
     })
   );
 } else {
@@ -42,7 +42,7 @@ if (SPLUNK_URL) {
         winston.format.splat(),
         winston.format.colorize({ all: true }),
         winston.format.simple()
-      )
+      ),
     })
   );
 }
