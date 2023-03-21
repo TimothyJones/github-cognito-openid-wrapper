@@ -1,7 +1,6 @@
 name: Build, lint, test
 
 on:
-  push:
   pull_request:
     branches: [master]
 
