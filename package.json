@@ -15,7 +15,6 @@
     "docker:start": "node /opt/dist-web/server.js",
     "docker:build": "DOCKER_BUILDKIT=1 docker build .",
     "lint": "eslint 'src/**' --ext .js",
-    "preinstall": "./scripts/create-key.sh",
     "prebuild-dist": "npm run lint && npm run test",
     "build-dist": "npm run build",
     "predeploy": "npm run build-dist",
@@ -68,5 +67,8 @@
   "engines": {
     "node": ">=12"
   },
-  "snyk": true
+  "snyk": true,
+  "volta": {
+    "node": "18.15.0"
+  }
 }

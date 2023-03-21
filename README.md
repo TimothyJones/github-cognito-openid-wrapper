@@ -5,8 +5,11 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f787719be529b1c0e8ee/test_coverage)](https://codeclimate.com/github/TimothyJones/github-openid-wrapper/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TimothyJones/github-cognito-openid-wrapper?targetFile=package.json)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Do you want to add GitHub as an OIDC (OpenID Connect) provider to an AWS Cognito User Pool? Have you run in to trouble because GitHub only provides OAuth2.0 endpoints, and doesn't support OpenID Connect?
@@ -291,9 +294,11 @@ you can extend `userinfo` in `src/openid.js`. You may need to add extra API
 client calls in `src/github.js`
 
 ## Docker
+
 The wrapper can be run entirely in Docker with [buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) enabled. Make sure to copy `.env.example` to `.env` before you build and run the image. Using `buildx` is optional. The port mapping should correspond to the port configured in `.env`.
 
 ### Example using localtunnel
+
 ```sh
 cp .env.example .env
 docker [buildx] build my-image .
@@ -305,6 +310,7 @@ Example using _localtunnel_ in a separate terminal. Make sure `https://some-rand
 ```
 lt -s some-random-subdomain -p 8080
 ```
+
 ## Contributing
 
 Contributions are welcome, especially for the missing features! Pull requests and issues are very welcome.
@@ -341,6 +347,7 @@ If you'd like to support the work that I have done (and will do) maintaining thi
 ## Contributors ✨
 
 Although I've done most of the work on this project, I wasn't the only person who has contributed. Here is a list of everyone who has contributed to this project ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -364,6 +371,7 @@ Although I've done most of the work on this project, I wasn't the only person wh
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -371,6 +379,15 @@ Although I've done most of the work on this project, I wasn't the only person wh
 <!-- markdownlint-disable -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## Island.is documentation
+
+Generate keys
+
+```bash
+./scripts/create-key.sh
+```

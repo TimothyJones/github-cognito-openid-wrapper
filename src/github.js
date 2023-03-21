@@ -22,16 +22,18 @@ const getApiEndpoints = (
 
 const debug_error = (err) => {
   if (err.response && err.response.data) {
-    logger.error('Github response: %s', err.response.data, {})
+    logger.error('Github response: %s', err.response.data, {});
     const custom_error = new Error(err.response.data || 'Unknown error');
     custom_error.status = err.response.status || 500;
-    custom_error.description = err.response.data ? err.response.data.statusText : null;
+    custom_error.description = err.response.data
+      ? err.response.data.statusText
+      : null;
     throw custom_error;
   }
   throw new Error(err);
-}
+};
 
-axios.interceptors.response.use(r => r, debug_error);
+axios.interceptors.response.use((r) => r, debug_error);
 
 const check = (response) => {
   logger.debug('Checking response: %j', response, {});
@@ -69,29 +71,21 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
       )}&state=${state}&response_type=${response_type}`,
     getUserDetails: (accessToken) =>
       gitHubGet(urls.userDetails, accessToken).then(check),
-<<<<<<< HEAD
     getUserEmails: (accessToken) => {
-      logger.debug('Using access token: %s', accessToken, {})
-      logger.debug('Fetching: %s', urls.userEmails, {})
-      return gitHubGet(urls.userEmails, accessToken).then(check)
+      logger.debug('Using access token: %s', accessToken, {});
+      logger.debug('Fetching: %s', urls.userEmails, {});
+      return gitHubGet(urls.userEmails, accessToken).then(check);
     },
     getUserOrgs: (accessToken) => {
-      logger.debug('Using access token: %s', accessToken, {})
-      logger.debug('Fetching: %s', urls.userOrgs, {})
-      return gitHubGet(urls.userOrgs, accessToken).then(check)
+      logger.debug('Using access token: %s', accessToken, {});
+      logger.debug('Fetching: %s', urls.userOrgs, {});
+      return gitHubGet(urls.userOrgs, accessToken).then(check);
     },
     getUserTeams: (accessToken) => {
-      logger.debug('Using access token: %s', accessToken, {})
-      logger.debug('Fetching: %s', urls.userTeams, {})
-      return gitHubGet(urls.userTeams, accessToken).then(check)
+      logger.debug('Using access token: %s', accessToken, {});
+      logger.debug('Fetching: %s', urls.userTeams, {});
+      return gitHubGet(urls.userTeams, accessToken).then(check);
     },
-||||||| a6b9c8d
-    getUserEmails: accessToken =>
-      gitHubGet(urls.userEmails, accessToken).then(check),
-=======
-    getUserEmails: (accessToken) =>
-      gitHubGet(urls.userEmails, accessToken).then(check),
->>>>>>> upstream/master
     getToken: (code, state) => {
       const data = {
         // OAuth required fields
