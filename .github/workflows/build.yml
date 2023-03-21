@@ -3,11 +3,11 @@ name: Monorepo pipeline
 on:
   push:
     branches:
-      - "main"
-      - "release/**"
-      - "hotfix/**"
+      - 'main'
+      - 'release/**'
+      - 'hotfix/**'
     paths-ignore:
-      - "**/*.md"
+      - '**/*.md'
   pull_request:
     branches:
       - main
@@ -17,13 +17,13 @@ env:
   DOCKER_REGISTRY: 821090935708.dkr.ecr.eu-west-1.amazonaws.com/
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 25
     outputs:
       PUBLISH: ${{ steps.publish_flag.outputs.PUBLISH }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Generate docker image tag
         id: docker_tags

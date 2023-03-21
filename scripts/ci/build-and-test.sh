@@ -1,11 +1,10 @@
 #!/bin/bash
 
-set -e
-set -u
+set -eu
 
 
-npm ci
-npm run format:check
-npm run lint
-npm run build
-npm run test
+yarn install --frozen-lockfile
+yarn run format:check
+yarn run lint
+yarn run build
+yarn run test
