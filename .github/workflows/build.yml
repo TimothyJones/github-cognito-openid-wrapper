@@ -30,7 +30,7 @@ jobs:
         run: |
           export GIT_BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF/refs\/heads\//}}"
           export DOCKER_BRANCH_TAG=$(echo ${GIT_BRANCH} | tr "/." "-" )
-          export DOCKER_TAG=${GITHUB_RUN_NUMBER}_${DOCKER_BRANCH_TAG}_${GITHUB_SHA:0:7}
+          export DOCKER_TAG=${DOCKER_BRANCH_TAG}_${GITHUB_SHA:0:7}_${GITHUB_RUN_NUMBER}
           echo "Docker tag will be ${DOCKER_TAG}"
           echo "GIT_BRANCH=${GIT_BRANCH}" >> $GITHUB_ENV
           echo "DOCKER_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
