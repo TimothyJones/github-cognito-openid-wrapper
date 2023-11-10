@@ -30,7 +30,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@snyk/protect": "^1.1235.0",
+    "@snyk/protect": "^1.1236.0",
     "axios": "^1.6.0",
     "body-parser": "^1.20.2",
     "colors": "^1.4.0",
