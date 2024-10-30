@@ -50,7 +50,7 @@ module.exports = (apiBaseUrl, loginBaseUrl) => {
     getAuthorizeUrl: (client_id, scope, state, response_type) =>
       `${urls.oauthAuthorize}?client_id=${client_id}&scope=${encodeURIComponent(
         scope
-      )}&state=${state}&response_type=${response_type}`,
+      )}&state=${state}&response_type=${response_type}&redirect_uri=${COGNITO_REDIRECT_URI}`,
     getUserDetails: (accessToken) =>
       gitHubGet(urls.userDetails, accessToken).then(check),
     getUserEmails: (accessToken) =>
