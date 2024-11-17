@@ -1,0 +1,7 @@
+.github
+coverage
+config.sh
+*.tgz
+*.key
+*.key.pub
+serverless-output.yml
