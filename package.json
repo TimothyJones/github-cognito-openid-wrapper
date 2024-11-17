@@ -59,7 +59,7 @@
     "nodemon-webpack-plugin": "^4.8.1",
     "prettier": "^2.6.2",
     "raw-loader": "^0.5.1",
-    "webpack": "^5.76.0",
+    "webpack": "^5.96.1",
     "webpack-cli": "^4.9.2",
     "webpack-node-externals": "^2.5.0"
   },
