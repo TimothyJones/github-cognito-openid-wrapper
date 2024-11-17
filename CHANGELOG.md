@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.0.0](https://github.com/TimothyJones/github-cognito-openid-wrapper/compare/v1.2.1...v2.0.0) (2024-11-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Drop support for node 14/16, add support for node 20
+
+### Features
+
+* Bump lambda runtime to nodejs18.x from the soon-to-be-deprecated 14.x ([9b4e36d](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/9b4e36ddacae4dcc9a22cd5afec806701a13b36f))
+
+
+### Bug Fixes
+
+* package.json & package-lock.json to reduce vulnerabilities ([8959e02](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/8959e023bfef40eed7e18ae8df5adf62807634ee))
+* package.json & package-lock.json to reduce vulnerabilities ([28e7447](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/28e7447f2c167e92ecfbf1a29b1e5535382cd5b7))
+* upgrade @snyk/protect from 1.1118.0 to 1.1119.0 ([203068f](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/203068f6e54f204a697d490d3f7e57d8d555b41d))
+* upgrade @snyk/protect from 1.1119.0 to 1.1128.0 ([5ed9b73](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/5ed9b73c9e87023f4fffb047bd935812534187a9))
+* upgrade @snyk/protect from 1.1128.0 to 1.1234.0 ([6c47188](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/6c47188e75f8cb11dae424731cd26cdee9c39c19))
+* upgrade @snyk/protect from 1.1234.0 to 1.1235.0 ([34146b9](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/34146b9eb3d4bd045a6077f011e9fb7b6d51a8a7))
+* upgrade @snyk/protect from 1.1235.0 to 1.1292.1 ([6d6789b](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/6d6789be6b8d60bf9be42d235fbdf14a92a0d70b))
+* upgrade axios from 1.6.0 to 1.6.1 ([84d0dad](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/84d0dad94cb771319dacea29498379761e37376b))
+* upgrade axios from 1.6.1 to 1.6.2 ([16e8029](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/16e80294aa68adf812eb64e6a7ad38970ff1ca72))
+* upgrade body-parser from 1.20.1 to 1.20.2 ([8e626cb](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/8e626cbb8d86a9290ec5a66cac47c28b53b4b8df))
+* upgrade json-web-key from 0.3.0 to 0.4.0 ([c478674](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/c4786745a812ef623d59eaf1c273cf85063fca1d))
+* upgrade jsonwebtoken from 9.0.0 to 9.0.1 ([49dd0ac](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/49dd0ac20e295233a241140f9373ba39c1859c2d))
+* upgrade jsonwebtoken from 9.0.1 to 9.0.2 ([610ebb1](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/610ebb1d998837f38b8c44dc60f4a61202d6df59))
+* upgrade winston from 3.11.0 to 3.13.0 ([8f0e763](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/8f0e7635a60b284545e044eebbc0844ae4954130))
+* upgrade winston from 3.8.1 to 3.8.2 ([87b67c4](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/87b67c4d0dcc344e0a949694c4100a4dd4128e88))
+
+
+### build
+
+* Drop support for node 14/16, add support for node 20 ([f5f279e](https://github.com/TimothyJones/github-cognito-openid-wrapper/commit/f5f279e959b83d1c15146d7af5d743c19666dca5))
+
 ### [1.2.1](https://github.com/TimothyJones/github-cognito-openid-wrapper/compare/v1.2.0...v1.2.1) (2023-03-15)
 
 
