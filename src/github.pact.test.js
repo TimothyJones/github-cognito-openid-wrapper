@@ -1,4 +1,4 @@
-const { PactV3, MatchersV3 } = require('@pact-foundation/pact');
+const { PactV3 } = require('@pact-foundation/pact');
 
 const path = require('path');
 const github = require('./github');
