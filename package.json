@@ -43,7 +43,7 @@
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
-    "@pact-foundation/pact": "^9.18.1",
+    "@pact-foundation/pact": "^13.1.5",
     "all-contributors-cli": "^6.17.2",
     "babel-jest": "^28.1.0",
     "babel-loader": "^8.2.5",
@@ -54,7 +54,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.2.0",
     "jest": "^28.1.0",
-    "jest-pact": "^0.9.4",
     "nodemon": "^2.0.20",
     "nodemon-webpack-plugin": "^4.8.1",
     "prettier": "^2.6.2",
