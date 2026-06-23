@@ -65,10 +65,10 @@
     "webpack-node-externals": "^2.5.0"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=24.17.0 <25"
   },
   "snyk": true,
   "volta": {
-    "node": "18.15.0"
+    "node": "24.17.0"
   }
 }

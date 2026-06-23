@@ -3,7 +3,7 @@ module.exports = function(api) {
     [
       '@babel/preset-env',
       {
-        targets: { node: '8.10' }
+        targets: { node: '24.17' }
       }
     ]
   ];
